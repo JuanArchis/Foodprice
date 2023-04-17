@@ -77,7 +77,7 @@ Ejecutar el módulo 0, el cual contiene las librerias necesarias para la clase; 
 Prueba1$Librerias()
 ```
             
-**4.2 Cargar el módulo 1**
+**4.3 Cargar el módulo 1**
             
 Ejecutar el módulo 1,se encarga de la depuración y mostrará dos salidas: 
 - Estimación_Precios_Minoristas: Datos de la estimación de los precios minoristas.
@@ -85,7 +85,6 @@ Ejecutar el módulo 1,se encarga de la depuración y mostrará dos salidas:
 ```        
 Prueba1$Módulo_1()
 ```
-# 
   
 ## :bangbang: Aspectos a tener en cuenta
   

@@ -100,7 +100,7 @@ abs_cavasa_mes$Total_alimento = rowSums(abs_cavasa_mes[,2:length(fechas)], na.rm
 
 ```
   
--Linea 17 del módulo 3 (código 3300): El promedio de los márgenes de comercialización aparentemente no es coherente.
+- Linea 17 del módulo 3 (código 3300): El promedio de los márgenes de comercialización aparentemente no es coherente.
   
 ```
 for (k in 1:nrow(margenes_historicos)) {

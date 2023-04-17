@@ -26,7 +26,9 @@ El paquete cuenta con una función para la carga de los datos, de tal forma que 
 
 
 
-**1. Instale y cargue el paquete alojado en el presente repositorio ejecutando en R (debe tener acceso al repositorio, dado que este es privado):** 
+**1. Instalación**
+            
+Instale y cargue el paquete alojado en el presente repositorio ejecutando en R (debe tener acceso al repositorio, dado que este es privado):            
 
 ```
 devtools::install_github("JuanArchis/Foodtipe");library(Foodprice)
@@ -52,13 +54,14 @@ El objeto o función a llamar es : Paquete_Foodprice_ver_0_0_1.
 - **Año:** Año de estudio,su formato debe ser númerico; por ejemplo, 2022.
 - **Ciudad:** Ciudad de estudio, debe estar en formato texto, por ejemplo: "Cali".
             
-#
+
             
 **4. Instrucciones de uso**
 
 El paquete es una clase, por lo cual se debe crear una asginación que cuente con la función "Paquete_Foodprice_ver_0_0_1" y sus argumentos de entrada. Lo anterior permite crear varias asignaciones indicando diferente ciudades, año y mes de estudio.
 
 **4.1 Crear asignación**
+            
 Creando una asginación que contendrá la depuración del objeto. En ella se llama la clase y se indican los argumentos de esta; por ejemplo, sea la asginación "Prueba1":  
             
 ```
@@ -77,13 +80,35 @@ Prueba1$Librerias()
 **4.2 Cargar el módulo 1**
             
 Ejecutar el módulo 1,se encarga de la depuración y mostrará dos salidas: 
-                                     - Estimación_Precios_Minoristas: Datos de la estimación de los precios minoristas.
-                                     - Datos_Insumo_Modelos: Datos depurados que servirán como insumo a los modelos.
+- Estimación_Precios_Minoristas: Datos de la estimación de los precios minoristas.
+- Datos_Insumo_Modelos: Datos depurados que servirán como insumo a los modelos.
 ```        
 Prueba1$Módulo_1()
 ```
+# 
+  
+## :bangbang: Aspectos a tener en cuenta
+  
+**1. En la presente versión se omiten los precios de cavasa, sólo se trabajan con los datos públicos.**
+  
+**2. Se encontraron dos POSIBLES errores en el código original que son pertinentes de revisar:**
+  
+- Linea 55 del módulo 2 (código 2100): La suma omite la columna 1.
+  
+```
+abs_cavasa_mes$Total_alimento = rowSums(abs_cavasa_mes[,2:length(fechas)], na.rm =TRUE)
 
-
+```
+  
+-Linea 17 del módulo 3 (código 3300): El promedio de los márgenes de comercialización aparentemente no es coherente.
+  
+```
+for (k in 1:nrow(margenes_historicos)) {
+  margenes_historicos$margen_medio[k] = mean(as.numeric(margenes_historicos[k, 2:4]))
+} 
+```
+  
+**3. La automatización de los mapeos está pendiente.**
 
 #
 En la versión 0.0.1 (actual) sólo se encuentra disponible la ciudad  de Cali y el Año 2022.

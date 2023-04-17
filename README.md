@@ -46,31 +46,41 @@ El objeto o función a llamar es : Paquete_Foodprice_ver_0_0_1.
 
 **3. Argumentos del objeto**
 
-- data_list_precios: Ingresar los datos de precios de SIPSA tal y cual como se descargaron.
-- data_list_abas: Ingresar los datos de abastecimiento de SIPSA tal y cual como se descargaron.
-- Mes: Mes o muestra de estudio, debe estar en formato texto, por ejemplo: "Julio"
-- Año: Año de estudio,su formato debe ser númerico; por ejemplo, 2022.
-- Ciudad: Ciudad de estudio, debe estar en formato texto, por ejemplo: "Cali".
-
+- **data_list_precios:** Ingresar los datos de precios de SIPSA tal y cual como se descargaron.
+- **data_list_abas:** Ingresar los datos de abastecimiento de SIPSA tal y cual como se descargaron.
+- **Mes:** Mes o muestra de estudio, debe estar en formato texto, por ejemplo: "Julio"
+- **Año:** Año de estudio,su formato debe ser númerico; por ejemplo, 2022.
+- **Ciudad:** Ciudad de estudio, debe estar en formato texto, por ejemplo: "Cali".
+            
+#
+            
 **4. Instrucciones de uso**
 
 El paquete es una clase, por lo cual se debe crear una asginación que cuente con la función "Paquete_Foodprice_ver_0_0_1" y sus argumentos de entrada. Lo anterior permite crear varias asignaciones indicando diferente ciudades, año y mes de estudio.
-Por ejemplo, sea la asginación "Prueba1":
 
-```
-# Creando una asginación que contendrá la depuración del objeto. En ella se llama la clase y se indican los argumentos de esta:
-Prueba1=Foodprice::Paquete_Foodprice_ver_0_0_1$new(data_list_precios=x,data_list_abas=y,Mes="Julio",Año=2022,Ciudad="Cali")
-
-# Se ejecuta el módulo 0, el cual contiene las librerias necesarias para la clase; este se encarga de instalar en caso de ser necesario todos los paquetes.
-
-Prueba1$Librerias()
-
-# Se encarga de la depuración y mostrará dos salidas: 
-            # Estimación_Precios_Minoristas: Datos de la estimación de los precios minoristas.
-            # Datos_Insumo_Modelos: Datos depurados que servirán como insumo a los modelos.
+**4.1 Crear asignación**
+Creando una asginación que contendrá la depuración del objeto. En ella se llama la clase y se indican los argumentos de esta; por ejemplo, sea la asginación "Prueba1":  
             
-Prueba1$Módulo_1()
+```
+Prueba1=Foodprice::Paquete_Foodprice_ver_0_0_1$new(data_list_precios=x,data_list_abas=y,Mes="Julio",Año=2022,Ciudad="Cali")
+```
+            
+**4.2 Cargar el módulo 0**  
+            
+Ejecutar el módulo 0, el cual contiene las librerias necesarias para la clase; este se encarga de instalar en caso de ser necesario todos los paquetes.
 
+            
+```
+Prueba1$Librerias()
+```
+            
+**4.2 Cargar el módulo 1**
+            
+Ejecutar el módulo 1,se encarga de la depuración y mostrará dos salidas: 
+                                     - Estimación_Precios_Minoristas: Datos de la estimación de los precios minoristas.
+                                     - Datos_Insumo_Modelos: Datos depurados que servirán como insumo a los modelos.
+```        
+Prueba1$Módulo_1()
 ```
 
 

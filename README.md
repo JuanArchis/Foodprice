@@ -31,7 +31,7 @@ El paquete cuenta con una función para la carga de los datos, de tal forma que 
 Instale y cargue el paquete alojado en el presente repositorio ejecutando en R (debe tener acceso al repositorio, dado que este es privado):            
 
 ```
-devtools::install_github("JuanArchis/Foodtipe");library(Foodprice)
+devtools::install_github("JuanArchis/Foodprice");library(Foodprice)
 ```
 
 **2. Preparación de los datos de entrada**

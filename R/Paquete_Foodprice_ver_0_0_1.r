@@ -22,12 +22,18 @@ Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
 public=list(
     Librerias_base = c("readxl","dplyr","ggplot2","reshape2","knitr","haven","foreign","stringi","labelled","tidyr","plyr","openxlsx","tidyverse",
                     "lpSolve","Rglpk","Rsymphony","scatterplot3d","reshape"),
-    # Nombra las librerias necesarias
+    # Parámetros de la clase
     data_list_precios=NULL,
     data_list_abas=NULL,
     Mes=NULL,
     Año=NULL,
     Ciudad=NULL,
+
+    # Parámetros privados
+
+    Data=NULL, # Data final del módulo 1
+    DRI_m=NULL,
+    DRI_f=NULL,
 
     initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad){
     self$data_list_precios=data_list_precios
@@ -593,7 +599,261 @@ public=list(
     #------------------------------------------------------------------#
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+self$Data=Datos_Insumo_Modelos
+
+},
+
+
+
+    # ------------------------------------------------------------#
+    #        MÓDULO 2: CARGA DE DATOS DE REQURIMIENTOS           # -- EN PROGRESO (FALTA GENERALIZAR sleft$ para comunicar con módulos siguientes)
+    #-----------------------------------------------------------#
+
+Módulo_2=function(){
+
+
+  #----------------------------------------#
+  # Carga de requerimientos Modelo 1 y 2   #
+  #---------------------------------------#
+
+# Modificación de datos del módulo 1
+names(self$Data) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
+
+self$Data <- self$Data %>%
+  transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
+  arrange(Alimento)
+
+
+#-------------------------------------#
+# Carga de requerimientos Modelo 3   #
+#------------------------------------#
+
+# carga de proporción por grupos de alimentos
+data(EER_share_M, package = "Foodprice",envir=parent.env(environment()));data(EER_share_F, package = "Foodprice",envir=parent.env(environment()))
+
+#  carga exclusión
+data(exclusion_3er_modelo, package = "Foodprice",envir=parent.env(environment()))
+
+# Carga cartidad de alimentos a selecionar
+data(cantidad_alimentos_seleccionar, package = "Foodprice",envir=parent.env(environment()))
+
+# Carga requerimentos de energía por grupos de alimentos
+data(EER_share_rangos, package = "Foodprice",envir=parent.env(environment()))
+
+# Cambiar nombres de columnas
+colnames(EER_share_F)[1] = "Grupo_GABAS"
+colnames(EER_share_M)[1] = "Grupo_GABAS"
+colnames(cantidad_alimentos_seleccionar)[1] = "Grupo_GABAS"
+
+# Función para la recodificacion de la contribucion de energia segun grupos de alimentos
+funcion_EER <- function(x) {
+  x$Grupo_GABAS <- recode(x$Grupo_GABAS, "Azúcares" = "Azúcares","Carnes, Huevos, Leguminosas, Frutos secos y Semillas" = "Carnes, huevos y leguminosas","Cereales, Raíces, Tubérculos y Plátanos" = "Cereales y raíces","Frutas y Verduras" = "Frutas y verduras","Grasas" = "Grasas", "Leche y productos lácteos" = "Lácteos","Sin categoría" = "Sin categoría")
+  return(x)
+}
+
+
+# Recodificar grupos de alimentos
+EER_share_F = funcion_EER(EER_share_F)
+EER_share_M = funcion_EER(EER_share_M)
+cantidad_alimentos_seleccionar= funcion_EER(cantidad_alimentos_seleccionar)
+
+
+
+# Cambiar nombres de columnas en exclusion_3er_modelo
+colnames(exclusion_3er_modelo) = c("Alimento", "Cod_TCAC");colnames(EER_share_rangos) = c("Grupo_GABAS", "Min", "Max")
+
+if(length(warnings())<100) {cat("Depuración del módulo 2 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+
+
+}, # BASES Resultantes: Data, DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar
+
+Módulo_3=function(){
+
+  #--------------------------------------------------------------------------#
+  #                   Primer Modelo - Construcción de datos                  #
+  #-------------------------------------------------------------------------#
+
+
+  # excluir azúcar porque no es viable (K003 y K004)
+  self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004"))
+
+  # vector de precios
+  precios = self$Data$Precio_100g_ajust
+
+  # nombre alimentos
+  alimentos=self$Data$Alimento
+
+  # Matriz de contenidos energéticos
+  A = matrix(as.vector(self$Data$Energia), ncol = length(alimentos))
+
+  #-----------------------------------------------------------------------------------------#
+  #                   Primer Modelo Masculino - Solución y verificación                    #
+  #--------------------------------------------------------------------------------------#
+
+  #--------- Solución
+
+  modelo_1 = data.frame(alimentos)
+  modelo_1 = modelo_1 %>% add_row(alimentos = "Costo")
+  colnames(modelo_1) = "Alimentos"
+  edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)", "[51, 70)", ">70")
+  #signos de las restricciones lineales
+  constr_signs = c("=")
+
+  #requerimientos de energia por edad
+  dri_edad = list()
+
+  for (i in 1:8) {
+    b = vector()
+    b = DRI_M[i,2]
+    dri_edad = append(dri_edad, b)
+    names(dri_edad)[i] = paste0("b_", i)
+  }
+  #solucion del modelo
+  for (i in 1:8) {
+    df_1 = data.frame()
+    df_2 = data.frame()
+    b = dri_edad[[i]]
+    opt_sol = lp(direction = "min",
+                 objective.in = precios,
+                 const.mat = A,
+                 const.dir = constr_signs,
+                 const.rhs = b,
+                 compute.sens = TRUE)
+    df_1 = cbind(alimentos, opt_sol$solution)
+    colnames(df_1) = c("Alimentos", edad[i])
+    df_2 = data.frame("Costo", opt_sol$objval)
+    colnames(df_2) = colnames(df_1)
+    df_1 = rbind(df_1, df_2)
+    modelo_1 = merge(modelo_1,df_1, by = "Alimentos")
+    rm(b, df_1, df_2)
+  }
+
+  # presentacion de la solucion por grupos etarios
+
+  #eliminar cantidades NA
+  modelo_1[modelo_1 == 0] = NA
+  modelo_1_res = modelo_1[rowSums(is.na(modelo_1[,2:length(colnames(modelo_1))])) != ncol(modelo_1[,2:length(colnames(modelo_1))]),]
+
+  #presentaci?n del resultado en gramos
+  modelo_1_res[nrow(modelo_1_res)+1,] = modelo_1_res[1,]
+
+  for (k in 2:ncol(modelo_1_res)) {
+    modelo_1_res[3,k] = as.numeric(modelo_1_res[1,k])*100
+  }
+
+  modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(g)")
+  modelo_1_res = modelo_1_res[c(1,3,2),]
+
+  #--------- Validación
+
+  # vector de energía para el alimento seleccionado
+  energia_modelo_1 = self$Data %>% filter(Alimento %in%
+                                       modelo_1_res[1,1])
+
+  # valores optimos para cada grupo demografico
+  optimo = list()
+  desv = list()
+  length(optimo) = length(edad)
+  length(desv)  = length(optimo)
+  n = length(optimo)
+  solucion_grupos =  modelo_1_res[1,]
+
+  for (k in 1:n) {
+    optimo[[k]] = as.numeric(solucion_grupos[1,k+1])*energia_modelo_1$Energia
+    desv[[k]] = optimo[[k]] - dri_edad[[k]]
+  }
+
+  # vector de energía para el alimento seleccionado
+  energia_modelo_1 = self$Data %>% filter(Alimento %in%
+                                       modelo_1_res[1,1])
+
+  # valores optimos para cada grupo demografico
+  optimo = list()
+  desv = list()
+  length(optimo) = length(edad)
+  length(desv)  = length(optimo)
+  n = length(optimo)
+  solucion_grupos =  modelo_1_res[1,]
+
+  for (k in 1:n) {
+    optimo[[k]] = as.numeric(solucion_grupos[1,k+1])*energia_modelo_1$Energia
+    desv[[k]] = optimo[[k]] - dri_edad[[k]]
+  }
+  assign("Modelo_1_M",modelo_1_res,envir = globalenv())
+
+
+ #-----------------------------------------------------------------------------------------#
+ #                   Primer Modelo Femenino - Solución y verificación                    #
+#--------------------------------------------------------------------------------------#
+  # signos de restricciones lineales
+  constr_signs = c("=")
+
+  #requerimientos de energia por edad
+  dri_edad = list()
+
+  for (i in 1:14) {
+    b = vector()
+    b = DRI_F[i,2]
+    dri_edad = append(dri_edad, b)
+    names(dri_edad)[i] = paste0("b_", i)
+  }
+
+
+
+  # base de datos de resultados
+  modelo_1 = data.frame(alimentos)
+  modelo_1 = modelo_1 %>% add_row(alimentos = "Costo")
+  colnames(modelo_1) = "Alimentos"
+  edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)",
+           "[51, 70)", ">70", "gestantes < 18 años", "gestantes 19 a 30 años",
+           "gestantes 31 a 50 años", "lactantes < 18 años", "lactantes 19 a 30 años",
+           "lactantes 31 a 50 años")
+
+  #solucion del modelo
+  for (i in 1:14) {
+    df_1 = data.frame()
+    df_2 = data.frame()
+    b = dri_edad[[i]]
+    opt_sol = lp(direction = "min",
+                 objective.in = precios,
+                 const.mat = A,
+                 const.dir = constr_signs,
+                 const.rhs = b,
+                 compute.sens = TRUE)
+    df_1 = cbind(alimentos, opt_sol$solution)
+    colnames(df_1) = c("Alimentos", edad[i])
+    df_2 = data.frame("Costo", opt_sol$objval)
+    colnames(df_2) = colnames(df_1)
+    df_1 = rbind(df_1, df_2)
+    modelo_1 = merge(modelo_1,df_1, by = "Alimentos")
+    rm(b, df_1, df_2)
+  }
+
+  # presentacion de la solucion por grupos etarios
+
+  #eliminar cantidades NA
+  modelo_1[modelo_1 == 0] = NA
+  modelo_1_res = modelo_1[rowSums(is.na(modelo_1[,2:length(colnames(modelo_1))])) != ncol(modelo_1[,2:length(colnames(modelo_1))]),]
+
+  #presentaci?n del resultado en gramos
+  modelo_1_res[nrow(modelo_1_res)+1,] = modelo_1_res[1,]
+
+  for (k in 2:ncol(modelo_1_res)) {
+    modelo_1_res[3,k] = as.numeric(modelo_1_res[1,k])*100
+  }
+
+  modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(g)")
+  modelo_1_res = modelo_1_res[c(1,3,2),]
+
+  assign("Modelo_1_F",modelo_1_res,envir = globalenv())
+  if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+
 
 }
+
 ))
+
+
+
+
 

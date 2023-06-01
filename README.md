@@ -42,7 +42,7 @@ entrada se solicita cargar los datos con la libreria "rio". Por ejemplo:
 
 ```
 x <- rio::import_list("path de los datos de precios SIPSA", setclass = "tbl") # mayoristas sipsa
-y <- rio::import_list(""path de los datos de abastecimiento  SIPSA"", setclass = "tbl")
+y <- rio::import_list("path de los datos de abastecimiento"  SIPSA"", setclass = "tbl")
 ```
 El objeto o función a llamar es : Paquete_Foodprice_ver_0_0_1.
 
@@ -107,7 +107,18 @@ for (k in 1:nrow(margenes_historicos)) {
 } 
 ```
   
-**3. La automatización de los mapeos está pendiente.**
+**4. **Se añadieron los módulos 2 y 3 **
+            
+- El módulo 2 se encarga de lso datos pertinentes para los modelos de requerimientos
+- El módulo 3 se encarga del primer modelo.
 
+Para usarlos sólo ejecute:
+            
+```  
+Prueba1$Módulo_2()
+Prueba1$Módulo_3()
+```            
+El módulo 3 mostrará en el environment global dos bases: Modelo_1_F y Modelo_1_M            
 #
-En la versión 0.0.1 (actual) sólo se encuentra disponible la ciudad  de Cali y el Año 2022.
+            
+En la versión 0.1.1 (actual) sólo se encuentra disponible la ciudad  de Cali y el Año 2022.

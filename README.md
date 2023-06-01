@@ -107,7 +107,7 @@ for (k in 1:nrow(margenes_historicos)) {
 } 
 ```
   
-**4. **Se añadieron los módulos 2 y 3 **
+**4. Se añadieron los módulos 2 y 3 **
             
 - El módulo 2 se encarga de lso datos pertinentes para los modelos de requerimientos
 - El módulo 3 se encarga del primer modelo.

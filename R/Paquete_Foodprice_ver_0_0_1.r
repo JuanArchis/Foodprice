@@ -853,7 +853,7 @@ Módulo_3=function(){
 
 Módulo_4=function(){
 
-  #--------------------------------------------------------------------------------------#
+#--------------------------------------------------------------------------------------#
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
 
@@ -870,7 +870,7 @@ keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folato
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
 
-A = Data[keep] %>% as.matrix() %>% t()
+A = self$Data[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])
 
 #recodificar la información de requerimeitnos nutricionales

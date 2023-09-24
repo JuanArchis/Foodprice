@@ -598,7 +598,7 @@ public=list(
     #               Estado de la depuración del módulo                 #
     #------------------------------------------------------------------#
 
- if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+ if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Data» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 self$Data=Datos_Insumo_Modelos
 
 },
@@ -625,8 +625,13 @@ self$Data <- self$Data %>%
 
 
 #-------------------------------------#
-# Carga de requerimientos Modelo 3   #
+# Carga de requerimientos Modelos   #
 #------------------------------------#
+
+# carga de porciones
+
+data(porciones, package = "Foodprice",envir=parent.env(environment()));data(EER_share_F, package = "Foodprice",envir=parent.env(environment()))
+
 
 # carga de proporción por grupos de alimentos
 data(EER_share_M, package = "Foodprice",envir=parent.env(environment()));data(EER_share_F, package = "Foodprice",envir=parent.env(environment()))
@@ -662,10 +667,11 @@ cantidad_alimentos_seleccionar= funcion_EER(cantidad_alimentos_seleccionar)
 # Cambiar nombres de columnas en exclusion_3er_modelo
 colnames(exclusion_3er_modelo) = c("Alimento", "Cod_TCAC");colnames(EER_share_rangos) = c("Grupo_GABAS", "Min", "Max")
 
-if(length(warnings())<100) {cat("Depuración del módulo 2 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+if(length(warnings())<100) {cat("Depuración del módulo 2 exitosa, se cargaron los requerimientos de los tres modelos: DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar ", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 
 }, # BASES Resultantes: Data, DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar
+
 
 Módulo_3=function(){
 
@@ -846,7 +852,7 @@ Módulo_3=function(){
   modelo_1_res = modelo_1_res[c(1,3,2),]
 
   assign("Modelo_1_F",modelo_1_res,envir = globalenv())
-  if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+  if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa, la salida principal son los alimentos del primer modelo por sexo, para acceder a estos use «Modelo_1_F o Modelo_1_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 
 },
@@ -974,7 +980,7 @@ const_2  = na.omit(const_2)
 
 #solucion del modelo
 for (i in 1:8) {
-  print(edad[i])
+  (edad[i])
 
   #resolver el modelo
   
@@ -1126,7 +1132,7 @@ const_2  = na.omit(const_2)
 
 #solucion del modelo
 for (i in 1:14) {
-  print(edad[i])
+  (edad[i])
 
   #resolver el modelo
   
@@ -1202,7 +1208,20 @@ modelo_2_res[is.na(modelo_2_res)] = 0
 
 
   assign("Modelo_2_F",modelo_2_res,envir = globalenv())
-  if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+  if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa, la salida principal son los alimentos del primer segundo por sexo, para acceder a estos use «Modelo_2_F o Modelo_2_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+
+},
+
+
+
+
+Módulo_5=function(){
+
+#---------------------------------------------------------------------------------------#
+#                   Tercer Modelo  - Construcción de datos                             #
+#-------------------------------------------------------------------------------------#
+
+
 
 
 

@@ -1355,8 +1355,7 @@ f_b_1 = function(a){
   dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
   
   # recuperar grupos y subgrupos GABAS
-  print(TCAC)
-  print(dataset_m3)
+ 
 
   dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
@@ -1415,10 +1414,10 @@ f_b_1 = function(a){
   dataset_m3 = dataset_m3 %>% filter(!Grupo_GABAS %in% "Sin categoría")
   
   # segundo: se excluyen los alimentos que no están recomendados por GABAS
-  
+
 colnames(exclusion_3er_modelo)=c("Alimento","Cod_TCAC")
   dataset_m3 = dataset_m3 %>% filter(!Cod_TCAC %in% levels(as.factor(exclusion_3er_modelo$Cod_TCAC)))
-  
+  print(dataset_m3)
   exclusion_ad_hoc = c("Carne de cerdo, espinazo", "Yuca ICA", "Papa Betina",
                        "Papa única")
   dataset_m3 = dataset_m3 %>% filter(!Alimento %in% exclusion_ad_hoc)

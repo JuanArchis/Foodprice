@@ -1357,7 +1357,7 @@ f_b_1 = function(a){
   # recuperar grupos y subgrupos GABAS
   print(TCAC)
   print(dataset_m3)
-  TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS")]
+
   dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
   

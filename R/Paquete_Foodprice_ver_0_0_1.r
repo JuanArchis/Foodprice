@@ -1788,8 +1788,7 @@ modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
 
 assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_M_COST",modelo_3_costo,envir = globalenv())
 
- if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa, la salida principal son las tres modelos para cada sexo (Modelo 3); use Modelo_3_* para acceder a cada uno", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
-self$Data=Datos_Insumo_Modelos
+cat("Depuración del módulo 4 exitosa, la salida principal son las tres modelos para cada sexo (Modelo 3); use «Modelo_3_*» para acceder a cada uno")
 
 }
 

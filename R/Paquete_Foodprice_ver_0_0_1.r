@@ -1447,6 +1447,7 @@ modelo_3_dieta_int = modelo_3_dieta
 
 ## Solución del    MOD3      ##
 
+colnames(cantidad_alimentos_seleccionar) = c("Grupo_GABAS", "Cantidad")
 
 # recodificar cantidad a seleccionar
 cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Azúcares")] = "Azúcares"

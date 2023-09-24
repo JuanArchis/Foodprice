@@ -1347,15 +1347,13 @@ f_b_1 = function(a){
                      by = "Cod_TCAC", all.x = TRUE)
   
   dataset_m3 = dataset_m3[!duplicated(dataset_m3),]
-  
-dataset_m3$Serving[1]=100
-dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
-
+  dataset_m3$Serving[1]=100
+  dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
   
   # recuperar grupos y subgrupos GABAS
+Mapeo_Sipsa_TCAC_GABAS_Grupos=Mapeo_Sipsa_TCAC_GABAS_Grupos[c("Cod_TCAC", "Grupo_GABAS")]
 
-  TCAC = Mapeo_Sipsa_TCAC_GABAS_Grupos
-  dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
+  dataset_m3 = merge(dataset_m3, Mapeo_Sipsa_TCAC_GABAS_Grupos, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
   
   ################

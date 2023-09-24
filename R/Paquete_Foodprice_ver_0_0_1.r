@@ -1355,7 +1355,8 @@ f_b_1 = function(a){
   dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
   
   # recuperar grupos y subgrupos GABAS
- 
+  
+TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS", "Subgrupo_GABAS")]
 
   dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
@@ -1417,14 +1418,14 @@ f_b_1 = function(a){
 
 colnames(exclusion_3er_modelo)=c("Alimento","Cod_TCAC")
   dataset_m3 = dataset_m3 %>% filter(!Cod_TCAC %in% levels(as.factor(exclusion_3er_modelo$Cod_TCAC)))
-  
-  print(dataset_m3)
 
-  dataset_m3 = dataset_m3 %>% filter(!Alimento %in% c("Carne de cerdo, espinazo", "Yuca ICA", "Papa Betina",
-                       "Papa única"))
+exclusion_ad_hoc = c("Carne de cerdo, espinazo", "Yuca ICA", "Papa Betina",
+                       "Papa única")
+
+dataset_m3 = dataset_m3 %>% filter(!Alimento %in% exclusion_ad_hoc)
   
 #---------------------------------------------------------------------------------------#
-#                   Tercer Modelo  -  Solución y contrucción Femenino                       #
+#                   Tercer Modelo  -  Solución y contrucción Femenino                  #
 #-------------------------------------------------------------------------------------#
 
 # base de datos de recepción

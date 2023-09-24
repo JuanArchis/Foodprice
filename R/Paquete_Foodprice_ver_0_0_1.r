@@ -34,7 +34,7 @@ public=list(
     Data=NULL, # Data final del módulo 1
     DRI_m=NULL,
     DRI_f=NULL,
-    TCAC=NULL,
+
 
     initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad){
     self$data_list_precios=data_list_precios
@@ -190,7 +190,7 @@ public=list(
     data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice",envir=parent.env(environment()))
     Variables_Necesarias = c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC");Mapeo_Sipsa_TCAC_GABAS_Grupos = Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
     colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) = c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
-    self$TCAC=Mapeo_Sipsa_TCAC_GABAS_Grupos
+    
 
     #--------               -------#
     #    Criterios de exclusión    #
@@ -632,11 +632,13 @@ self$Data <- self$Data %>%
 # carga de porciones
 
 data(intercambio_gramos, package = "Foodprice",envir=parent.env(environment()))
-
 # carga de requerimientos
 
 data(int_req_m, package = "Foodprice",envir=parent.env(environment()))
+
+
 data(int_req_f, package = "Foodprice",envir=parent.env(environment()))
+
 
 
 # carga de proporción por grupos de alimentos
@@ -675,6 +677,7 @@ colnames(exclusion_3er_modelo) = c("Alimento", "Cod_TCAC");colnames(EER_share_ra
 
 if(length(warnings())<100) {cat("Depuración del módulo 2 exitosa, se cargaron los requerimientos de los tres modelos: DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar ", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
+data(TCAC, package = "Foodprice",envir=parent.env(environment()))
 
 }, # BASES Resultantes: Data, DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar
 

@@ -1449,28 +1449,28 @@ modelo_3_dieta_int = modelo_3_dieta
 
 
 # recodificar cantidad a seleccionar
-cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Azúcares")] = "Azúcares"
-cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Carnes, huevos y leguminosas")] = "Carnes, huevos y leguminosas"
-cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Cereales, Raíces, Tubérculos y Plátanos")] = "Cereales y raíces"
-cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Frutas y verduras")] = "Frutas y verduras"
-cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Grasas")] = "Grasas"
-cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Leche y productos lácteos")] = "Lácteos"
+cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Azúcares")] = "Azúcares"
+cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Carnes, huevos y leguminosas")] = "Carnes, huevos y leguminosas"
+cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Cereales, Raíces, Tubérculos y Plátanos")] = "Cereales y raíces"
+cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Frutas y verduras")] = "Frutas y verduras"
+cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Grasas")] = "Grasas"
+cantidad_alimentos_seleccionar$Grupo_GABAS[which(cantidad_alimentos_seleccionar$Grupo_GABAS == "Leche y productos lácteos")] = "Lácteos"
 
 # incluir la cantidad a seleccionar de frutas y verduras
 frutas_verduras_cantidad = data.frame(Grupo_GABAS = c("Verduras", "Frutas"),
                                       Cantidad = c(2,2))
-cantidad_seleccionar = rbind(cantidad_seleccionar, frutas_verduras_cantidad)
+cantidad_alimentos_seleccionar = rbind(cantidad_alimentos_seleccionar, frutas_verduras_cantidad)
 
 # incluir la cantidad a seleccionar de cereales, raíces y tubérculos
 cereales_cantidad = data.frame(Grupo_GABAS = c("Tuberculos", "Raices",
                                                       "Cereales"),
                                       Cantidad = c(1,1,1))
-cantidad_seleccionar = rbind(cantidad_seleccionar, cereales_cantidad)
+cantidad_alimentos_seleccionar = rbind(cantidad_alimentos_seleccionar, cereales_cantidad)
 
 # incluir la cantidad a seleccionar de carnes y leguminosas
 carnes_cantidad = data.frame(Grupo_GABAS = c("Carnes", "Leguminosas"),
                                       Cantidad = c(1,1))
-cantidad_seleccionar = rbind(cantidad_seleccionar, carnes_cantidad)
+cantidad_alimentos_seleccionar = rbind(cantidad_alimentos_seleccionar, carnes_cantidad)
 
 # construcción de subsets por grupos de alimentos
 gabas = levels(as.factor(dataset_m3$Grupo_GABAS))
@@ -1500,7 +1500,7 @@ for (i in 1:length(edad)) {
   
   #cereales 
   #df = datos_grupos[[3]]
-  #q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   #q = as.numeric(q)
   #df = df[order(df$Precio_per_int),]
   #df_x = df[1:q,]
@@ -1515,7 +1515,7 @@ for (i in 1:length(edad)) {
   
   #frutas 
   df = datos_grupos[[4]]
-  q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
   df_x = df[1:q,]
@@ -1528,7 +1528,7 @@ for (i in 1:length(edad)) {
   
   #verduras 
   df = datos_grupos[[10]]
-  q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
   df_x = df[1:q,]
@@ -1541,7 +1541,7 @@ for (i in 1:length(edad)) {
   
   #carnes
   #df = datos_grupos[[2]]
-  #q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   #q = as.numeric(q)
   #df = df[order(df$Precio_per_int),]
   #df_x = df[1:q,]
@@ -1556,7 +1556,7 @@ for (i in 1:length(edad)) {
   # grasas, lacteos y azucares
   for (k in c(1,2,3,5,6,7,8,9)) {
     df = datos_grupos[[k]]
-    q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+    q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
     q = as.numeric(levels(as.factor(q$Cantidad)))
     df = df[order(df$Precio_per_int),]
     df_x = df[1:q,]

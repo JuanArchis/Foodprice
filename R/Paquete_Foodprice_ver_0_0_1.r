@@ -1415,7 +1415,8 @@ f_b_1 = function(a){
   dataset_m3 = dataset_m3 %>% filter(!Grupo_GABAS %in% "Sin categoría")
   
   # segundo: se excluyen los alimentos que no están recomendados por GABAS
-
+  
+colnames(exclusion_3er_modelo)=c("Alimento","Cod_TCAC")
   dataset_m3 = dataset_m3 %>% filter(!Cod_TCAC %in% levels(as.factor(exclusion_3er_modelo$Cod_TCAC)))
   
   exclusion_ad_hoc = c("Carne de cerdo, espinazo", "Yuca ICA", "Papa Betina",

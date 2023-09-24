@@ -598,7 +598,7 @@ public=list(
     #               Estado de la depuración del módulo                 #
     #------------------------------------------------------------------#
 
- if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Data» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+ if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 self$Data=Datos_Insumo_Modelos
 
 },
@@ -1348,7 +1348,9 @@ f_b_1 = function(a){
   
   dataset_m3 = dataset_m3[!duplicated(dataset_m3),]
   
-  dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/dataset_m3$Serving)*dataset_m3$Intercambio_g
+dataset_m3$Serving[1]=100
+dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
+
   
   # recuperar grupos y subgrupos GABAS
 

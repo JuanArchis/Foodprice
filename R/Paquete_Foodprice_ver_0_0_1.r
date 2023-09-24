@@ -1355,8 +1355,9 @@ f_b_1 = function(a){
   dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
   
   # recuperar grupos y subgrupos GABAS
-TCAC=self$TCAC[c("Cod_TCAC", "Grupo_GABAS")]
-
+  print(TCAC)
+  print(dataset_m3)
+  TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS")]
   dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
   
@@ -1919,7 +1920,7 @@ modelo_3_verif_f = merge(modelo_3_verif_f, cho_contraste_f, by = "Edad")
 
 ###############################
 
-TCAC = self$TCAC[c("Cod_TCAC", "Grupo_GABAS")]
+TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS")]
 data_TCAC = merge(data[c("Cod_TCAC", "Alimento")], TCAC, by = "Cod_TCAC")
 data_TCAC = f_gabas_1(data_TCAC[c("Alimento", "Grupo_GABAS")])
 

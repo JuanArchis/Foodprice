@@ -849,7 +849,7 @@ Módulo_3=function(){
   if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 
-}
+},
 
 Módulo_4=function(){
 #--------------------------------------------------------------------------------------#

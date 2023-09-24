@@ -1606,8 +1606,189 @@ modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
 
 
 assign("Modelo_3_F",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_F_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_F_COST",modelo_3_costo,envir = globalenv())
+
+
+
+
+#---------------------------------------------------------------------------------------#
+#                   Tercer Modelo  -  Solución y contrucción Masculino                  #
+#-------------------------------------------------------------------------------------#
+
+# base de datos de recepción
+modelo_3_dieta = data.frame(dataset_m3[c("Grupo_GABAS", "Alimento")])
+
+edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)", 
+         "[51, 70)", ">70")
+
+modelo_3_costo = as.data.frame(matrix(ncol = 1))
+colnames(modelo_3_costo) = c("Grupo")
+modelo_3_costo$Grupo[1] = "Costo"
+
+
+modelo_3_dieta_g = modelo_3_dieta
+modelo_3_dieta_int = modelo_3_dieta
+
+###########################
+## Solución del          ##
+##      modelo tipo 3    ##
+###########################
+
+# recodificar cantidad a seleccionar
+cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Azúcares")] = "Azúcares"
+cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Carnes, huevos y leguminosas")] = "Carnes, huevos y leguminosas"
+cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Cereales, Raíces, Tubérculos y Plátanos")] = "Cereales y raíces"
+cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Frutas y verduras")] = "Frutas y verduras"
+cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Grasas")] = "Grasas"
+cantidad_seleccionar$Grupo_GABAS[which(cantidad_seleccionar$Grupo_GABAS == "Leche y productos lácteos")] = "Lácteos"
+
+# incluir la cantidad a seleccionar de frutas y verduras
+frutas_verduras_cantidad = data.frame(Grupo_GABAS = c("Verduras", "Frutas"),
+                                      Cantidad = c(2,2))
+cantidad_seleccionar = rbind(cantidad_seleccionar, frutas_verduras_cantidad)
+
+# incluir la cantidad a seleccionar de cereales, raíces y tubérculos
+cereales_cantidad = data.frame(Grupo_GABAS = c("Tuberculos", "Raices",
+                                                      "Cereales"),
+                                      Cantidad = c(1,1,1))
+cantidad_seleccionar = rbind(cantidad_seleccionar, cereales_cantidad)
+
+# incluir la cantidad a seleccionar de carnes y leguminosas
+carnes_cantidad = data.frame(Grupo_GABAS = c("Carnes", "Leguminosas"),
+                                      Cantidad = c(1,1))
+cantidad_seleccionar = rbind(cantidad_seleccionar, carnes_cantidad)
+
+# construcción de subsets por grupos de alimentos
+gabas = levels(as.factor(dataset_m3$Grupo_GABAS))
+datos_grupos = list()
+length(datos_grupos) = length(gabas)
+
+gabas = setdiff(gabas, c("Carnes, huevos y leguminosas", "Cereales y raíces"))
+
+for (k in 1:length(gabas)) {
+  df = data.frame()
+  df = dataset_m3 %>% filter(Grupo_GABAS %in% gabas[k])
+  datos_grupos[[k]] = df
+  names(datos_grupos)[k] = paste0("Grupo_",gabas[k])
+  rm(df)
 }
 
+# bucle general para obtener las cantidades de los alimentos
+for (i in 1:length(edad)) {
+  # restricciones
+  int_req_m_x = int_req_m[,c(1,1+i)]
+  colnames(int_req_m_x) = c("Grupo_GABAS", "Intercambio")
+  int_req_m_x = f_gabas_2(int_req_m_x)
+  
+  df_solution = as.data.frame(matrix(ncol = (ncol(dataset_m3)+2))) 
+  colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")   
+  df_solution = na.omit(df_solution)
+  
+  #cereales 
+  #df = datos_grupos[[3]]
+  #q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  #q = as.numeric(q)
+  #df = df[order(df$Precio_per_int),]
+  #df_x = df[1:q,]
+  
+  # A = f_A_3(df_x)
+  #b = f_b_3(df_x)
+  #df_x$sol_int = solve(A, b)  
+  #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  #df_solution = rbind(df_solution, df_x)
+  
+ 
+  
+  #frutas 
+  df = datos_grupos[[4]]
+  q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = as.numeric(levels(as.factor(q$Cantidad)))
+  df = df[order(df$Precio_per_int),]
+  df_x = df[1:q,]
+  
+  A = f_A_2(df_x)
+  b = f_b_2(df_x)
+  df_x$sol_int = solve(A, b)  
+  df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  df_solution = rbind(df_solution, df_x)
+  
+  #verduras 
+  df = datos_grupos[[10]]
+  q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = as.numeric(levels(as.factor(q$Cantidad)))
+  df = df[order(df$Precio_per_int),]
+  df_x = df[1:q,]
+  
+  A = f_A_2(df_x)
+  b = f_b_2(df_x)
+  df_x$sol_int = solve(A, b)  
+  df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  df_solution = rbind(df_solution, df_x)
+  
+  #carnes
+  #df = datos_grupos[[2]]
+  #q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  #q = as.numeric(q)
+  #df = df[order(df$Precio_per_int),]
+  #df_x = df[1:q,]
+  
+  #A = f_A_2(df_x)
+  #b = f_b_2(df_x)
+  #df_x$sol_int = solve(A, b)  
+  #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  #df_solution = rbind(df_solution, df_x)
+  
+  
+  # grasas, lacteos y azucares
+  for (k in c(1,2,3,5,6,7,8,9)) {
+    df = datos_grupos[[k]]
+    q = cantidad_seleccionar[which(cantidad_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+    q = as.numeric(levels(as.factor(q$Cantidad)))
+    df = df[order(df$Precio_per_int),]
+    df_x = df[1:q,]
+    
+    A = f_A_1(df_x)
+    b = f_b_1(df_x)
+    df_x$sol_int = solve(A, b)  
+    df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+    df_solution = rbind(df_solution, df_x)
+  }
+  
+  
+  
+  costo_df = as.data.frame(matrix(ncol = 2, nrow = 1))
+  colnames(costo_df) = c("Grupo", edad[i]) 
+  costo_df$Grupo = "Costo"
+  costo_df[,2] = sum(df_solution$Precio_per_int*df_solution$sol_int)
+  
+  modelo_3_costo = merge(modelo_3_costo, costo_df, by = "Grupo")
+  
+  
+  
+  modelo_3_sol_g = df_solution[c("Alimento", "solution_g")]
+  modelo_3_sol_int = df_solution[c("Alimento", "sol_int")]
+  
+  colnames(modelo_3_sol_g) = c("Alimento", edad[i]) 
+  colnames(modelo_3_sol_int) = c("Alimento", edad[i]) 
+  
+  
+  modelo_3_dieta_g = merge(modelo_3_dieta_g, modelo_3_sol_g, by = "Alimento")
+  modelo_3_dieta_int = merge(modelo_3_dieta_int, modelo_3_sol_int, by = "Alimento")
+  
+}
+
+
+# Organizar los resultados
+modelo_3_dieta_g = modelo_3_dieta_g[,c(2,1,3:10)]
+modelo_3_dieta_g = modelo_3_dieta_g[order(modelo_3_dieta_g$Grupo_GABAS),]
+
+
+modelo_3_dieta_int = modelo_3_dieta_int[,c(2,1,3:10)]
+modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
+
+
+assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_M_COST",modelo_3_costo,envir = globalenv())
+
+}
 
 ))
 

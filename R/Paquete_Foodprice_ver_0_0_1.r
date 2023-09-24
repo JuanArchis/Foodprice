@@ -852,10 +852,11 @@ Módulo_3=function(){
 },
 
 Módulo_4=function(){
-  
-#--------------------------------------------------------------------------------------#
+
+  #--------------------------------------------------------------------------------------#
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
+
 
   # vector de precios
   precios = self$Data$Precio_100g_ajust
@@ -1203,7 +1204,10 @@ modelo_2_res[is.na(modelo_2_res)] = 0
   assign("Modelo_2_F",modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
+
+
 }
+
 
 ))
 

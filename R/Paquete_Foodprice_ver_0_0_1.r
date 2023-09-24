@@ -34,6 +34,7 @@ public=list(
     Data=NULL, # Data final del módulo 1
     DRI_m=NULL,
     DRI_f=NULL,
+    TCAC=NULL,
 
     initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad){
     self$data_list_precios=data_list_precios
@@ -189,7 +190,7 @@ public=list(
     data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice",envir=parent.env(environment()))
     Variables_Necesarias = c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC");Mapeo_Sipsa_TCAC_GABAS_Grupos = Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
     colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) = c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
-
+    self$TCAC=Mapeo_Sipsa_TCAC_GABAS_Grupos
 
     #--------               -------#
     #    Criterios de exclusión    #
@@ -1351,9 +1352,9 @@ f_b_1 = function(a){
   dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
   
   # recuperar grupos y subgrupos GABAS
-Mapeo_Sipsa_TCAC_GABAS_Grupos=Mapeo_Sipsa_TCAC_GABAS_Grupos[c("Cod_TCAC", "Grupo_GABAS")]
+TCAC=self$TCAC[c("Cod_TCAC", "Grupo_GABAS")]
 
-  dataset_m3 = merge(dataset_m3, Mapeo_Sipsa_TCAC_GABAS_Grupos, by = "Cod_TCAC")
+  dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
   
   ################
@@ -1600,8 +1601,8 @@ modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
 
 # verificacion para cada grupo etario (requerimiento de energia)
 datos <- self$Data
-DRI_m <- DRI_M
-DRI_f <- DRI_F
+DRI_m <- self$DRI_M
+DRI_f <- self$DRI_F
 
 
 
@@ -1914,9 +1915,8 @@ modelo_3_verif_f = merge(modelo_3_verif_f, cho_contraste_f, by = "Edad")
 ## Recuperar Grupo_GABAS     ##
 
 ###############################
-TCAC =Mapeo_Sipsa_TCAC_GABAS_Grupos 
 
-TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS")]
+TCAC = self$TCAC[c("Cod_TCAC", "Grupo_GABAS")]
 data_TCAC = merge(data[c("Cod_TCAC", "Alimento")], TCAC, by = "Cod_TCAC")
 data_TCAC = f_gabas_1(data_TCAC[c("Alimento", "Grupo_GABAS")])
 

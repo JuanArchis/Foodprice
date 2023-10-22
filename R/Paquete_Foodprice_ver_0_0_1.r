@@ -506,11 +506,17 @@ public=list(
                                                 Margenes_Historicos[c("Grupo", "margen_medio")],
                                                 by = "Grupo", all.x = TRUE)
 
-
     if (!is.null(self$Margenes)) {
-      precios_mayoristas_grupos_margenes$Precio_minorista_kg <- precios_mayoristas_grupos_margenes$Precio_kg * (1 + precios_mayoristas_grupos_margenes$selft$Margenes/100)
+
+      Margenes_Historicos$margen_medio=selft$Margenes
+
+      precios_mayoristas_grupos_margenes <- merge(Precios_Grupos_SIPSA,
+                                                  Margenes_Historicos[c("Grupo", "margen_medio")],
+                                                  by = "Grupo", all.x = TRUE)
+      precios_mayoristas_grupos_margenes$Precio_minorista_kg <- precios_mayoristas_grupos_margenes$Precio_kg * (1 + precios_mayoristas_grupos_margenes$margen_medio/100)
 
     } else {
+
     precios_mayoristas_grupos_margenes$Precio_minorista_kg <- precios_mayoristas_grupos_margenes$Precio_kg * (1 + precios_mayoristas_grupos_margenes$margen_medio/100)}
 
 

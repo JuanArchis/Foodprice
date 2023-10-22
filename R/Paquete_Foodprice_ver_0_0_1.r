@@ -28,6 +28,7 @@ public=list(
     Mes=NULL,
     Año=NULL,
     Ciudad=NULL,
+    Margenes=NULL,
 
     # Parámetros privados
 
@@ -36,12 +37,22 @@ public=list(
     DRI_f=NULL,
 
 
-    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad){
+    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL){
+
     self$data_list_precios=data_list_precios
     self$data_list_abas=data_list_abas
     self$Mes=Mes
     self$Año=Año
-    self$Ciudad=Ciudad},
+    self$Ciudad=Ciudad
+
+
+    if (!is.vector(margenes) || length(margenes) != 7) {
+      stop("El parámetro 'Margenes' debe ser un vector de longitud 7.")
+    }
+
+
+
+    self$Margenes=Margenes},
 
     # ---------------------------------------------------------------#
     #          Primer método: Definición de librerias base           # COMPLETO
@@ -190,7 +201,7 @@ public=list(
     data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice",envir=parent.env(environment()))
     Variables_Necesarias = c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC");Mapeo_Sipsa_TCAC_GABAS_Grupos = Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
     colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) = c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
-    
+
 
     #--------               -------#
     #    Criterios de exclusión    #
@@ -490,7 +501,14 @@ public=list(
                                                 Margenes_Historicos[c("Grupo", "margen_medio")],
                                                 by = "Grupo", all.x = TRUE)
 
-    precios_mayoristas_grupos_margenes$Precio_minorista_kg <- precios_mayoristas_grupos_margenes$Precio_kg * (1 + precios_mayoristas_grupos_margenes$margen_medio/100)
+
+
+    if (!is.null(self$Margenes)) {
+      precios_mayoristas_grupos_margenes$Precio_minorista_kg <- precios_mayoristas_grupos_margenes$Precio_kg * (1 + precios_mayoristas_grupos_margenes$selft$Margenes/100)
+
+    } else {
+    precios_mayoristas_grupos_margenes$Precio_minorista_kg <- precios_mayoristas_grupos_margenes$Precio_kg * (1 + precios_mayoristas_grupos_margenes$margen_medio/100)}
+
 
     Estimación_Precios_Minoristas <- precios_mayoristas_grupos_margenes %>%
         filter(Alimento %in% Lista_Alimentos_Definitiva$Alimento) # exclusión criterios 1 y 2
@@ -898,7 +916,7 @@ f_x = function(a){
                   "vit_a_l", "vit_a_u", "tiamina_l", "tiamina_u", "ribo_l", "ribo_u",
                   "niacina_l", "niacina_u", "b12_l", "b12_u", "mg_l", "mg_u", "p_l", "p_u",
                   "na_l", "na_u", "ca_l", "ca_u", "fe_l", "fe_u", "zinc_l", "zinc_u")
-  
+
   a[is.na(a)] = 999999
   df = a
   return(df)
@@ -912,7 +930,7 @@ lower = c("proteina_l", "grasa_l","cho_l", "vit_c_l", "folato_l",
           "vit_a_l", "tiamina_l", "ribo_l",
           "niacina_l", "b12_l", "mg_l", "p_l",
           "na_l", "ca_l", "fe_l", "zinc_l")
-          
+
 #vector de limites superiores
 upper = setdiff(colnames(DRI_f),lower)
 upper = upper[!upper %in% c("edad", "energia")]
@@ -960,7 +978,7 @@ for (i in 1:8) {
 # vector b segun grupo de edad
 b_2 = list()
 for (k in 1:8) {
-  b_2[[k]] = c(dri_edad[[k]], lower_list[[k]], upper_list[[k]])  
+  b_2[[k]] = c(dri_edad[[k]], lower_list[[k]], upper_list[[k]])
 }
 
 
@@ -974,10 +992,10 @@ b_2[[8]] =  (1 - 0.067)*b_2[[7]]
 modelo_2 = data.frame(alimentos)
 modelo_2 = modelo_2 %>% add_row(alimentos = "Costo")
 colnames(modelo_2) = "Alimentos"
-edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", 
+edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)",
          "[31, 50)", "[51, 70)", ">70")
 
-nutrientes = c("Grupo", "Nutriente", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC",    
+nutrientes = c("Grupo", "Nutriente", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC",
                     "Folatos" , "VitaminaA" ,    "Tiamina"  ,     "Riboflavina" ,
                     "Niacina" , "VitaminaB12" , "Magnesio" , "Fosforo", "Sodio" ,
                     "Calcio"  , "Hierro", "Zinc")
@@ -992,7 +1010,7 @@ for (i in 1:8) {
   (edad[i])
 
   #resolver el modelo
-  
+
   df_1 = data.frame()
   df_2 = data.frame()
   b = b_2[[i]]
@@ -1009,7 +1027,7 @@ for (i in 1:8) {
   df_1 = rbind(df_1, df_2)
   modelo_2 = merge(modelo_2,df_1, by = "Alimentos")
   rm(b, df_1, df_2)
-  
+
   #cumplimiento de las restricciones
   const = A[1:17,]%*%as.matrix(opt_sol$solution)
   const = data.frame(rownames(const), as.numeric(const))
@@ -1018,29 +1036,29 @@ for (i in 1:8) {
   colnames(const) = c("Nutriente", "Opt", "Rest")
   const$Dif = ((const$Opt - const$Rest)/const$Rest)*100
   const[const<0] <- 0
-  
+
   #redondear
   for (k in 1:nrow(const)) {
     for (l in 2:ncol(const)) {
-      const[k,l] = round(as.numeric(const[k,l]), digits = 2)  
+      const[k,l] = round(as.numeric(const[k,l]), digits = 2)
     }
   }
-  
+
   colnames(const)[which(colnames(const) == "Dif")] = paste0("Dif", " (%)")
-  
-  
+
+
   const = as.data.frame(t(const))
   colnames(const) = as.character(const[1,])
   const = const[-1,]
-  
+
   const[,ncol(const)+ 1] = rownames(const)
   const[,ncol(const)+ 1] = c(edad[i], edad[i], edad[i])
-  
+
   const = const[,c(ncol(const), (ncol(const)-1),1:(ncol(const)-2))]
   rownames(const) = seq(1, nrow(const), by = 1)
   colnames(const)[1] = "Grupo"
   colnames(const)[2] = "Nutriente"
-  
+
   const_2 = rbind(const_2, const)
   rm(const)
 }
@@ -1061,7 +1079,7 @@ for (k in 2:ncol(modelo_2_res)) {
 }
 
 modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Costo"),]
-modelo_2_res[is.na(modelo_2_res)] = 0 
+modelo_2_res[is.na(modelo_2_res)] = 0
 
   assign("Modelo_2_M",modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
@@ -1110,7 +1128,7 @@ for (i in 1:14) {
 
 b_2 = list()
 for (k in 1:14) {
-  b_2[[k]] = c(dri_edad[[k]], lower_list[[k]], upper_list[[k]])  
+  b_2[[k]] = c(dri_edad[[k]], lower_list[[k]], upper_list[[k]])
 }
 
 
@@ -1124,12 +1142,12 @@ for (k in 1:14) {
 modelo_2 = data.frame(alimentos)
 modelo_2 = modelo_2 %>% add_row(alimentos = "Costo")
 colnames(modelo_2) = "Alimentos"
-edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)", 
+edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)",
          "[51, 70)", ">70", "gestantes < 18 años", "gestantes 19 a 30 años",
          "gestantes 31 a 50 años", "lactantes < 18 años", "lactantes 19 a 30 años",
          "lactantes 31 a 50 años")
 
-nutrientes = c("Grupo", "Nutriente", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC",    
+nutrientes = c("Grupo", "Nutriente", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC",
                     "Folatos" , "VitaminaA" ,    "Tiamina"  ,     "Riboflavina" ,
                     "Niacina" , "VitaminaB12" , "Magnesio" , "Fosforo", "Sodio" ,
                     "Calcio"  , "Hierro", "Zinc")
@@ -1144,7 +1162,7 @@ for (i in 1:14) {
   (edad[i])
 
   #resolver el modelo
-  
+
   df_1 = data.frame()
   df_2 = data.frame()
   b = b_2[[i]]
@@ -1161,7 +1179,7 @@ for (i in 1:14) {
   df_1 = rbind(df_1, df_2)
   modelo_2 = merge(modelo_2,df_1, by = "Alimentos")
   rm(b, df_1, df_2)
-  
+
   #cumplimiento de las restricciones
   const = A[1:17,]%*%as.matrix(opt_sol$solution)
   const = data.frame(rownames(const), as.numeric(const))
@@ -1170,29 +1188,29 @@ for (i in 1:14) {
   colnames(const) = c("Nutriente", "Opt", "Rest")
   const$Dif = ((const$Opt - const$Rest)/const$Rest)*100
   const[const<0] <- 0
-  
+
   #redondear
   for (k in 1:nrow(const)) {
     for (l in 2:ncol(const)) {
-      const[k,l] = round(as.numeric(const[k,l]), digits = 2)  
+      const[k,l] = round(as.numeric(const[k,l]), digits = 2)
     }
   }
-  
+
   colnames(const)[which(colnames(const) == "Dif")] = paste0("Dif", " (%)")
-  
-  
+
+
   const = as.data.frame(t(const))
   colnames(const) = as.character(const[1,])
   const = const[-1,]
-  
+
   const[,ncol(const)+ 1] = rownames(const)
   const[,ncol(const)+ 1] = c(edad[i], edad[i], edad[i])
-  
+
   const = const[,c(ncol(const), (ncol(const)-1),1:(ncol(const)-2))]
   rownames(const) = seq(1, nrow(const), by = 1)
   colnames(const)[1] = "Grupo"
   colnames(const)[2] = "Nutriente"
-  
+
   const_2 = rbind(const_2, const)
   rm(const)
 }
@@ -1213,7 +1231,7 @@ for (k in 2:ncol(modelo_2_res)) {
 }
 
 modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Costo"),]
-modelo_2_res[is.na(modelo_2_res)] = 0 
+modelo_2_res[is.na(modelo_2_res)] = 0
 
 
   assign("Modelo_2_F",modelo_2_res,envir = globalenv())
@@ -1292,14 +1310,14 @@ f_b_1 = function(a){
     A_0 = rbind(vec_x, vec_y)
     return(A_0)
   }
-  
+
   f_b_2 = function(a){
     b1 = 0
     b2 = int_req_m_x[which(int_req_m_x$Grupo_GABAS == levels(as.factor(df_x$Grupo_GABAS))),2]
     b = c(b1, b2)
     return(b)
   }
-  
+
 # tercero: tres alimentos
   f_A_3 = function(a){
     a = df_x
@@ -1310,7 +1328,7 @@ f_b_1 = function(a){
     A_0 = rbind(vec_x, vec_y, vec_z)
     return(A_0)
   }
-  
+
   f_b_3 = function(a){
     b1 = 0
     b2 = 0
@@ -1318,9 +1336,9 @@ f_b_1 = function(a){
     b = c(b1, b2, b3)
     return(b)
   }
-  
+
 # cuarto: cuatro alimentos
-  
+
   f_A_4 = function(a){
     a = df_x
     A_0 = data.frame()
@@ -1331,7 +1349,7 @@ f_b_1 = function(a){
     A_0 = rbind(vec_x, vec_y, vec_z, vec_w)
     return(A_0)
   }
-  
+
   f_b_4 = function(a){
     b1 = 0
     b2 = 0
@@ -1340,28 +1358,28 @@ f_b_1 = function(a){
     b = c(b1, b2, b3, b4)
     return(b)
   }
-  
-  
+
+
   ##   Preparación de la base de datos de entrada    ##
 
-  
+
   # base de datos para el modelo
   dataset_m3 = self$Data[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
-  
-  dataset_m3 = merge(dataset_m3, intercambio_gramos[c("Cod_TCAC", "Intercambio_g")], 
+
+  dataset_m3 = merge(dataset_m3, intercambio_gramos[c("Cod_TCAC", "Intercambio_g")],
                      by = "Cod_TCAC", all.x = TRUE)
-  
+
   dataset_m3 = dataset_m3[!duplicated(dataset_m3),]
   dataset_m3$Serving[1]=100
   dataset_m3$Precio_per_int = (dataset_m3$Precio_100g_ajust/as.numeric(dataset_m3$Serving))*dataset_m3$Intercambio_g
-  
+
   # recuperar grupos y subgrupos GABAS
-  
+
 TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS", "Subgrupo_GABAS")]
 
   dataset_m3 = merge(dataset_m3, TCAC, by = "Cod_TCAC")
   dataset_m3 = f_gabas_1(dataset_m3)
-  
+
   ################
   ##   AD HOC   ##
   ################
@@ -1370,51 +1388,51 @@ TCAC = TCAC[c("Cod_TCAC", "Grupo_GABAS", "Subgrupo_GABAS")]
       dataset_m3$Grupo_GABAS[k] = "Frutas"
     }
   }
-  
+
   for (k in 1:nrow(dataset_m3)) {
     if (dataset_m3$Subgrupo_GABAS[k] == "VERDURAS") {
       dataset_m3$Grupo_GABAS[k] = "Verduras"
     }
   }
-  
+
   for (k in 1:nrow(dataset_m3)) {
     if (dataset_m3$Subgrupo_GABAS[k] == "CARNES MAGRAS CRUDAS") {
       dataset_m3$Grupo_GABAS[k] = "Carnes"
     }
   }
-  
+
   for (k in 1:nrow(dataset_m3)) {
     if (dataset_m3$Subgrupo_GABAS[k] == "LEGUMINOSAS COCIDAS Y MEZCLAS VEGETALES COCIDAS") {
       dataset_m3$Grupo_GABAS[k] = "Leguminosas"
     }
   }
-  
+
   for (k in 1:nrow(dataset_m3)) {
     if (dataset_m3$Subgrupo_GABAS[k] == "TUBÉRCULOS") {
       dataset_m3$Grupo_GABAS[k] = "Tuberculos"
     }
   }
-  
+
   for (k in 1:nrow(dataset_m3)) {
     if (dataset_m3$Subgrupo_GABAS[k] == "RAÍCES") {
       dataset_m3$Grupo_GABAS[k] = "Raices"
     }
   }
-  
+
   for (k in 1:nrow(dataset_m3)) {
     if (dataset_m3$Subgrupo_GABAS[k] == "CEREALES") {
       dataset_m3$Grupo_GABAS[k] = "Cereales"
     }
   }
-  
-  
+
+
   ################
   ##   AD HOC   ##
   ################
-  
+
   # primero: se excluyen los alimentos sin categorías
   dataset_m3 = dataset_m3 %>% filter(!Grupo_GABAS %in% "Sin categoría")
-  
+
   # segundo: se excluyen los alimentos que no están recomendados por GABAS
 
 colnames(exclusion_3er_modelo)=c("Alimento","Cod_TCAC")
@@ -1424,7 +1442,7 @@ exclusion_ad_hoc = c("Carne de cerdo, espinazo", "Yuca ICA", "Papa Betina",
                        "Papa única")
 
 dataset_m3 = dataset_m3 %>% filter(!Alimento %in% exclusion_ad_hoc)
-  
+
 #---------------------------------------------------------------------------------------#
 #                   Tercer Modelo  -  Solución y contrucción Femenino                  #
 #-------------------------------------------------------------------------------------#
@@ -1432,7 +1450,7 @@ dataset_m3 = dataset_m3 %>% filter(!Alimento %in% exclusion_ad_hoc)
 # base de datos de recepción
 modelo_3_dieta = data.frame(dataset_m3[c("Grupo_GABAS", "Alimento")])
 
-edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)", 
+edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)",
          "[51, 70)", ">70", "Gestantes 14-18 años", "Gestantes 19-30 años",
          "Gestantes 31-50 años", "Lactantes 14-18 años", "Lactantes 19-30 años",
          "Lactantes 31-50 años" )
@@ -1495,66 +1513,66 @@ for (i in 1:length(edad)) {
   int_req_m_x = int_req_f[,c(1,1+i)]
   colnames(int_req_m_x) = c("Grupo_GABAS", "Intercambio")
   int_req_m_x = f_gabas_2(int_req_m_x)
-  
-  df_solution = as.data.frame(matrix(ncol = (ncol(dataset_m3)+2))) 
-  colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")   
+
+  df_solution = as.data.frame(matrix(ncol = (ncol(dataset_m3)+2)))
+  colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")
   df_solution = na.omit(df_solution)
-  
-  #cereales 
+
+  #cereales
   #df = datos_grupos[[3]]
   #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   #q = as.numeric(q)
   #df = df[order(df$Precio_per_int),]
   #df_x = df[1:q,]
-  
+
   # A = f_A_3(df_x)
   #b = f_b_3(df_x)
-  #df_x$sol_int = solve(A, b)  
+  #df_x$sol_int = solve(A, b)
   #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   #df_solution = rbind(df_solution, df_x)
-  
- 
-  
-  #frutas 
+
+
+
+  #frutas
   df = datos_grupos[[4]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
   df_x = df[1:q,]
-  
+
   A = f_A_2(df_x)
   b = f_b_2(df_x)
-  df_x$sol_int = solve(A, b)  
+  df_x$sol_int = solve(A, b)
   df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   df_solution = rbind(df_solution, df_x)
-  
-  #verduras 
+
+  #verduras
   df = datos_grupos[[10]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
   df_x = df[1:q,]
-  
+
   A = f_A_2(df_x)
   b = f_b_2(df_x)
-  df_x$sol_int = solve(A, b)  
+  df_x$sol_int = solve(A, b)
   df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   df_solution = rbind(df_solution, df_x)
-  
+
   #carnes
   #df = datos_grupos[[2]]
   #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   #q = as.numeric(q)
   #df = df[order(df$Precio_per_int),]
   #df_x = df[1:q,]
-  
+
   #A = f_A_2(df_x)
   #b = f_b_2(df_x)
-  #df_x$sol_int = solve(A, b)  
+  #df_x$sol_int = solve(A, b)
   #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   #df_solution = rbind(df_solution, df_x)
-  
-  
+
+
   # grasas, lacteos y azucares
   for (k in c(1,2,3,5,6,7,8,9)) {
     df = datos_grupos[[k]]
@@ -1562,35 +1580,35 @@ for (i in 1:length(edad)) {
     q = as.numeric(levels(as.factor(q$Cantidad)))
     df = df[order(df$Precio_per_int),]
     df_x = df[1:q,]
-    
+
     A = f_A_1(df_x)
     b = f_b_1(df_x)
-    df_x$sol_int = solve(A, b)  
+    df_x$sol_int = solve(A, b)
     df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
     df_solution = rbind(df_solution, df_x)
   }
-  
-  
-  
+
+
+
   costo_df = as.data.frame(matrix(ncol = 2, nrow = 1))
-  colnames(costo_df) = c("Grupo", edad[i]) 
+  colnames(costo_df) = c("Grupo", edad[i])
   costo_df$Grupo = "Costo"
   costo_df[,2] = sum(df_solution$Precio_per_int*df_solution$sol_int)
-  
+
   modelo_3_costo = merge(modelo_3_costo, costo_df, by = "Grupo")
-  
-  
-  
+
+
+
   modelo_3_sol_g = df_solution[c("Alimento", "solution_g")]
   modelo_3_sol_int = df_solution[c("Alimento", "sol_int")]
-  
-  colnames(modelo_3_sol_g) = c("Alimento", edad[i]) 
-  colnames(modelo_3_sol_int) = c("Alimento", edad[i]) 
-  
-  
+
+  colnames(modelo_3_sol_g) = c("Alimento", edad[i])
+  colnames(modelo_3_sol_int) = c("Alimento", edad[i])
+
+
   modelo_3_dieta_g = merge(modelo_3_dieta_g, modelo_3_sol_g, by = "Alimento")
   modelo_3_dieta_int = merge(modelo_3_dieta_int, modelo_3_sol_int, by = "Alimento")
-  
+
 }
 
 
@@ -1618,7 +1636,7 @@ assign("Modelo_3_F",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_F_INT
 # base de datos de recepción
 modelo_3_dieta = data.frame(dataset_m3[c("Grupo_GABAS", "Alimento")])
 
-edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)", 
+edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)",
          "[51, 70)", ">70")
 
 modelo_3_costo = as.data.frame(matrix(ncol = 1))
@@ -1679,66 +1697,66 @@ for (i in 1:length(edad)) {
   int_req_m_x = int_req_m[,c(1,1+i)]
   colnames(int_req_m_x) = c("Grupo_GABAS", "Intercambio")
   int_req_m_x = f_gabas_2(int_req_m_x)
-  
-  df_solution = as.data.frame(matrix(ncol = (ncol(dataset_m3)+2))) 
-  colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")   
+
+  df_solution = as.data.frame(matrix(ncol = (ncol(dataset_m3)+2)))
+  colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")
   df_solution = na.omit(df_solution)
-  
-  #cereales 
+
+  #cereales
   #df = datos_grupos[[3]]
   #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   #q = as.numeric(q)
   #df = df[order(df$Precio_per_int),]
   #df_x = df[1:q,]
-  
+
   # A = f_A_3(df_x)
   #b = f_b_3(df_x)
-  #df_x$sol_int = solve(A, b)  
+  #df_x$sol_int = solve(A, b)
   #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   #df_solution = rbind(df_solution, df_x)
-  
- 
-  
-  #frutas 
+
+
+
+  #frutas
   df = datos_grupos[[4]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
   df_x = df[1:q,]
-  
+
   A = f_A_2(df_x)
   b = f_b_2(df_x)
-  df_x$sol_int = solve(A, b)  
+  df_x$sol_int = solve(A, b)
   df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   df_solution = rbind(df_solution, df_x)
-  
-  #verduras 
+
+  #verduras
   df = datos_grupos[[10]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
   df_x = df[1:q,]
-  
+
   A = f_A_2(df_x)
   b = f_b_2(df_x)
-  df_x$sol_int = solve(A, b)  
+  df_x$sol_int = solve(A, b)
   df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   df_solution = rbind(df_solution, df_x)
-  
+
   #carnes
   #df = datos_grupos[[2]]
   #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   #q = as.numeric(q)
   #df = df[order(df$Precio_per_int),]
   #df_x = df[1:q,]
-  
+
   #A = f_A_2(df_x)
   #b = f_b_2(df_x)
-  #df_x$sol_int = solve(A, b)  
+  #df_x$sol_int = solve(A, b)
   #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   #df_solution = rbind(df_solution, df_x)
-  
-  
+
+
   # grasas, lacteos y azucares
   for (k in c(1,2,3,5,6,7,8,9)) {
     df = datos_grupos[[k]]
@@ -1746,35 +1764,35 @@ for (i in 1:length(edad)) {
     q = as.numeric(levels(as.factor(q$Cantidad)))
     df = df[order(df$Precio_per_int),]
     df_x = df[1:q,]
-    
+
     A = f_A_1(df_x)
     b = f_b_1(df_x)
-    df_x$sol_int = solve(A, b)  
+    df_x$sol_int = solve(A, b)
     df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
     df_solution = rbind(df_solution, df_x)
   }
-  
-  
-  
+
+
+
   costo_df = as.data.frame(matrix(ncol = 2, nrow = 1))
-  colnames(costo_df) = c("Grupo", edad[i]) 
+  colnames(costo_df) = c("Grupo", edad[i])
   costo_df$Grupo = "Costo"
   costo_df[,2] = sum(df_solution$Precio_per_int*df_solution$sol_int)
-  
+
   modelo_3_costo = merge(modelo_3_costo, costo_df, by = "Grupo")
-  
-  
-  
+
+
+
   modelo_3_sol_g = df_solution[c("Alimento", "solution_g")]
   modelo_3_sol_int = df_solution[c("Alimento", "sol_int")]
-  
-  colnames(modelo_3_sol_g) = c("Alimento", edad[i]) 
-  colnames(modelo_3_sol_int) = c("Alimento", edad[i]) 
-  
-  
+
+  colnames(modelo_3_sol_g) = c("Alimento", edad[i])
+  colnames(modelo_3_sol_int) = c("Alimento", edad[i])
+
+
   modelo_3_dieta_g = merge(modelo_3_dieta_g, modelo_3_sol_g, by = "Alimento")
   modelo_3_dieta_int = merge(modelo_3_dieta_int, modelo_3_sol_int, by = "Alimento")
-  
+
 }
 
 

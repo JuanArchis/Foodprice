@@ -505,7 +505,7 @@ public=list(
 
     if (!is.null(self$Margenes)) {
 
-      Margenes_Historicos$margen_medio=selft$Margenes
+      Margenes_Historicos$margen_medio=self$Margenes
 
       precios_mayoristas_grupos_margenes <- merge(Precios_Grupos_SIPSA,
                                                   Margenes_Historicos[c("Grupo", "margen_medio")],

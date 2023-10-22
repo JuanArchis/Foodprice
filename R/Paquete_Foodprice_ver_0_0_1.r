@@ -46,7 +46,7 @@ public=list(
     self$Ciudad=Ciudad
 
 
-    if (!is.vector(margenes) || length(margenes) != 8) {
+    if (!is.vector(Margenes) || length(Margenes) != 8) {
       stop("El parámetro 'Margenes' debe ser un vector de longitud 7.")
     }
 

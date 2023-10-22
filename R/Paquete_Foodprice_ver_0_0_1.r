@@ -47,12 +47,11 @@ public=list(
 
 
     if (!is.vector(Margenes) || length(Margenes) != 8) {
-      stop("El parámetro 'Margenes' debe ser un vector de longitud 7.")
-    }
+      stop("El parámetro 'Margenes' debe ser un vector de longitud 8")
 
+    } else {self$Margenes=Margenes}
 
-
-    self$Margenes=Margenes},
+    },
 
     # ---------------------------------------------------------------#
     #          Primer método: Definición de librerias base           # COMPLETO

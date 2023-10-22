@@ -46,10 +46,16 @@ public=list(
     self$Ciudad=Ciudad
 
 
-    if (!is.vector(Margenes) || length(Margenes) != 8) {
-      stop("El parámetro 'Margenes' debe ser un vector de longitud 8")
 
-    } else {self$Margenes=Margenes}
+    if (!is.null(Margenes)) {
+      if (!is.vector(Margenes) || length(Margenes) != 8) {
+        stop("El parámetro 'Margenes' debe ser un vector de longitud 8")
+      } else {
+        self$Margenes = Margenes
+      }
+    } else {
+      self$Margenes = NULL
+    }
 
     },
 
@@ -499,7 +505,6 @@ public=list(
     precios_mayoristas_grupos_margenes <- merge(Precios_Grupos_SIPSA,
                                                 Margenes_Historicos[c("Grupo", "margen_medio")],
                                                 by = "Grupo", all.x = TRUE)
-
 
 
     if (!is.null(self$Margenes)) {

@@ -663,7 +663,7 @@ Módulo_2=function(){
   #---------------------------------------#
 
 # Modificación de datos del módulo 1
-names(self$Data) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
+#OJO names(self$Data) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
 
 self$Data <- self$Data %>%
   transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%

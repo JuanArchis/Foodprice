@@ -349,7 +349,7 @@ public=list(
     #   Mapeo: :Alimentos en gramos     #  Falta generalizar
     #-----                       -------#
 
-    drop = c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra", "Leche pasteurizada (1.1 L)")
+    drop = c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra")
 
     Mapeo_Mayorista_Minorista_subset_1 = Mapeo_Mayorista_Minorista %>% filter(Alimento %in% setdiff(levels(as.factor(Precios_Grupos_SIPSA$Alimento)), drop))
 
@@ -404,31 +404,6 @@ public=list(
     Precios_Grupos_SIPSA$Precio_minorista_kg[which(Precios_Grupos_SIPSA$Alimento == levels(as.factor(alpha_2$Alimento)))] = max(alpha_2$Precio_minorista_kg)
 
     rm(alpha_1, alpha_2)
-
-
-
-    # leche (1100 ml)
-    keep = "Leche pasteurizada (1.1 L)"
-    Mapeo_Mayorista_Minorista_subset_2 = Mapeo_Mayorista_Minorista %>% filter(Alimento %in% keep)
-
-    alpha_1 = Mapeo_Mayorista_Minorista_subset_2
-    (levels(as.factor(alpha_1$Alimento)))
-    alpha_1 = alpha_1[, colSums(is.na(alpha_1)) != nrow(alpha_1)]
-    alpha_2 = data.frame(matrix(ncol=3, nrow = ((ncol(alpha_1) - 1)/2)))
-    colnames(alpha_2) = c("Alimento", "Codigo_mercar", "Cantidad_g")
-
-    for (i in 1:nrow(alpha_2)) {
-        alpha_2[i,] = alpha_1[c("Alimento",
-                                paste0("Cod_mercar_", i),
-                                paste0("Unidad_",i))]
-    }
-    alpha_2[alpha_2 == "NA"] = NA
-    alpha_2 = merge(alpha_2, Mercar_mes[c("Codigo_mercar", "Descripcion", "Precio")], by = "Codigo_mercar")
-    alpha_2$Precio_minorista_kg = (alpha_2$Precio/as.numeric(gsub("([0-9]+).*$", "\\1", alpha_2$Cantidad_g)))*1100
-    Precios_Grupos_SIPSA$Precio_minorista_kg[which(Precios_Grupos_SIPSA$Alimento == levels(as.factor(alpha_2$Alimento)))] = max(alpha_2$Precio_minorista_kg)
-
-    rm(alpha_1, alpha_2)
-
 
 
     #--------                    -------#
@@ -553,11 +528,11 @@ public=list(
 
     # Subset 2: alimentos en unidades de medida distintas a 100g
     dataset_sim_2 <- dataset_sim %>%
-        filter(Alimento %in% c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA","Huevo rojo extra","AS"))
+        filter(Alimento %in% c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA","Huevo rojo extra"))
 
     # Subset 1: alimentos en 100g
     dataset_sim_1 <- dataset_sim %>%
-        filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra","AS")))
+        filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra")))
 
     # Subset 1
     dataset_sim_1$Serving <- rep(1, length(dataset_sim_1$Alimento))
@@ -572,7 +547,7 @@ public=list(
 
     aux_dataset$Serving <- c("1 Litro", "1 Unidad", "1 Unidad", "1 Unidad")
 
-    aux_dataset$Factor_gramos <- c(100/920, 100/50, 100/60, 100/67, 100/1133)
+    aux_dataset$Factor_gramos <- c(100/920, 100/50, 100/60, 100/67)
 
     dataset_sim_2 <- merge(dataset_sim_2, aux_dataset, by = "Alimento", all.x = TRUE)
 

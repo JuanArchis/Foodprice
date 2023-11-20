@@ -535,7 +535,7 @@ public=list(
         filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra")))
 
     # Subset 1
-    dataset_sim_1$Serving <- rep(1, length(dataset_sim_1$Alimento))
+    dataset_sim_1$Serving <- rep(1, length(precios_kg))
     dataset_sim_1$Precio_100g <- dataset_sim_1$Precio_minorista_kg/10
 
     # Subset 2

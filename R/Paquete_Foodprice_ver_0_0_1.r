@@ -553,14 +553,14 @@ public=list(
 
     # Subset 2: alimentos en unidades de medida distintas a 100g
     dataset_sim_2 <- dataset_sim %>%
-        filter(Alimento %in% c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA","Huevo rojo extra","Leche pasteurizada (1.1 L)"))
+        filter(Alimento %in% c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA","Huevo rojo extra"))
 
     # Subset 1: alimentos en 100g
     dataset_sim_1 <- dataset_sim %>%
-        filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra","Leche pasteurizada (1.1 L)")))
+        filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra"))
 
     # Subset 1
-    dataset_sim_1$Serving <- rep(100, length(dataset_sim_1$Alimento))
+    dataset_sim_1$Serving <- rep(1, length(dataset_sim_1$Alimento))
     dataset_sim_1$Precio_100g <- dataset_sim_1$Precio_minorista_kg/10
 
     # Subset 2
@@ -568,9 +568,9 @@ public=list(
     aux_dataset <- data.frame(matrix(nrow = 5, ncol = 3))
     colnames(aux_dataset) <- c("Alimento", "Serving", "Factor_gramos")
 
-    aux_dataset$Alimento <- c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra","Leche pasteurizada (1.1 L)")
+    aux_dataset$Alimento <- c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra")
 
-    aux_dataset$Serving <- c("1 Litro", "1 Unidad", "1 Unidad", "1 Unidad", "1.1 Litro")
+    aux_dataset$Serving <- c("1 Litro", "1 Unidad", "1 Unidad", "1 Unidad")
 
     aux_dataset$Factor_gramos <- c(100/920, 100/50, 100/60, 100/67, 100/1133)
 
@@ -582,7 +582,7 @@ public=list(
 
     # Base de datos de precios (combinación de ambos subsets)
     dataset_sim <- rbind(dataset_sim_1, dataset_sim_2)
-    dataset_sim$Serving <- rep(100, length(dataset_sim$Serving))
+    dataset_sim$Serving <- rep(1, length(dataset_sim$Serving))
 
     #--------                    -------  #
     #     Cálculo de precios ajustados    #

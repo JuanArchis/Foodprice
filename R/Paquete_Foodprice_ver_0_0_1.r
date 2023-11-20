@@ -923,10 +923,10 @@ Módulo_4=function(){
 
 
   # vector de precios
-  precios = self$Data2$Precio_100g_ajust
+  precios = self$Data$Precio_100g_ajust
 
   # nombre alimentos
-  alimentos=self$Data2$Alimento
+  alimentos=self$Data$Alimento
 
   # Matriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
@@ -934,7 +934,7 @@ keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folato
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
 
-A = self$Data2[keep] %>% as.matrix() %>% t()
+A = self$Data[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])
 
 #recodificar la información de requerimeitnos nutricionales

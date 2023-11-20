@@ -1836,6 +1836,7 @@ assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT
 
 cat("Depuración del módulo 4 exitosa, la salida principal son las tres modelos para cada sexo (Modelo 3); use «Modelo_3_*» para acceder a cada uno")
 
+assign("Precio_per_int",dataset_m3$Precio_per_int,envir = globalenv())
 }
 
 

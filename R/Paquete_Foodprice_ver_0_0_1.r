@@ -1392,7 +1392,9 @@ f_b_1 = function(a){
 
   # base de datos para el modelo
   dataset_m3 = self$Data[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
-
+  
+  assign("Ojo_m3",dataset_m3,envir = globalenv())
+  
   dataset_m3 = merge(dataset_m3, intercambio_gramos[c("Cod_TCAC", "Intercambio_g")],
                      by = "Cod_TCAC", all.x = TRUE)
 

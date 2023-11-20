@@ -47,10 +47,6 @@ public=list(
     self$Mes=Mes
     self$Año=Año
     self$Ciudad=Ciudad
-    self$Trucar=Trucar
-    self$Data_T=Data_T
-
-
 
     if (!is.null(Margenes)) {
       if (!is.vector(Margenes) || length(Margenes) != 8) {
@@ -61,6 +57,8 @@ public=list(
     } else {
       self$Margenes = NULL
     }
+    self$Trucar=Trucar
+    self$Data_T=Data_T
 
     },
 

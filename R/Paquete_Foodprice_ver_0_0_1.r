@@ -29,6 +29,8 @@ public=list(
     Año=NULL,
     Ciudad=NULL,
     Margenes=NULL,
+    Trucar=NULL,
+    Data_T=NULL,
 
 
     # Parámetros privados
@@ -45,6 +47,8 @@ public=list(
     self$Mes=Mes
     self$Año=Año
     self$Ciudad=Ciudad
+    self$Trucar=Trucar
+    self$Data_T=Data_T
 
 
 
@@ -189,7 +193,6 @@ public=list(
     Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total_cali")]
     #----# Salida: Data_Sipsa_Abas_Unicos #----#
 
-    assign("Data_global_cali",Data_Sipsa_Abas_Unicos,envir = globalenv())
     
     
     # ---------------------------------------------------------------#
@@ -628,7 +631,12 @@ public=list(
     # -----------------------------------------------------------------#
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
-    assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
+    if (self$Trucar==TRUE) { 
+      assign("Datos_Insumo_Modelos",self$Data_T,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
+      
+    } else {
+      assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
+    }
 
 
 

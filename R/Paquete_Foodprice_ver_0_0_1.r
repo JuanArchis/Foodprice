@@ -30,6 +30,7 @@ public=list(
     Ciudad=NULL,
     Margenes=NULL,
 
+
     # Parámetros privados
 
     Data=NULL, # Data final del módulo 1
@@ -188,6 +189,9 @@ public=list(
     Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total_cali")]
     #----# Salida: Data_Sipsa_Abas_Unicos #----#
 
+    assign("Data_global_cali",Data_Sipsa_Abas_Unicos,envir = globalenv())
+    
+    
     # ---------------------------------------------------------------#
     #                                Mapeos                          # REVISAR GENERALIZACIÓN
     #----------------------------------------------------------------#
@@ -616,6 +620,8 @@ public=list(
             "Micr sin inf (por alimento)", "Int");dataset_sim = dataset_sim[setdiff(colnames(dataset_sim), drop)]
 
     dataset_sim = dataset_sim[c(1,2, 20, 21, 3:19)];dataset_sim = dataset_sim[order(dataset_sim$Alimento),];dataset_sim[1,3]="1 Litro";Datos_Insumo_Modelos=dataset_sim
+
+    
     #--------------------------------------------------- Salida principal 2 ----------------------------- Datos_Insumo_Modelos ----------------------------------------#
 
 

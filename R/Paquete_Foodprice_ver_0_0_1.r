@@ -553,11 +553,11 @@ public=list(
 
     # Subset 2: alimentos en unidades de medida distintas a 100g
     dataset_sim_2 <- dataset_sim %>%
-        filter(Alimento %in% c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA","Huevo rojo extra"))
+        filter(Alimento %in% c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA","Huevo rojo extra","AS"))
 
     # Subset 1: alimentos en 100g
     dataset_sim_1 <- dataset_sim %>%
-        filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra")))
+        filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra","AS")))
 
     # Subset 1
     dataset_sim_1$Serving <- rep(1, length(dataset_sim_1$Alimento))

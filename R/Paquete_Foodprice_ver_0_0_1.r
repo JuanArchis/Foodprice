@@ -540,7 +540,7 @@ public=list(
 
     # Subset 2
 
-    aux_dataset <- data.frame(matrix(nrow = 5, ncol = 3))
+    aux_dataset <- data.frame(matrix(nrow = 4, ncol = 3))
     colnames(aux_dataset) <- c("Alimento", "Serving", "Factor_gramos")
 
     aux_dataset$Alimento <- c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra")

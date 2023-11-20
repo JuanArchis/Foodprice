@@ -39,6 +39,8 @@ public=list(
     Data=NULL, # Data final del módulo 1
     DRI_m=NULL,
     DRI_f=NULL,
+    Data2=NULL,
+    Data3=NULL,
 
 
     initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL,Trucar,Data_T){
@@ -646,6 +648,8 @@ public=list(
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 self$Data=Datos_Insumo_Modelos
+self$Data2=Datos_Insumo_Modelos
+self$Data3=Datos_Insumo_Modelos
 
 },
 
@@ -919,10 +923,10 @@ Módulo_4=function(){
 
 
   # vector de precios
-  precios = self$Data$Precio_100g_ajust
+  precios = self$Data2$Precio_100g_ajust
 
   # nombre alimentos
-  alimentos=self$Data$Alimento
+  alimentos=self$Data2$Alimento
 
   # Matriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
@@ -930,7 +934,7 @@ keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folato
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
 
-A = self$Data[keep] %>% as.matrix() %>% t()
+A = self$Data2[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])
 
 #recodificar la información de requerimeitnos nutricionales
@@ -1391,7 +1395,7 @@ f_b_1 = function(a){
 
 
   # base de datos para el modelo
-  dataset_m3 = self$Data[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
+  dataset_m3 = self$Data2[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
   
   assign("Ojo_m3",dataset_m3,envir = globalenv())
   

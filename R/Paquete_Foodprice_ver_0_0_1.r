@@ -29,6 +29,7 @@ public=list(
     Año=NULL,
     Ciudad=NULL,
     Margenes=NULL,
+    
     Trucar=NULL,
     Data_T=NULL,
 
@@ -40,7 +41,7 @@ public=list(
     DRI_f=NULL,
 
 
-    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL){
+    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL,Trucar,Data_T){
 
     self$data_list_precios=data_list_precios
     self$data_list_abas=data_list_abas

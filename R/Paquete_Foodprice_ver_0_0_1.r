@@ -645,7 +645,7 @@ public=list(
     #------------------------------------------------------------------#
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
-self$Data=self$Data_T
+self$Data=Datos_Insumo_Modelos
 
 },
 

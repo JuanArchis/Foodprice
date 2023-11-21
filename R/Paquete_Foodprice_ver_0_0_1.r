@@ -29,7 +29,7 @@ public=list(
     Año=NULL,
     Ciudad=NULL,
     Margenes=NULL,
-    
+
     Trucar=NULL,
     Data_T=NULL,
 
@@ -124,8 +124,9 @@ public=list(
     Meses=Nombres_Meses[1:length(self$data_list_precios)-1];Data_Sipsa_Precios=(self$data_list_precios[[which(Meses %in% self$Mes)+1]]) # Se extraen los meses disponibles con base en la data dada
 
     if(self$Mes %in% Meses==FALSE){cat("Error,",self$Mes," aún no está disponible en los precios mayoristas de SIPSA",sep="")}
+    # ELIMINADA Data_Sipsa_Precios=Data_Sipsa_Precios[-c(1:4,nrow(Data_Sipsa_Precios)),-c(6,7)];Data_Sipsa_Precios=na.omit(Data_Sipsa_Precios) # Un poco de depuración
 
-    Data_Sipsa_Precios=Data_Sipsa_Precios[-c(1:4,nrow(Data_Sipsa_Precios)),-c(6,7)];Data_Sipsa_Precios=na.omit(Data_Sipsa_Precios) # Un poco de depuración
+    Data_Sipsa_Precios=Data_Sipsa_Precios[-c(1:4,nrow(Data_Sipsa_Precios)),-c(5)];Data_Sipsa_Precios=na.omit(Data_Sipsa_Precios) # Un poco de depuración
     colnames(Data_Sipsa_Precios) = c("Fecha", "Grupo", "Alimento", "Mercado", "Precio_kg");Data_Sipsa_Precios$Precio_kg=as.numeric(Data_Sipsa_Precios$Precio_kg);Data_Sipsa_Precios$Fecha=as.Date(paste(self$Año,which(Meses %in% self$Mes),"1", sep = "-"),format = "%Y-%m-%d") # Cambia los nombres y asigna fechas
 
     # -- Establece la ciudad de interés
@@ -194,8 +195,8 @@ public=list(
     Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total_cali")]
     #----# Salida: Data_Sipsa_Abas_Unicos #----#
 
-    
-    
+
+
     # ---------------------------------------------------------------#
     #                                Mapeos                          # REVISAR GENERALIZACIÓN
     #----------------------------------------------------------------#
@@ -607,9 +608,9 @@ public=list(
     # -----------------------------------------------------------------#
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
-    if (self$Trucar==TRUE) { 
+    if (self$Trucar==TRUE) {
       assign("Datos_Insumo_Modelos",self$Data_T,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
-      
+
     } else {
       assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
     }
@@ -1371,9 +1372,9 @@ f_b_1 = function(a){
 
   # base de datos para el modelo
   dataset_m3 = self$Data2[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
-  
+
   assign("Ojo_m3",dataset_m3,envir = globalenv())
-  
+
   dataset_m3 = merge(dataset_m3, intercambio_gramos[c("Cod_TCAC", "Intercambio_g")],
                      by = "Cod_TCAC", all.x = TRUE)
 

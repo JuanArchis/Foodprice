@@ -62,9 +62,6 @@ public=list(
     }
 
       # Data_Model como parámetro opcional
-
-    self$Data_Model=Data_Model
-
       if (!is.null(Data_Model)) {
       if (!is.data.frame(Data_Model)) {
         stop("El parámetro 'Data_Model' debe ser un data frame, consulte la documentación para más información")

@@ -730,7 +730,7 @@ Módulo_3=function(){
 
 
   # excluir azúcar porque no es viable (K003 y K004)
-  self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004"))
+  #self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004"))
 
   # vector de precios
   precios = self$Data$Precio_100g_ajust

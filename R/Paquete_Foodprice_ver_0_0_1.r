@@ -919,10 +919,9 @@ self$Data <- self$Data2 %>%
 
   # Matriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
-keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "Vitamina C", "Folatos", "VitaminaA",
+keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
-
 
 
 

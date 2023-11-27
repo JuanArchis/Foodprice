@@ -615,7 +615,7 @@ public=list(
     # -----------------------------------------------------------------#
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
-    if (self$Data_Model!=NULL) {
+    if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0)) {
       assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
 
     } else {

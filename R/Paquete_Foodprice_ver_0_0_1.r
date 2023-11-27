@@ -633,7 +633,7 @@ public=list(
 
 self$Data=Datos_Insumo_Modelos
 self$Data2=Datos_Insumo_Modelos
-self$Data3=Datos_Insumo_Modelos
+
 
 },
 
@@ -907,10 +907,10 @@ Módulo_4=function(){
 
 
   # vector de precios
-  precios = self$Data$Precio_100g_ajust
+  precios = self$Data2$Precio_100g_ajust
 
   # nombre alimentos
-  alimentos=self$Data$Alimento
+  alimentos=self$Data2$Alimento
 
   # Matriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
@@ -918,7 +918,7 @@ keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folato
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
 
-A = self$Data[keep] %>% as.matrix() %>% t()
+A = self$Data2[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])
 
 #recodificar la información de requerimeitnos nutricionales
@@ -1381,8 +1381,6 @@ f_b_1 = function(a){
   # base de datos para el modelo
   dataset_m3 = self$Data2[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
 
-  assign("Ojo_m3",dataset_m3,envir = globalenv())
-
   dataset_m3 = merge(dataset_m3, intercambio_gramos[c("Cod_TCAC", "Intercambio_g")],
                      by = "Cod_TCAC", all.x = TRUE)
 
@@ -1826,7 +1824,6 @@ assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT
 
 cat("Depuración del módulo 4 exitosa, la salida principal son las tres modelos para cada sexo (Modelo 3); use «Modelo_3_*» para acceder a cada uno")
 
-assign("Precio_per_int",dataset_m3,envir = globalenv())
 }
 
 

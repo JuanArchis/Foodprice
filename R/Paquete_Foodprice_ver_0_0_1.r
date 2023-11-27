@@ -615,7 +615,7 @@ public=list(
     # -----------------------------------------------------------------#
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
-    if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0)) {
+    if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
       assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
 
     } else {
@@ -630,6 +630,7 @@ public=list(
     #------------------------------------------------------------------#
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+
 self$Data=Datos_Insumo_Modelos
 self$Data2=Datos_Insumo_Modelos
 self$Data3=Datos_Insumo_Modelos

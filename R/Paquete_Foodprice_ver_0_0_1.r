@@ -29,9 +29,8 @@ public=list(
     Año=NULL,
     Ciudad=NULL,
     Margenes=NULL,
+    Data_Model=NULL,
 
-    Trucar=NULL,
-    Data_T=NULL,
 
 
     # Parámetros privados
@@ -43,7 +42,7 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL,Trucar,Data_T){
+    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL){
 
     self$data_list_precios=data_list_precios
     self$data_list_abas=data_list_abas
@@ -51,6 +50,7 @@ public=list(
     self$Año=Año
     self$Ciudad=Ciudad
 
+  # Margenes como parámetro opcional
     if (!is.null(Margenes)) {
       if (!is.vector(Margenes) || length(Margenes) != 8) {
         stop("El parámetro 'Margenes' debe ser un vector de longitud 8")
@@ -60,9 +60,20 @@ public=list(
     } else {
       self$Margenes = NULL
     }
-    self$Trucar=Trucar
-    self$Data_T=Data_T
 
+      # Data_Model como parámetro opcional
+
+    self$Data_Model=Data_Model
+
+      if (!is.null(Data_Model)) {
+      if (!is.data.frame(Data_Model)) {
+        stop("El parámetro 'Data_Model' debe ser un data frame, consulte la documentación para más información")
+      } else {
+        self$Data_Model = Data_Model
+      }
+    } else {
+      self$Data_Model = NULL
+    }
     },
 
     # ---------------------------------------------------------------#
@@ -607,8 +618,8 @@ public=list(
     # -----------------------------------------------------------------#
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
-    if (self$Trucar==TRUE) {
-      assign("Datos_Insumo_Modelos",self$Data_T,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
+    if (Data_Model!=NULL) {
+      assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
 
     } else {
       assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
@@ -1822,6 +1833,7 @@ assign("Precio_per_int",dataset_m3,envir = globalenv())
 
 
 ))
+
 
 
 

@@ -676,6 +676,9 @@ data(int_req_m, package = "Foodprice",envir=parent.env(environment()))
 data(int_req_f, package = "Foodprice",envir=parent.env(environment()))
 
 
+data(DRI_M, package = "Foodprice",envir=parent.env(environment()))
+data(DRI_F, package = "Foodprice",envir=parent.env(environment()))
+
 
 # carga de proporción por grupos de alimentos
 data(EER_share_M, package = "Foodprice",envir=parent.env(environment()));data(EER_share_F, package = "Foodprice",envir=parent.env(environment()))

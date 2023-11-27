@@ -830,7 +830,7 @@ Módulo_3=function(){
     optimo[[k]] = as.numeric(solucion_grupos[1,k+1])*energia_modelo_1$Energia
     desv[[k]] = optimo[[k]] - dri_edad[[k]]
   }
-  assign("Modelo_1_M",modelo_1_res,envir = globalenv())
+  assign(paste("Modelo_1_M", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
 
 
  #-----------------------------------------------------------------------------------------#
@@ -896,7 +896,8 @@ Módulo_3=function(){
   modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(100 g)")
   modelo_1_res = modelo_1_res[c(1,3,2),]
 
-  assign("Modelo_1_F",modelo_1_res,envir = globalenv())
+  assign(paste("Modelo_1_M", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
+
   if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa, la salida principal son los alimentos del primer modelo por sexo, para acceder a estos use «Modelo_1_F o Modelo_1_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 
@@ -1105,7 +1106,7 @@ for (k in 2:ncol(modelo_2_res)) {
 modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Costo"),]
 modelo_2_res[is.na(modelo_2_res)] = 0
 
-  assign("Modelo_2_M",modelo_2_res,envir = globalenv())
+  assign(paste("Modelo_2_M", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 #------------------------------------------------------------------------------------#
@@ -1258,7 +1259,7 @@ modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Cos
 modelo_2_res[is.na(modelo_2_res)] = 0
 
 
-  assign("Modelo_2_F",modelo_2_res,envir = globalenv())
+  assign(paste("Modelo_2_F", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa, la salida principal son los alimentos del primer segundo por sexo, para acceder a estos use «Modelo_2_F o Modelo_2_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 },
@@ -1648,9 +1649,8 @@ modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
 #----------- Verificación (PENDIENTE)
 
 
-assign("Modelo_3_F",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_F_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_F_COST",modelo_3_costo,envir = globalenv())
-
-
+#assign("Modelo_3_F",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_F_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_F_COST",modelo_3_costo,envir = globalenv())
+assign(paste("Modelo_3_F_COST", self$Mes, self$Año, sep = "_"),modelo_3_costo,envir = globalenv())
 
 
 #---------------------------------------------------------------------------------------#
@@ -1829,7 +1829,8 @@ modelo_3_dieta_int = modelo_3_dieta_int[,c(2,1,3:10)]
 modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
 
 
-assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_M_COST",modelo_3_costo,envir = globalenv())
+#assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_M_COST",modelo_3_costo,envir = globalenv())
+assign(paste("Modelo_3_M_COST", self$Mes, self$Año, sep = "_"),modelo_3_costo,envir = globalenv())
 
 cat("Depuración del módulo 4 exitosa, la salida principal son las tres modelos para cada sexo (Modelo 3); use «Modelo_3_*» para acceder a cada uno")
 

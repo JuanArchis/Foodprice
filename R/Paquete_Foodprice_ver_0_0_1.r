@@ -913,7 +913,7 @@ Módulo_4=function(){
 #------------------------------------------------------------------------------------#
 names(self$Data2) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
 
-self$Data <- self$Data2 %>%
+self$Data2 <- self$Data2 %>%
   transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
   arrange(Alimento)
 

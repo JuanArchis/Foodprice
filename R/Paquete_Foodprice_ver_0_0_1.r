@@ -914,9 +914,9 @@ Módulo_4=function(){
 
   # Matriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
-keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
-         "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
-         "Calcio", "Hierro", "Zinc")
+keep = c("Energia (Kcal)", "Proteina (g)", "Lipidos (g)", "Carbohidratos Totales (g)", "Vitamina C (mg)", "Folatos (mcg)", "Vitamina A (ER)",
+"Tiamina (mg)", "Riboflavina (mg)", "Niacina (mg)", "Vitamina B12 (mcg)", "Magnesio (mg)", "Fosforo (mg)", "Sodio (mg)",
+"Calcio (mg)", "Hierro (mg)", "Zinc (mg)")
 
 A = self$Data2[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])

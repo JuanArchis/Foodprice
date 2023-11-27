@@ -896,7 +896,7 @@ Módulo_3=function(){
   modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(100 g)")
   modelo_1_res = modelo_1_res[c(1,3,2),]
 
-  assign(paste("Modelo_1_M", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
+  assign(paste("Modelo_1_F", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
 
   if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa, la salida principal son los alimentos del primer modelo por sexo, para acceder a estos use «Modelo_1_F o Modelo_1_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 

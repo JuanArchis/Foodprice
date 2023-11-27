@@ -633,6 +633,7 @@ public=list(
 
 self$Data=Datos_Insumo_Modelos
 self$Data2=Datos_Insumo_Modelos
+self$Data3=Datos_Insumo_Modelos
 
 
 },
@@ -904,7 +905,11 @@ Módulo_4=function(){
 #--------------------------------------------------------------------------------------#
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
+names(self$Data2) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
 
+self$Data <- self$Data2 %>%
+  transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
+  arrange(Alimento)
 
   # vector de precios
   precios = self$Data2$Precio_100g_ajust
@@ -914,9 +919,12 @@ Módulo_4=function(){
 
   # Matriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
-keep = c("Energia (Kcal)", "Proteina (g)", "Lipidos (g)", "Carbohidratos Totales (g)", "Vitamina C (mg)", "Folatos (mcg)", "Vitamina A (ER)",
-"Tiamina (mg)", "Riboflavina (mg)", "Niacina (mg)", "Vitamina B12 (mcg)", "Magnesio (mg)", "Fosforo (mg)", "Sodio (mg)",
-"Calcio (mg)", "Hierro (mg)", "Zinc (mg)")
+keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "Vitamina C", "Folatos", "VitaminaA",
+         "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
+         "Calcio", "Hierro", "Zinc")
+
+
+
 
 A = self$Data2[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])
@@ -1379,7 +1387,7 @@ f_b_1 = function(a){
 
 
   # base de datos para el modelo
-  dataset_m3 = self$Data2[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
+  dataset_m3 = self$Data3[c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")]
 
   dataset_m3 = merge(dataset_m3, intercambio_gramos[c("Cod_TCAC", "Intercambio_g")],
                      by = "Cod_TCAC", all.x = TRUE)

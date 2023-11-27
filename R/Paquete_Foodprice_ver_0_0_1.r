@@ -1108,7 +1108,7 @@ for (k in 2:ncol(modelo_2_res)) {
 
 modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Costo"),]
 modelo_2_res[is.na(modelo_2_res)] = 0
-
+    ssign(paste("CONTRI_MOD3_M", self$Mes, self$Año, sep = "_"),const_2,envir = globalenv())
   assign(paste("Modelo_2_M", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
@@ -1263,6 +1263,8 @@ modelo_2_res[is.na(modelo_2_res)] = 0
 
 
   assign(paste("Modelo_2_F", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
+    assign(paste("CONTRI_MOD3_F", self$Mes, self$Año, sep = "_"),const_2,envir = globalenv())
+
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa, la salida principal son los alimentos del primer segundo por sexo, para acceder a estos use «Modelo_2_F o Modelo_2_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 },

@@ -930,13 +930,13 @@ Módulo_4=function(){
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
 
-vector de precios
+#vector de precios
   precios = self$Data2$Precio_100g_ajust
 
-ombre alimentos
+#ombre alimentos
   alimentos=self$Data2$Alimento
 
-atriz de contenidos energéticos
+#atriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
 keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",

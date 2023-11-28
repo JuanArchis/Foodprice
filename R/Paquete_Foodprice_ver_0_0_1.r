@@ -620,6 +620,7 @@ public=list(
       Datos=self$Data_Model
       self$Data=Datos
       self$Data3=Datos
+      self$Data2=Datos
 
     } else {
 
@@ -930,19 +931,39 @@ Módulo_4=function(){
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
 
-#vector de precios
-  precios = self$Data2$Precio_100g_ajust
 
-#ombre alimentos
-  alimentos=self$Data2$Alimento
 
-#atriz de contenidos energéticos
+# se ajustan los nombre de las variables
+names(data) <- c("Cod_TCAC", "Alimento", "Serving",   
+                 "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos",
+                 "Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo",
+                 "VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos",
+                 "VitaminaB12", "VitaminaA","Sodio")
+
+# se crea variable grupo 
+data$grupo <- substr(data$Cod_TCAC, start = 1, stop = 1)    # Para extraer el primer caracter.
+
+data = data[order(data$Alimento),]
+
+datos=data
+
+datos <- read_excel("~/Descargas/Datos_Prueba.xlsx")
+
+"-------------------------------------------------------------------"
+"-------------------------------------------------------------------"
+"-------------------------------------------------------------------"
+
+
+# vector de precios
+precios = self$Data2$Precio_100g_ajust
+
+# nombre alimentos
+alimentos=self$Data2$Alimento
+
 # matriz de contenidos nutricionales y energéticos
 keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
-
-
 
 A = self$Data2[keep] %>% as.matrix() %>% t()
 A = rbind(A, A[-1,])
@@ -957,7 +978,7 @@ f_x = function(a){
                   "vit_a_l", "vit_a_u", "tiamina_l", "tiamina_u", "ribo_l", "ribo_u",
                   "niacina_l", "niacina_u", "b12_l", "b12_u", "mg_l", "mg_u", "p_l", "p_u",
                   "na_l", "na_u", "ca_l", "ca_u", "fe_l", "fe_u", "zinc_l", "zinc_u")
-
+  
   a[is.na(a)] = 999999
   df = a
   return(df)
@@ -979,16 +1000,17 @@ upper = upper[!upper %in% c("edad", "energia")]
 #signos de las restricciones
 constr_signs = c("=", rep(">=", length(lower)), rep("<=", length(upper)))
 
-#--------------------------------------------------------------------------------------#
-#                   Segundo Modelo Masculino  - Construcción de datos                       #
-#------------------------------------------------------------------------------------#
 
-# requerimientos de enegia por grupos etarios
+"-------------------------------------------------------------------"
+"-------------------------------------------------------------------"
+"-------------------------------------------------------------------"
+
+#requerimientos de energia segun grupos etarios
 dri_edad = list()
 
-for (i in 1:8) {
+for (i in 1:14) {
   b = vector()
-  b = as.numeric(DRI_m$energia[i])
+  b = as.numeric(DRI_f$energia[i])
   dri_edad = append(dri_edad, b)
   names(dri_edad)[i] = paste0("b_",i)
   rm(b)
@@ -996,8 +1018,8 @@ for (i in 1:8) {
 
 # requerimientos nutricionales minimos (limites inferiores)
 lower_list = list()
-for (i in 1:8) {
-  df = DRI_m
+for (i in 1:14) {
+  df = DRI_f
   df = df[lower]
   l = as.numeric(df[i,])
   lower_list[[i]] = l
@@ -1005,10 +1027,12 @@ for (i in 1:8) {
   rm(l , df)
 }
 
-# requerimientos nutricionales máximos (limites superiores)
+
+# requerimientos nutricionales maximos (limites superiores)
+
 upper_list = list()
-for (i in 1:8) {
-  df = DRI_m
+for (i in 1:14) {
+  df = DRI_f
   df = df[upper]
   u = as.numeric(df[i,])
   upper_list[[i]] = u
@@ -1017,41 +1041,45 @@ for (i in 1:8) {
 }
 
 # vector b segun grupo de edad
+
 b_2 = list()
-for (k in 1:8) {
-  b_2[[k]] = c(dri_edad[[k]], lower_list[[k]], upper_list[[k]])
+for (k in 1:14) {
+  b_2[[k]] = c(dri_edad[[k]], lower_list[[k]], upper_list[[k]])  
 }
 
 
-  #-----------------------------------------------------------------------------------------#
-  #                   Segundo Modelo Masculino - Solución y verificación                    #
-  #--------------------------------------------------------------------------------------#
 
-b_2[[8]] =  (1 - 0.067)*b_2[[7]]
+"-------------------------------------------------------------------"
+"-------------------------------------------------------------------"
+"-------------------------------------------------------------------"
+
+
+
 
 # base de datos para la presentacion de resultados
 modelo_2 = data.frame(alimentos)
 modelo_2 = modelo_2 %>% add_row(alimentos = "Costo")
 colnames(modelo_2) = "Alimentos"
-edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)",
-         "[31, 50)", "[51, 70)", ">70")
+edad = c("[1, 4)", "[4, 9)", "[9, 14)", "[14, 19)", "[19, 31)", "[31, 50)", 
+         "[51, 70)", ">70", "gestantes < 18 años", "gestantes 19 a 30 años",
+         "gestantes 31 a 50 años", "lactantes < 18 años", "lactantes 19 a 30 años",
+         "lactantes 31 a 50 años")
 
-nutrientes = c("Grupo", "Nutriente", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC",
-                    "Folatos" , "VitaminaA" ,    "Tiamina"  ,     "Riboflavina" ,
-                    "Niacina" , "VitaminaB12" , "Magnesio" , "Fosforo", "Sodio" ,
-                    "Calcio"  , "Hierro", "Zinc")
+nutrientes = c("Grupo", "Nutriente", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC",    
+               "Folatos" , "VitaminaA" ,    "Tiamina"  ,     "Riboflavina" ,
+               "Niacina" , "VitaminaB12" , "Magnesio" , "Fosforo", "Sodio" ,
+               "Calcio"  , "Hierro", "Zinc")
 
 const_2 = as.data.frame(matrix(ncol = length(nutrientes)))
 colnames(const_2) = nutrientes
 const_2  = na.omit(const_2)
 
-
 #solucion del modelo
-for (i in 1:8) {
-  (edad[i])
-
+for (i in 1:14) {
+  print(edad[i])
+  
   #resolver el modelo
-
+  
   df_1 = data.frame()
   df_2 = data.frame()
   b = b_2[[i]]
@@ -1068,7 +1096,7 @@ for (i in 1:8) {
   df_1 = rbind(df_1, df_2)
   modelo_2 = merge(modelo_2,df_1, by = "Alimentos")
   rm(b, df_1, df_2)
-
+  
   #cumplimiento de las restricciones
   const = A[1:17,]%*%as.matrix(opt_sol$solution)
   const = data.frame(rownames(const), as.numeric(const))
@@ -1077,29 +1105,29 @@ for (i in 1:8) {
   colnames(const) = c("Nutriente", "Opt", "Rest")
   const$Dif = ((const$Opt - const$Rest)/const$Rest)*100
   const[const<0] <- 0
-
+  
   #redondear
   for (k in 1:nrow(const)) {
     for (l in 2:ncol(const)) {
-      const[k,l] = round(as.numeric(const[k,l]), digits = 2)
+      const[k,l] = round(as.numeric(const[k,l]), digits = 2)  
     }
   }
-
+  
   colnames(const)[which(colnames(const) == "Dif")] = paste0("Dif", " (%)")
-
-
+  
+  
   const = as.data.frame(t(const))
   colnames(const) = as.character(const[1,])
   const = const[-1,]
-
+  
   const[,ncol(const)+ 1] = rownames(const)
   const[,ncol(const)+ 1] = c(edad[i], edad[i], edad[i])
-
+  
   const = const[,c(ncol(const), (ncol(const)-1),1:(ncol(const)-2))]
   rownames(const) = seq(1, nrow(const), by = 1)
   colnames(const)[1] = "Grupo"
   colnames(const)[2] = "Nutriente"
-
+  
   const_2 = rbind(const_2, const)
   rm(const)
 }
@@ -1120,8 +1148,9 @@ for (k in 2:ncol(modelo_2_res)) {
 }
 
 modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Costo"),]
-modelo_2_res[is.na(modelo_2_res)] = 0
-  assign(paste("CONTRI_MOD3_M", self$Mes, self$Año, sep = "_"),const_2,envir = globalenv())
+modelo_2_res[is.na(modelo_2_res)] = 0 
+
+
   assign(paste("Modelo_2_M", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 

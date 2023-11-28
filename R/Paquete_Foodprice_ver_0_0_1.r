@@ -1134,7 +1134,7 @@ modelo_2_res[nrow(modelo_2_res)+1, ] = modelo_2[which(modelo_2$Alimentos == "Cos
 modelo_2_res[is.na(modelo_2_res)] = 0 
 
 
-  assign(paste("Modelo_2_M", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
+  assign(paste("Modelo_2_F", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 #------------------------------------------------------------------------------------#
@@ -1202,7 +1202,7 @@ const_2  = na.omit(const_2)
 
 #solucion del modelo
 for (i in 1:8) {
-  print(edad[i])
+  
 
   #resolver el modelo
   

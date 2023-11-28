@@ -617,18 +617,43 @@ public=list(
     #------------------------------------------------------------------#
     if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
       assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
+      
       Datos=self$Data_Model
       self$Data=Datos
-      self$Data3=Datos
-      self$Data2=Datos
+
 
     } else {
 
       assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
       Datos=Datos_Insumo_Modelos
-       self$Data=Datos
-      self$Data3=Datos
-#
+      self$Data=Datos
+
+
+}
+
+
+
+
+    # -----------------------------------------------------------------#
+    #               Estado de la depuración del módulo                 #
+    #------------------------------------------------------------------#
+
+ if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+
+
+
+
+},
+
+
+
+    # ------------------------------------------------------------#
+    #        MÓDULO 2: CARGA DE DATOS DE REQURIMIENTOS           # -- EN PROGRESO (FALTA GENERALIZAR sleft$ para comunicar con módulos siguientes)
+    #-----------------------------------------------------------#
+
+Módulo_2=function(){
+
+
 # Depuración modelo 1
 #
 
@@ -657,32 +682,6 @@ self$Data2 <- self$Data2 %>%
   transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
   arrange(Alimento)
  
-}
-
-
-
-
-    # -----------------------------------------------------------------#
-    #               Estado de la depuración del módulo                 #
-    #------------------------------------------------------------------#
-
- if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
-
-
-
-
-},
-
-
-
-    # ------------------------------------------------------------#
-    #        MÓDULO 2: CARGA DE DATOS DE REQURIMIENTOS           # -- EN PROGRESO (FALTA GENERALIZAR sleft$ para comunicar con módulos siguientes)
-    #-----------------------------------------------------------#
-
-Módulo_2=function(){
-
-
-
 
 #-------------------------------------#
 # Carga de requerimientos Modelos   #
@@ -931,23 +930,6 @@ Módulo_4=function(){
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
 
-
-
-# se ajustan los nombre de las variables
-names(data) <- c("Cod_TCAC", "Alimento", "Serving",   
-                 "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos",
-                 "Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo",
-                 "VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos",
-                 "VitaminaB12", "VitaminaA","Sodio")
-
-# se crea variable grupo 
-data$grupo <- substr(data$Cod_TCAC, start = 1, stop = 1)    # Para extraer el primer caracter.
-
-data = data[order(data$Alimento),]
-
-datos=data
-
-datos <- read_excel("~/Descargas/Datos_Prueba.xlsx")
 
 "-------------------------------------------------------------------"
 "-------------------------------------------------------------------"

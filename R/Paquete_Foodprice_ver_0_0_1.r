@@ -618,10 +618,45 @@ public=list(
     if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
       assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
       Datos=self$Data_Model
+      self$Data=Datos
+      self$Data3=Datos
+
     } else {
+
       assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
       Datos=Datos_Insumo_Modelos
-    }
+       self$Data=Datos
+      self$Data3=Datos
+#
+# Depuración modelo 1
+#
+
+# Modificación de datos del módulo 1
+names(self$Data) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
+
+self$Data <- self$Data %>%
+  transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
+  arrange(Alimento)
+
+self$Data = self$Data[order(self$Data$Alimento),]
+
+self$Data2=self$Data 
+self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004"))
+
+
+
+#
+# Depuración modelo 2
+#
+
+
+names(self$Data2) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
+
+self$Data2 <- self$Data2 %>%
+  transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
+  arrange(Alimento)
+ 
+}
 
 
 
@@ -632,8 +667,7 @@ public=list(
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
-self$Data=Datos
-self$Data3=Datos
+
 
 
 },
@@ -647,20 +681,7 @@ self$Data3=Datos
 Módulo_2=function(){
 
 
-  #----------------------------------------#
-  # Carga de requerimientos Modelo 1 y 2   #
-  #---------------------------------------#
 
-# Modificación de datos del módulo 1
-names(self$Data) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
-
-self$Data <- self$Data %>%
-  transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
-  arrange(Alimento)
-
-self$Data = self$Data[order(self$Data$Alimento),]
-
-self$Data2=self$Data 
 
 #-------------------------------------#
 # Carga de requerimientos Modelos   #
@@ -729,10 +750,6 @@ Módulo_3=function(){
   #-------------------------------------------------------------------------#
 
 
-  # excluir azúcar porque no es viable (K003 y K004)
-  #self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004"))
-
-  # vector de precios
   precios = self$Data$Precio_100g_ajust
 
   # nombre alimentos
@@ -912,19 +929,14 @@ Módulo_4=function(){
 #--------------------------------------------------------------------------------------#
 #                   Segundo Modelo  - Construcción de datos                           #
 #------------------------------------------------------------------------------------#
-names(self$Data2) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
 
-self$Data2 <- self$Data2 %>%
-  transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
-  arrange(Alimento)
-
-  # vector de precios
+vector de precios
   precios = self$Data2$Precio_100g_ajust
 
-  # nombre alimentos
+ombre alimentos
   alimentos=self$Data2$Alimento
 
-  # Matriz de contenidos energéticos
+atriz de contenidos energéticos
 # matriz de contenidos nutricionales y energéticos
 keep = c("Energia", "Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",

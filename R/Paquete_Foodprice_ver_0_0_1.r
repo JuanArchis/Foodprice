@@ -620,13 +620,14 @@ public=list(
       
       Datos=self$Data_Model
       self$Data=Datos
-
+      self$Data3=Datos
 
     } else {
 
       assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
       Datos=Datos_Insumo_Modelos
       self$Data=Datos
+      self$Data3=Datos
 
 
 }
@@ -1058,7 +1059,7 @@ const_2  = na.omit(const_2)
 
 #solucion del modelo
 for (i in 1:14) {
-  print(edad[i])
+
   
   #resolver el modelo
   

@@ -717,7 +717,7 @@ public=list(
 
     } else {
 
-      assign("Datos_Insumo_Modelos",Datos_Insumo_Modelos,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
+      assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())
       Datos=Datos_Insumo_Modelos
       self$Data=Datos
       self$Data3=Datos

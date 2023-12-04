@@ -125,7 +125,7 @@ public=list(
 
     #  -----------------Abastecimiento-----------------------------
 
- if (self$Percentil_Abast !=  NULL){
+ if (!is.null(self$Percentil_Abast)){
   temp_dir_A <- tempdir()
   archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
 
@@ -216,7 +216,7 @@ public=list(
 
     # -- Carga y limpia los datos de abastecimiento SIPSA
     # -- Carga y limpia los datos de abastecimiento SIPSA
-  if (self$Percentil_Abast !=  NULL){
+  if (!is.null(self$Percentil_Abast)){
 
     Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
     colnames(Data_Sipsa_Abas) = c("Ciudad_Mercado", "Fecha","Cod_Dep", "Cod_Mun", "Dep_Proc", "Mun_Proc","Grupo", "Alimento", "Cantidad_KG")
@@ -316,7 +316,7 @@ public=list(
     Data_abs_precios_Sipsa = merge(Data_Sipsa_Precios_Unicos, Mapeo_Precios_Abs, by = "Alimento", all.x = TRUE)
 
 
- if (self$Percentil_Abast !=  NULL){
+ if (!is.null(self$Percentil_Abast)){
     # Asignación del valor de abastecimiento en cada caso
     Data_abs_precios_Sipsa = merge(Data_Sipsa_Abas_Unicos, Data_abs_precios_Sipsa,by = "Alimento_abs", all.x = TRUE)
     # Selección de las variables de interés
@@ -337,7 +337,7 @@ public=list(
     # -----------------------------------------------------------------#
     #                       Criterios de Exc                           # REVISAR GENERALIZACIÓN Y PERFECCIÓN DEL MISMO
     #------------------------------------------------------------------#
- if (self$Percentil_Abast !=  NULL){
+ if (!is.null(self$Percentil_Abast){
 
     Data_abs_precios_Sipsa_ABS=Data_abs_precios_Sipsa[,c("Alimento",paste0("Total_Cali_",self$Mes))]
 

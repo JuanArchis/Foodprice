@@ -125,6 +125,7 @@ public=list(
 
     #  -----------------Abastecimiento-----------------------------
 
+ if (self$Percentil_Abast !=  NULL){
   temp_dir_A <- tempdir()
   archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
 
@@ -137,7 +138,11 @@ public=list(
         self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
 
  }
+ }
 
+ else {
+    self$data_list_abas=NULL
+ }
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO
     #----------------------------------------------------------------#

@@ -325,7 +325,7 @@ public=list(
     colnames(Data_abs_precios_Sipsa) = c("Alimento",paste0("Precio_kg_", self$Mes), paste0("Total_Cali_", self$Mes))
  }
  else {
-        # Selección de las variables de interés
+    # Selección de las variables de interés
     Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[c("Alimento", "Precio_kg")]
     Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[order(Data_abs_precios_Sipsa$Alimento),]
     colnames(Data_abs_precios_Sipsa) = c("Alimento",paste0("Precio_kg_", self$Mes))
@@ -412,7 +412,7 @@ public=list(
     Alimentos_Excluidos = c(Alimentos_Excluidos_Criterio_1,"Queso Caquetá")
 
     # Exclusión de los alimentos y construcción de la lista definitiva
-    Lista_Alimentos_Definitiva = Data_abs_precios_Sipsa_ABS %>% filter(Alimento %in% setdiff(levels(as.factor(Data_abs_precios_Sipsa_ABS$Alimento)), Alimentos_Excluidos))
+    Lista_Alimentos_Definitiva = Data_abs_precios_Sipsa %>% filter(Alimento %in% setdiff(levels(as.factor(Data_abs_precios_Sipsa$Alimento)), Alimentos_Excluidos))
 
 
  }

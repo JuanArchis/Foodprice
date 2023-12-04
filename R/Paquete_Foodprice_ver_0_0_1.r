@@ -104,7 +104,7 @@ public=list(
 
   # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_p)) {
-  url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", Año)
+  url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
   download.file(url_excel_P, archivo_excel_p, mode = "wb")
   self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
   } else {

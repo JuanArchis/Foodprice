@@ -99,26 +99,32 @@ public=list(
 
     #  -----------------Precios mayoristas------------------------------
 
-      url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
-      # Descargar el archivo Excel
-      temp_dir_P <- tempdir()
-      archivo_excel_p <- file.path(temp_dir_P, "archivo_P.xlsx")
-      download.file(url_excel_P, archivo_excel_p, mode = "wb")
+  temp_dir_P <- tempdir()
+  archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
 
-      # Importar todo el contenido como una lista
-      self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
-
+  # Verificar si el archivo ya existe en el directorio temporal
+  if (!file.exists(archivo_excel_p)) {
+  url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", Año)
+  download.file(url_excel_P, archivo_excel_p, mode = "wb")
+  self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
+  } else {
+  self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
+  }
 
     #  -----------------Abastecimiento-----------------------------
 
-      url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
-      # Descargar el archivo Excel
-      temp_dir_A <- tempdir()
-      archivo_excel_A <- file.path(temp_dir_A, "archivo_A.xlsx")
-      download.file(url_excel_A, archivo_excel_A, mode = "wb")
+  temp_dir_A <- tempdir()
+  archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
 
-      # Importar todo el contenido como una lista
+    # Verificar si el archivo ya existe en el directorio temporal
+  if (!file.exists(archivo_excel_A)) {
+      url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
+      download.file(url_excel_A, archivo_excel_A, mode = "wb")
       self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
+ } else {
+        self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
+
+ }
 
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO

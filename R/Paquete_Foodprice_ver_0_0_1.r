@@ -337,7 +337,7 @@ public=list(
     # -----------------------------------------------------------------#
     #                       Criterios de Exc                           # REVISAR GENERALIZACIÓN Y PERFECCIÓN DEL MISMO
     #------------------------------------------------------------------#
- if (!is.null(self$Percentil_Abast){
+ if (!is.null(self$Percentil_Abast)){
 
     Data_abs_precios_Sipsa_ABS=Data_abs_precios_Sipsa[,c("Alimento",paste0("Total_Cali_",self$Mes))]
 

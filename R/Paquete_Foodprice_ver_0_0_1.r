@@ -30,7 +30,7 @@ public=list(
     Ciudad=NULL,
     Margenes=NULL,
     Data_Model=NULL,
-
+    Percentil_Abast=NULL,
 
 
     # Parámetros privados
@@ -42,11 +42,12 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast){
 
     self$Mes=Mes
     self$Año=Año
     self$Ciudad=Ciudad
+    self$Percentil_Abast=Percentil_Abast
 
   # Margenes como parámetro opcional
     if (!is.null(Margenes)) {
@@ -331,10 +332,10 @@ public=list(
     criterio_2 = criterio_2 %>% drop_na(paste0("Total_Cali_",self$Mes))
 
     # Calcular cuantiles
-    quant = quantile(criterio_2[,2], na.rm = TRUE)
+    quant = quantile(criterio_2[,2],probs = self$Percentil_Abast, na.rm = TRUE)
 
     # Eliminar los alimentos cuyo flujo de carga está abajo del percentil 25
-    criterio_2 = criterio_2[criterio_2[,2] < quant[2],]
+    criterio_2 = criterio_2[criterio_2[,2] < quant,]
 
 
     #--------                               -------#

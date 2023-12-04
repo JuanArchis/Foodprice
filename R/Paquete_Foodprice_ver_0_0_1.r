@@ -198,7 +198,7 @@ public=list(
   Data_Sipsa_Abas$Fecha=as.numeric(Data_Sipsa_Abas$Fecha)
   Data_Sipsa_Abas$Fecha=as.Date(Data_Sipsa_Abas$Fecha,origin = "1899-12-30")
   Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
-
+  Data_Sipsa_Abas=as.numeric(Data_Sipsa_Abas$Cantidad_KG)
 
     # -- Seleciona la ciudad de interés
     if(self$Ciudad=="Cali") {

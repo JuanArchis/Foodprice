@@ -573,7 +573,7 @@ public=list(
         filter(Alimento %in% setdiff(levels(as.factor(dataset_sim$Alimento)), c("Aceite vegetal mezcla","Huevo rojo A", "Huevo rojo AA","Huevo rojo extra")))
 
     # Subset 1
-    dataset_sim_1$Serving <- rep(100, length(precios_kg))
+    dataset_sim_1$Serving <- rep(100, nrow(dataset_sim_1))
     dataset_sim_1$Precio_100g <- dataset_sim_1$Precio_minorista_kg/10
 
     # Subset 2
@@ -595,7 +595,7 @@ public=list(
 
     # Base de datos de precios (combinación de ambos subsets)
     dataset_sim <- rbind(dataset_sim_1, dataset_sim_2)
-    dataset_sim$Serving <- rep(100, length(precios_kg))
+    dataset_sim$Serving <- rep(100, nrow(dataset_sim))
 
     #--------                    -------  #
     #     Cálculo de precios ajustados    #

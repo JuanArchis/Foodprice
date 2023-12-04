@@ -98,7 +98,7 @@ public=list(
     #-----------------------------------------------------------#
 
     #  -----------------Precios mayoristas------------------------------
-    
+
       url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
       # Descargar el archivo Excel
       temp_dir_P <- tempdir()
@@ -106,7 +106,7 @@ public=list(
       download.file(url_excel_P, archivo_excel_p, mode = "wb")
 
       # Importar todo el contenido como una lista
-      self$data_list_precios <- rio::import(archivo_excel_p)
+      self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
 
 
     #  -----------------Abastecimiento-----------------------------
@@ -118,7 +118,7 @@ public=list(
       download.file(url_excel_A, archivo_excel_A, mode = "wb")
 
       # Importar todo el contenido como una lista
-      self$data_list_abas <- rio::import(archivo_excel_A)
+      self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
 
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO

@@ -21,7 +21,7 @@ Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
 
 public=list(
     Librerias_base = c("readxl","dplyr","ggplot2","reshape2","knitr","haven","foreign","stringi","labelled","tidyr","plyr","openxlsx","tidyverse",
-                    "lpSolve","Rglpk","Rsymphony","scatterplot3d","reshape"),
+                    "lpSolve","Rglpk","Rsymphony","scatterplot3d","reshape","utils","rio"),
     # Parámetros de la clase
     data_list_precios=NULL,
     data_list_abas=NULL,
@@ -42,10 +42,8 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(data_list_precios,data_list_abas,Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL){
 
-    self$data_list_precios=data_list_precios
-    self$data_list_abas=data_list_abas
     self$Mes=Mes
     self$Año=Año
     self$Ciudad=Ciudad
@@ -93,6 +91,34 @@ public=list(
     #-----------------------------------------------------------#
 
     Módulo_1=function(){
+
+
+    # ------------------------------------------------------------#
+    #   IIMPORTAR DATOS DESDE LA WEB                             # COMPLETO
+    #-----------------------------------------------------------#
+
+    #  -----------------Precios mayoristas------------------------------
+    
+      url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
+      # Descargar el archivo Excel
+      temp_dir_P <- tempdir()
+      archivo_excel_p <- file.path(temp_dir_P, "archivo_P.xlsx")
+      download.file(url_excel_P, archivo_excel_p, mode = "wb")
+
+      # Importar todo el contenido como una lista
+      self$data_list_precios <- rio::import(archivo_excel_p)
+
+
+    #  -----------------Abastecimiento-----------------------------
+
+      url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
+      # Descargar el archivo Excel
+      temp_dir_A <- tempdir()
+      archivo_excel_A <- file.path(temp_dir_A, "archivo_A.xlsx")
+      download.file(url_excel_A, archivo_excel_A, mode = "wb")
+
+      # Importar todo el contenido como una lista
+      self$data_list_abas <- rio::import(archivo_excel_A)
 
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO
@@ -165,7 +191,7 @@ public=list(
     #----------------------------------------------------------------#
 
     # -- Carga y limpia los datos de abastecimiento SIPSA
-    Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+1]]) # Se extraen los meses disponibles con base en la data dada
+    Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
     colnames(Data_Sipsa_Abas) = c("Ciudad_Mercado", "Fecha","Cod_Dep", "Cod_Mun", "Dep_Proc", "Mun_Proc","Grupo", "Alimento", "Cantidad_KG");Data_Sipsa_Abas$Fecha=as.Date(Data_Sipsa_Abas$Fecha)
     Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
 

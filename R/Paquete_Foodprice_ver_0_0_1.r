@@ -191,9 +191,13 @@ public=list(
     #----------------------------------------------------------------#
 
     # -- Carga y limpia los datos de abastecimiento SIPSA
-    Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
-    colnames(Data_Sipsa_Abas) = c("Ciudad_Mercado", "Fecha","Cod_Dep", "Cod_Mun", "Dep_Proc", "Mun_Proc","Grupo", "Alimento", "Cantidad_KG");Data_Sipsa_Abas$Fecha=as.Date(Data_Sipsa_Abas$Fecha)
-    Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
+    # -- Carga y limpia los datos de abastecimiento SIPSA
+  Data_Sipsa_Abas=(data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
+  colnames(Data_Sipsa_Abas) = c("Ciudad_Mercado", "Fecha","Cod_Dep", "Cod_Mun", "Dep_Proc", "Mun_Proc","Grupo", "Alimento", "Cantidad_KG")
+  Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "rows");Data_Sipsa_Abas=Data_Sipsa_Abas[-c(1:2),]
+  Data_Sipsa_Abas$Fecha=as.numeric(Data_Sipsa_Abas$Fecha)
+  Data_Sipsa_Abas$Fecha=as.Date(Data_Sipsa_Abas$Fecha,origin = "1899-12-30")
+  Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
 
 
     # -- Seleciona la ciudad de interés

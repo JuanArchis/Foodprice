@@ -42,12 +42,12 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL){
 
     self$Mes=Mes
     self$Año=Año
     self$Ciudad=Ciudad
-    self$Percentil_Abast=Percentil_Abast
+
 
   # Margenes como parámetro opcional
     if (!is.null(Margenes)) {
@@ -70,6 +70,17 @@ public=list(
     } else {
       self$Data_Model = NULL
     }
+
+     # Data_Model como Percentil_Abast
+    if (!is.null(Percentil_Abast)) {
+    if (!is.numeric(Percentil_Abast) || Percentil_Abast < 0 || Percentil_Abast > 1) {
+    stop("El parámetro 'Percentil_Abast' debe ser un número entre 0 y 1, consulte la documentación para más información")
+    } else {
+    }
+    self$Percentil_Abast = Percentil_Abast
+    } else {
+    self$Percentil_Abast =  NULL }
+
     },
 
     # ---------------------------------------------------------------#
@@ -193,19 +204,22 @@ public=list(
 
     #----# Salida: Data_Sipsa_Precios_Unicos #----#
 
+
     # ---------------------------------------------------------------#
     # Depuración de la data: Datos Abastecimiento  (Fuente: SIPSA)   # COMPLETO
     #----------------------------------------------------------------#
 
     # -- Carga y limpia los datos de abastecimiento SIPSA
     # -- Carga y limpia los datos de abastecimiento SIPSA
-  Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
-  colnames(Data_Sipsa_Abas) = c("Ciudad_Mercado", "Fecha","Cod_Dep", "Cod_Mun", "Dep_Proc", "Mun_Proc","Grupo", "Alimento", "Cantidad_KG")
-  Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "rows");Data_Sipsa_Abas=Data_Sipsa_Abas[-c(1:2),]
-  Data_Sipsa_Abas$Fecha=as.numeric(Data_Sipsa_Abas$Fecha)
-  Data_Sipsa_Abas$Fecha=as.Date(Data_Sipsa_Abas$Fecha,origin = "1899-12-30")
-  Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
-  Data_Sipsa_Abas$Cantidad_KG=as.numeric(Data_Sipsa_Abas$Cantidad_KG)
+  if (self$Percentil_Abast !=  NULL){
+
+    Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
+    colnames(Data_Sipsa_Abas) = c("Ciudad_Mercado", "Fecha","Cod_Dep", "Cod_Mun", "Dep_Proc", "Mun_Proc","Grupo", "Alimento", "Cantidad_KG")
+    Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "rows");Data_Sipsa_Abas=Data_Sipsa_Abas[-c(1:2),]
+    Data_Sipsa_Abas$Fecha=as.numeric(Data_Sipsa_Abas$Fecha)
+    Data_Sipsa_Abas$Fecha=as.Date(Data_Sipsa_Abas$Fecha,origin = "1899-12-30")
+    Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
+    Data_Sipsa_Abas$Cantidad_KG=as.numeric(Data_Sipsa_Abas$Cantidad_KG)
 
     # -- Seleciona la ciudad de interés
     if(self$Ciudad=="Cali") {
@@ -239,7 +253,7 @@ public=list(
     Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total_cali")]
     #----# Salida: Data_Sipsa_Abas_Unicos #----#
 
-
+  } else {Data_Sipsa_Abas_Unicos=NULL}
 
     # ---------------------------------------------------------------#
     #                                Mapeos                          # REVISAR GENERALIZACIÓN
@@ -297,19 +311,28 @@ public=list(
     Data_abs_precios_Sipsa = merge(Data_Sipsa_Precios_Unicos, Mapeo_Precios_Abs, by = "Alimento", all.x = TRUE)
 
 
-
+ if (self$Percentil_Abast !=  NULL){
     # Asignación del valor de abastecimiento en cada caso
     Data_abs_precios_Sipsa = merge(Data_Sipsa_Abas_Unicos, Data_abs_precios_Sipsa,by = "Alimento_abs", all.x = TRUE)
-
     # Selección de las variables de interés
     Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[c("Alimento", "Precio_kg", "Total_cali")]
     Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[order(Data_abs_precios_Sipsa$Alimento),]
     colnames(Data_abs_precios_Sipsa) = c("Alimento",paste0("Precio_kg_", self$Mes), paste0("Total_Cali_", self$Mes))
+ }
+ else {
+        # Selección de las variables de interés
+    Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[c("Alimento", "Precio_kg")]
+    Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[order(Data_abs_precios_Sipsa$Alimento),]
+    colnames(Data_abs_precios_Sipsa) = c("Alimento",paste0("Precio_kg_", self$Mes))
+ }
+
+
 
 
     # -----------------------------------------------------------------#
     #                       Criterios de Exc                           # REVISAR GENERALIZACIÓN Y PERFECCIÓN DEL MISMO
     #------------------------------------------------------------------#
+ if (self$Percentil_Abast !=  NULL){
 
     Data_abs_precios_Sipsa_ABS=Data_abs_precios_Sipsa[,c("Alimento",paste0("Total_Cali_",self$Mes))]
 
@@ -337,8 +360,7 @@ public=list(
     # Eliminar los alimentos cuyo flujo de carga está abajo del percentil 25
     criterio_2 = criterio_2[criterio_2[,2] < quant,]
 
-
-    #--------                               -------#
+       #--------                               -------#
     #  Primer  criterio de exclusión: Nutrición    #
     #-----                                  -------#
 
@@ -362,6 +384,35 @@ public=list(
     # Exclusión de los alimentos y construcción de la lista definitiva
     Lista_Alimentos_Definitiva = Data_abs_precios_Sipsa_ABS %>% filter(Alimento %in% setdiff(levels(as.factor(Data_abs_precios_Sipsa_ABS$Alimento)), Alimentos_Excluidos))
 
+ }
+ else {
+
+
+    #--------                               -------#
+    #  Primer  criterio de exclusión: Nutrición    #
+    #-----                                  -------#
+
+    Alimentos_Exclu_Criterio_1 = Primer_Criterio_Lista_Alimentos[Primer_Criterio_Lista_Alimentos$`COD. TCAC` == "EX000","Alimento"]
+
+    #--------                               -------#
+    # Lista depurada con base en los dos criterios #
+    #-----                                  -------#
+
+
+
+    # Construir el vector con la totalidad de alimentos excluidos
+    # (criterio 1, criterio 2, flujo de carga nulo y exclusiones ad hoc)
+
+    Alimentos_Excluidos_Criterio_1 = Alimentos_Exclu_Criterio_1["Alimento"]
+    Alimentos_Excluidos = c(Alimentos_Excluidos_Criterio_1,"Queso Caquetá")
+
+    # Exclusión de los alimentos y construcción de la lista definitiva
+    Lista_Alimentos_Definitiva = Data_abs_precios_Sipsa_ABS %>% filter(Alimento %in% setdiff(levels(as.factor(Data_abs_precios_Sipsa_ABS$Alimento)), Alimentos_Excluidos))
+
+
+ }
+
+ 
     # -----------------------------------------------------------------#
     #                        Marginalización                           #  REVISAR GENERALZIACIÓN
     #------------------------------------------------------------------#

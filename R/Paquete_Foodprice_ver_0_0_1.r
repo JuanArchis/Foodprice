@@ -628,7 +628,7 @@ if (self$Año>2022) {
     if (!is.null(self$Margenes)) {
 
       Margenes_Historicos$margen_medio=self$Margenes
-      precios_mayoristas_grupos_margenes$Grupo <- toupper(precios_mayoristas_grupos_margenes$Grupo)
+      Precios_Grupos_SIPSA$Grupo <- toupper(Precios_Grupos_SIPSA$Grupo)
 
       precios_mayoristas_grupos_margenes <- merge(Precios_Grupos_SIPSA,
                                                   Margenes_Historicos[c("Grupo", "margen_medio")],
@@ -637,7 +637,7 @@ if (self$Año>2022) {
 
 
     } else {
-      precios_mayoristas_grupos_margenes$Grupo <- toupper(precios_mayoristas_grupos_margenes$Grupo)
+      Precios_Grupos_SIPSA$Grupo <- toupper(Precios_Grupos_SIPSA$Grupo)
       precios_mayoristas_grupos_margenes <- merge(Precios_Grupos_SIPSA,
                                                   Margenes_Historicos[c("Grupo", "margen_medio")],
                                                   by = "Grupo", all.x = TRUE)

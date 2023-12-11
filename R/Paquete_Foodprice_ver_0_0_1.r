@@ -1910,7 +1910,6 @@ for (i in 1:length(edad)) {
   modelo_3_costo = merge(modelo_3_costo, costo_df, by = "Grupo")
 
 
-
   modelo_3_sol_g = df_solution[c("Alimento", "solution_g")]
   modelo_3_sol_int = df_solution[c("Alimento", "sol_int")]
 
@@ -1932,7 +1931,7 @@ modelo_3_dieta_g = modelo_3_dieta_g[order(modelo_3_dieta_g$Grupo_GABAS),]
 modelo_3_dieta_int = modelo_3_dieta_int[,c(2,1,3:10)]
 modelo_3_dieta_int = modelo_3_dieta_int[order(modelo_3_dieta_int$Grupo_GABAS),]
 
-
+names(modelo_3_costo)[names(modelo_3_costo) == "Gupo"][1] <- "Alimentos"
 #assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_M_COST",modelo_3_costo,envir = globalenv())
 assign(paste("Modelo_3_M_COST", self$Mes, self$Año, sep = "_"),modelo_3_costo,envir = globalenv())
 

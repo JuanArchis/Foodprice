@@ -1693,18 +1693,17 @@ for (i in 1:length(edad)) {
   colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")
   df_solution = na.omit(df_solution)
 
-  #cereales
-  #df = datos_grupos[[3]]
-  #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
-  #q = as.numeric(q)
-  #df = df[order(df$Precio_per_int),]
-  #df_x = df[1:q,]
-
-  # A = f_A_3(df_x)
-  #b = f_b_3(df_x)
-  #df_x$sol_int = solve(A, b)
-  #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
-  #df_solution = rbind(df_solution, df_x)
+  #cereales (COMENTADO)
+  df = datos_grupos[[3]]
+  q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = as.numeric(q)
+  df = df[order(df$Precio_per_int),]
+  df_x = df[1:q,]
+   A = f_A_3(df_x)
+  b = f_b_3(df_x)
+  df_x$sol_int = solve(A, b)
+  df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  df_solution = rbind(df_solution, df_x)
 
 
 
@@ -1734,18 +1733,18 @@ for (i in 1:length(edad)) {
   df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   df_solution = rbind(df_solution, df_x)
 
-  #carnes
-  #df = datos_grupos[[2]]
-  #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
-  #q = as.numeric(q)
-  #df = df[order(df$Precio_per_int),]
-  #df_x = df[1:q,]
+  #carnes (COMENTADO)
+  df = datos_grupos[[2]]
+  q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = as.numeric(q)
+  df = df[order(df$Precio_per_int),]
+  df_x = df[1:q,]
 
-  #A = f_A_2(df_x)
-  #b = f_b_2(df_x)
-  #df_x$sol_int = solve(A, b)
-  #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
-  #df_solution = rbind(df_solution, df_x)
+  A = f_A_2(df_x)
+  b = f_b_2(df_x)
+  df_x$sol_int = solve(A, b)
+  df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  df_solution = rbind(df_solution, df_x)
 
 
   # grasas, lacteos y azucares
@@ -1876,18 +1875,18 @@ for (i in 1:length(edad)) {
   colnames(df_solution) = c(colnames(dataset_m3), "sol_int", "solution_g")
   df_solution = na.omit(df_solution)
 
-  #cereales
-  #df = datos_grupos[[3]]
-  #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
-  #q = as.numeric(q)
-  #df = df[order(df$Precio_per_int),]
-  #df_x = df[1:q,]
+  #cereales (COMENTADO)
+  df = datos_grupos[[3]]
+  q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = as.numeric(q)
+  df = df[order(df$Precio_per_int),]
+  df_x = df[1:q,]
 
-  # A = f_A_3(df_x)
-  #b = f_b_3(df_x)
-  #df_x$sol_int = solve(A, b)
-  #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
-  #df_solution = rbind(df_solution, df_x)
+  A = f_A_3(df_x)
+  b = f_b_3(df_x)
+  df_x$sol_int = solve(A, b)
+  df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  df_solution = rbind(df_solution, df_x)
 
 
 
@@ -1917,18 +1916,18 @@ for (i in 1:length(edad)) {
   df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
   df_solution = rbind(df_solution, df_x)
 
-  #carnes
-  #df = datos_grupos[[2]]
-  #q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
-  #q = as.numeric(q)
-  #df = df[order(df$Precio_per_int),]
-  #df_x = df[1:q,]
+  #carnes (COMENTADO)
+  df = datos_grupos[[2]]
+  q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
+  q = as.numeric(q)
+  df = df[order(df$Precio_per_int),]
+  df_x = df[1:q,]
 
-  #A = f_A_2(df_x)
-  #b = f_b_2(df_x)
-  #df_x$sol_int = solve(A, b)
-  #df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
-  #df_solution = rbind(df_solution, df_x)
+  A = f_A_2(df_x)
+  b = f_b_2(df_x)
+  df_x$sol_int = solve(A, b)
+  df_x$solution_g = df_x$sol_int*df_x$Intercambio_g
+  df_solution = rbind(df_solution, df_x)
 
 
   # grasas, lacteos y azucares

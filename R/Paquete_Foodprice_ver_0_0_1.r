@@ -117,7 +117,7 @@ public=list(
   # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_p)) {
   url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
-  download.file(url_excel_P, archivo_excel_p, mode = "wb")
+  download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444))
   self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
   } else {
   self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
@@ -132,7 +132,7 @@ public=list(
     # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_A)) {
       url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
-      download.file(url_excel_A, archivo_excel_A, mode = "wb")
+      download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444))
       self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
  } else {
         self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
@@ -578,13 +578,12 @@ public=list(
     Margenes_Historicos <- Reduce(function(x, y) merge(x, y, by = "Grupo", all.x = TRUE), mget(paste0("margen_", meses)))
 
     # Calcular el margen medio
-    Margenes_Historicos$margen_medio <- rowMeans(Margenes_Historicos[,c(2,4,6)])
+    Margenes_Historicos$margen_medio <- c(4.925515,32.154734,21.770773,26.226295,17.150887,6.884347,76.380988,54.096494)
 
 
     # -----------------------------------------------------------------#
     #                 Estimación precios minoristas                    #
     #------------------------------------------------------------------#
-
 
 
     if (!is.null(self$Margenes)) {

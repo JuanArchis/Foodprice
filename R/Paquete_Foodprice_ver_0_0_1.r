@@ -111,10 +111,12 @@ public=list(
       options(timeout=1000)
       
     #  -----------------Precios mayoristas------------------------------
-
+if (self$Año>2022) {
+  
   temp_dir_P <- tempdir()
   archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
-
+  
+  
   # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_p)) {
   url_excel_P <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSA-SerieHistoricaMayorista-%d.xlsx", self$Año)
@@ -123,9 +125,28 @@ public=list(
   } else {
   self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
   }
+}
 
+      if (self$Año<2023) {
+        
+        temp_dir_P <- tempdir()
+        archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
+        
+        
+        # Verificar si el archivo ya existe en el directorio temporal
+        if (!file.exists(archivo_excel_p)) {
+          url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
+          download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
+          self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
+        } else {
+          self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
+        }
+      }      
+      
+      
     #  -----------------Abastecimiento-----------------------------
-
+if (self$Año>2022) {
+      
  if (!is.null(self$Percentil_Abast)){
   temp_dir_A <- tempdir()
   archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
@@ -139,7 +160,24 @@ public=list(
         self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
 
  }
- }
+ }}
+
+      if (self$Año>2023) {
+        
+        if (!is.null(self$Percentil_Abast)){
+          temp_dir_A <- tempdir()
+          archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
+          
+          # Verificar si el archivo ya existe en el directorio temporal
+          if (!file.exists(archivo_excel_A)) {
+            url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
+            download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
+            self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
+          } else {
+            self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
+            
+          }
+        }}
 
  else {
     self$data_list_abas=NULL

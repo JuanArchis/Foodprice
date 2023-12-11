@@ -162,7 +162,7 @@ if (self$Año>2022) {
  }
  }}
 
-      if (self$Año>2023) {
+      if (self$Año<2023) {
         
         if (!is.null(self$Percentil_Abast)){
           temp_dir_A <- tempdir()

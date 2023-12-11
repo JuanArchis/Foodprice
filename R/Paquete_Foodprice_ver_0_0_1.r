@@ -153,7 +153,7 @@ if (self$Año>2022) {
 
     # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_A)) {
-      url_excel_A <- sprintf("  https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSAbastecimiento-Microdatos-%d.xlsx", self$Año)
+      url_excel_A <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSAbastecimiento-Microdatos-%d.xlsx", self$Año)
       download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
       self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
  } else {

@@ -117,7 +117,7 @@ public=list(
   # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_p)) {
   url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
-  download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444))
+  download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
   self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
   } else {
   self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
@@ -132,7 +132,7 @@ public=list(
     # Verificar si el archivo ya existe en el directorio temporal
   if (!file.exists(archivo_excel_A)) {
       url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
-      download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444))
+      download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
       self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
  } else {
         self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")

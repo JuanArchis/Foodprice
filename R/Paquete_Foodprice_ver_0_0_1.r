@@ -104,7 +104,7 @@ public=list(
 
     Módulo_1=function(){
 
-
+suppressMessages({
     # ------------------------------------------------------------#
     #   IIMPORTAR DATOS DESDE LA WEB                             # COMPLETO
     #-----------------------------------------------------------#
@@ -182,6 +182,7 @@ if (self$Año>2022) {
  else {
     self$data_list_abas=NULL
  }
+    })
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO
     #----------------------------------------------------------------#
@@ -869,7 +870,7 @@ cantidad_alimentos_seleccionar= funcion_EER(cantidad_alimentos_seleccionar)
 # Cambiar nombres de columnas en exclusion_3er_modelo
 colnames(exclusion_3er_modelo) = c("Alimento", "Cod_TCAC");colnames(EER_share_rangos) = c("Grupo_GABAS", "Min", "Max")
 
-if(length(warnings())<100) {cat("Depuración del módulo 2 exitosa, se cargaron los requerimientos de los tres modelos: DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar ", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+if(length(warnings())<100) {cat("Carga de requerimientos exitosa")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 data(TCAC, package = "Foodprice",envir=parent.env(environment()))
 

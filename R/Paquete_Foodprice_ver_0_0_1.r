@@ -94,7 +94,7 @@ public=list(
     if (!require("pacman")) install.packages("pacman") # Paquete que simplifica la carga de librerias
     pacman::p_load(char = Librerias_base);Librerias_base_print = paste0(paste0("'", Librerias_base, "'"), collapse = ", ") # Instala si es necesario, o en su defecto, sólo llama los paquetes
 
-    cat("Las librerias usadas en el presente paquete son:",Librerias_base_print,"\n")
+    print("Se instalaron y cargaron todas la librerias corectamente")
 
     },
 
@@ -771,7 +771,7 @@ if (self$Año>2022) {
     #               Estado de la depuración del módulo                 #
     #------------------------------------------------------------------#
 
- if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa, la salida principal son las estimaciónes de los alimentos por (Gr); para acceder a esta use «Datos_Insumo_Modelos» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+ if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 
 
@@ -1052,8 +1052,7 @@ Módulo_3=function(){
 
   assign(paste("Modelo_1_F", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
 
-  if(length(warnings())<100) {cat("Depuración del módulo 3 exitosa, la salida principal son los alimentos del primer modelo por sexo, para acceder a estos use «Modelo_1_F o Modelo_1_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
-
+  if(length(warnings())<100) {cat ("Ejecución del modelo 1 correcta") } else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 },
 
@@ -1411,7 +1410,7 @@ modelo_2_res[is.na(modelo_2_res)] = 0
 
   assign(paste("Modelo_2_M", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
 
-  if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa, la salida principal son los alimentos del primer segundo por sexo, para acceder a estos use «Modelo_2_F o Modelo_2_M» en el ambiente global", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
+  if(length(warnings())<100) {cat("Ejecución del modelo 2 correcta")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 },
 
@@ -1935,7 +1934,7 @@ names(modelo_3_costo)[names(modelo_3_costo) == "Gupo"][1] <- "Alimentos"
 #assign("Modelo_3_M",modelo_3_dieta_g,envir = globalenv());assign("Modelo_3_M_INT",modelo_3_dieta_int,envir = globalenv());assign("Modelo_3_M_COST",modelo_3_costo,envir = globalenv())
 assign(paste("Modelo_3_M_COST", self$Mes, self$Año, sep = "_"),modelo_3_costo,envir = globalenv())
 
-cat("Depuración del módulo 5 exitosa, la salida principal son las tres modelos para cada sexo (Modelo 3); use «Modelo_3_*» para acceder a cada uno")
+cat("Ejecución del modelo 3 correcta")
 
 }
 

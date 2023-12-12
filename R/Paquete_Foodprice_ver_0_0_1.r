@@ -103,7 +103,7 @@ public=list(
     #-----------------------------------------------------------#
 
     Módulo_1=function(){
-
+options(rio.column_names = FALSE)
 suppressMessages({
     # ------------------------------------------------------------#
     #   IIMPORTAR DATOS DESDE LA WEB                             # COMPLETO
@@ -1267,7 +1267,6 @@ modelo_2_res[is.na(modelo_2_res)] = 0
 
 
   assign(paste("Modelo_2_F", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
-  if(length(warnings())<100) {cat("Depuración del módulo 4 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 #------------------------------------------------------------------------------------#
 #                   Segundo Modelo Masculino- Construcción de datos                  #

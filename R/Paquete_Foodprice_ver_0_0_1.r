@@ -115,7 +115,7 @@ options(rio.column_names = FALSE)
 
 
 temp_dir_P <- tempdir()
-archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",Año, ".xlsx"))
+archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
 if (!exists("data_list_precios_ev")) {data_list_precios_ev <- new.env(parent = emptyenv())}
 nombre_data <- paste0("data_list_precios_env", self$Año)
 

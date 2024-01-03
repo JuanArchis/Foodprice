@@ -15,6 +15,11 @@ library("R6")
 
 Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
 
+  private = list(
+    static = list(
+      self$static$data_list_precios_ev = new.env(parent = emptyenv())  # Campo estático
+    ),
+
 # ------------------------------------------------------------#
 #   Definición de parámetros (entradas) de la clase          #
 #-----------------------------------------------------------#
@@ -116,7 +121,7 @@ options(rio.column_names = FALSE)
 
 temp_dir_P <- tempdir()
 archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
-if (!exists("data_list_precios_ev")) {data_list_precios_ev <- new.env(parent = emptyenv())}
+#if (!exists("self$static$data_list_precios_ev")) {self$static$data_list_precios_ev <- new.env(parent = emptyenv())}
 nombre_data <- paste0("data_list_precios_env", self$Año)
 
 
@@ -127,10 +132,10 @@ if (self$Año>2022) {
   if (!file.exists(archivo_excel_p)) {
   url_excel_P <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSA-SerieHistoricaMayorista-%d.xlsx", self$Año)
   download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
-  assign(nombre_data, rio::import_list(archivo_excel_p, setclass = "tbl"), envir = data_list_precios_ev)
-    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
+  assign(nombre_data, rio::import_list(archivo_excel_p, setclass = "tbl"), envir = self$static$data_list_precios_ev)
+    self$data_list_precios =get(nombre_data, envir = self$static$data_list_precios_ev)
   } else {
-    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
+    self$data_list_precios =get(nombre_data, envir = self$static$data_list_precios_ev)
   }
 
 }
@@ -141,10 +146,10 @@ if (self$Año<2023) {
   if (!file.exists(archivo_excel_p)) {
   url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
   download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
-  assign(nombre_data, rio::import_list(archivo_excel_p, setclass = "tbl"), envir = data_list_precios_ev)
-    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
+  assign(nombre_data, rio::import_list(archivo_excel_p, setclass = "tbl"), envir = self$static$data_list_precios_ev)
+    self$data_list_precios =get(nombre_data, envir = self$static$data_list_precios_ev)
   } else {
-    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
+    self$data_list_precios =get(nombre_data, envir = self$static$data_list_precios_ev)
   }
     } 
       
@@ -157,7 +162,7 @@ if (self$Año>2022) {
       
 temp_dir_A <- tempdir()
 archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
-if (!exists("data_list_abast_ev")) {data_list_abast_ev <- new.env(parent = emptyenv())}
+#if (!exists("data_list_abast_ev")) {data_list_abast_ev <- new.env(parent = emptyenv())}
 nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
 
   # Verificar si el archivo ya existe en el directorio temporal >2022

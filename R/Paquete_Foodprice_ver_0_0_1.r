@@ -346,11 +346,11 @@ Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombi
 
     if(!is.null(Mercados_ciudad)) {
 
-        Data_Sipsa_Abas = Data_Sipsa_Abas %>% filter(Ciudad_Mercado %in% Mercados_ciudad_Abas } 
-        
-        else {cat("Error,",self$Ciudad," aún no está en los datos públicos de abastecimiento SIPSA",sep="")}
+        Data_Sipsa_Abas = Data_Sipsa_Abas %>% filter(Ciudad_Mercado %in% Mercados_ciudad_Abas) } else 
+        {cat("Error,",self$Ciudad," aún no está en los datos públicos de abastecimiento SIPSA",sep="")}
 
           
+          }
 
 
     # --- Crea el abastecimiento mensual de SIPSA

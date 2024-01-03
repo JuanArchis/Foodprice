@@ -563,162 +563,22 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     #                        Marginalización                           #  REVISAR GENERALZIACIÓN
     #------------------------------------------------------------------#
 
-    # Carga de datos minoristas
-
-    Nombre_Mercar_mes <- paste0("Mercar_", self$Mes)
-
-    # Cargar el conjunto de datos utilizando get() y el nombre creado
-    # Mercar_mes= get(Nombre_Mercar_mes, envir = as.environment("package:Foodprice"))
-    assign("Mercar_mes",get("Mercar_Julio", envir = as.environment("package:Foodprice")),envir=parent.env(environment()))
-    # Un poco de depuración
-    Mercar_mes = Mercar_mes[, colSums(is.na(Mercar_mes)) != nrow(Mercar_mes)];colnames(Mercar_mes) = c("Codigo_mercar", "Descripcion", "Fecha", "Precio", "Unidad");Mercar_mes$Precio = as.numeric(gsub("\\,", "", Mercar_mes$Precio))
-
 
     #-- Construcción data por grupos (SIPSA)
 
     Grupos_Alimentos_Sipsa = Data_Sipsa_Precios[c("Alimento", "Grupo")];Grupos_Alimentos_Sipsa = Grupos_Alimentos_Sipsa[!duplicated(Grupos_Alimentos_Sipsa), ]
     Precios_Grupos_SIPSA = merge(Data_Sipsa_Precios_Unicos, Grupos_Alimentos_Sipsa,by = "Alimento", all.x = TRUE, all.y = FALSE, no.dups = TRUE)
-    # Ignorar cavasa por ahora
+    
 
-    #--------                    -------#
-    #  Mapeo : Mayorista y Minorista    #  Falta generalizar
-    #-----                       -------#
-    data(Mapeo_Mayorista_Minorista, package = "Foodprice",envir=parent.env(environment()))
-        Precios_Grupos_SIPSA$Precio_minorista_kg = NA
-
-
-    #--------                    -------#
-    #   Mapeo: :Alimentos en gramos     #  Falta generalizar
-    #-----                       -------#
-
-    drop = c("Aceite vegetal mezcla", "Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra")
-
-    Mapeo_Mayorista_Minorista_subset_1 = Mapeo_Mayorista_Minorista %>% filter(Alimento %in% setdiff(levels(as.factor(Precios_Grupos_SIPSA$Alimento)), drop))
-
-    for (j in 1:nrow(Mapeo_Mayorista_Minorista_subset_1)) {
-        alpha_1 = Mapeo_Mayorista_Minorista_subset_1[j,]
-        levels(as.factor(alpha_1$Alimento))
-        alpha_1 = alpha_1[, colSums(is.na(alpha_1)) != nrow(alpha_1)]
-
-        alpha_2 = data.frame(matrix(ncol=3, nrow = ((ncol(alpha_1) - 1)/2)))
-
-        colnames(alpha_2) = c("Alimento", "Codigo_mercar", "Cantidad_g")
-
-
-        for (i in 1:nrow(alpha_2)) {
-        alpha_2[i,] = alpha_1[c("Alimento",
-                                paste0("Cod_mercar_", i),
-                                paste0("Unidad_",i))]
-        }
-
-        alpha_2[alpha_2 == "NA"] = NA
-        alpha_2 = merge(alpha_2, Mercar_mes[c("Codigo_mercar", "Descripcion", "Precio")], by = "Codigo_mercar")
-        alpha_2$Precio_minorista_kg = (alpha_2$Precio/as.numeric(alpha_2$Cantidad_g))*1000
-        x_1 = which(Precios_Grupos_SIPSA$Alimento == levels(as.factor(alpha_2$Alimento)))
-        Precios_Grupos_SIPSA$Precio_minorista_kg[x_1] = mean(alpha_2$Precio_minorista_kg)
-
-        rm(alpha_1, alpha_2)
-    }
-
-
-    #--------                    -------#
-    # Mapeo: :Alimentos en mililitros   #  Falta generalizar
-    #-----                       -------#
-
-    # Aceite vegetal (1000 ml)
-    keep = "Aceite vegetal mezcla"
-    Mapeo_Mayorista_Minorista_subset_2 = Mapeo_Mayorista_Minorista %>% filter(Alimento %in% keep)
-
-    alpha_1 = Mapeo_Mayorista_Minorista_subset_2
-    (levels(as.factor(alpha_1$Alimento)))
-    alpha_1 = alpha_1[, colSums(is.na(alpha_1)) != nrow(alpha_1)]
-    alpha_2 = data.frame(matrix(ncol=3, nrow = ((ncol(alpha_1) - 1)/2)))
-    colnames(alpha_2) = c("Alimento", "Codigo_mercar", "Cantidad_g")
-
-    for (i in 1:nrow(alpha_2)) {
-        alpha_2[i,] = alpha_1[c("Alimento",
-                                paste0("Cod_mercar_", i),
-                                paste0("Unidad_",i))]
-    }
-    alpha_2[alpha_2 == "NA"] = NA
-    alpha_2 = merge(alpha_2, Mercar_mes[c("Codigo_mercar", "Descripcion", "Precio")], by = "Codigo_mercar")
-    alpha_2$Precio_minorista_kg = (alpha_2$Precio/as.numeric(gsub("([0-9]+).*$", "\\1", alpha_2$Cantidad_g)))*1000
-    Precios_Grupos_SIPSA$Precio_minorista_kg[which(Precios_Grupos_SIPSA$Alimento == levels(as.factor(alpha_2$Alimento)))] = max(alpha_2$Precio_minorista_kg)
-
-    rm(alpha_1, alpha_2)
-
-
-    #--------                    -------#
-    # Mapeo: :Alimentos en unidades     #  Falta generalizar
-    #-----                       -------#
-
-
-    keep = c("Huevo rojo A", "Huevo rojo AA", "Huevo rojo extra")
-    Mapeo_Mayorista_Minorista_Subset_3 = Mapeo_Mayorista_Minorista %>% filter(Alimento %in% keep)
-
-    for (j in 1:nrow(Mapeo_Mayorista_Minorista_Subset_3)) {
-        alpha_1 = Mapeo_Mayorista_Minorista_Subset_3[j,]
-        (levels(as.factor(alpha_1$Alimento)))
-        alpha_1 = alpha_1[, colSums(is.na(alpha_1)) != nrow(alpha_1)]
-
-        alpha_2 = data.frame(matrix(ncol=3, nrow = ((ncol(alpha_1) - 1)/2)))
-
-        colnames(alpha_2) = c("Alimento", "Codigo_mercar", "Cantidad_g")
-
-
-        for (i in 1:nrow(alpha_2)) {
-        alpha_2[i,] = alpha_1[c("Alimento",
-                                paste0("Cod_mercar_", i),
-                                paste0("Unidad_",i))]
-        }
-
-        alpha_2[alpha_2 == "NA"] = NA
-        alpha_2 = merge(alpha_2, Mercar_mes[c("Codigo_mercar", "Descripcion", "Precio")], by = "Codigo_mercar")
-        alpha_2$Precio_minorista_kg = (alpha_2$Precio/as.numeric(gsub("([0-9]+).*$", "\\1", alpha_2$Cantidad_g)))
-        Precios_Grupos_SIPSA$Precio_minorista_kg[which(Precios_Grupos_SIPSA$Alimento == levels(as.factor(alpha_2$Alimento)))] = max(alpha_2$Precio_minorista_kg)
-
-        rm(alpha_1, alpha_2)
     }
 
     #--------                    -------#
     #  Margenes de comercialziación     #
     #-----                       -------#
 
-    grupos_margenes <- levels(as.factor(Precios_Grupos_SIPSA$Grupo));margenes_mes <- data.frame(Grupo = grupos_margenes, margen_estimado = NA,error_estandar = NA)
+    grupos_margenes <- levels(as.factor(Precios_Grupos_SIPSA$Grupo));Margenes_Historicos <- data.frame(Grupo = grupos_margenes, margen_medio=NA)
 
-    for (k in 1:length(grupos_margenes)) {
-        grupo_z <- Precios_Grupos_SIPSA %>%
-        filter(Grupo %in% grupos_margenes[k]) %>%
-        drop_na()
-        grupo_z$margen <- (grupo_z$Precio_minorista_kg - grupo_z$Precio_kg) / grupo_z$Precio_kg
-        quant <- quantile(grupo_z$margen, probs = c(.25, .75), na.rm = FALSE)
-        iqr <- IQR(grupo_z$margen);lower <- quant[1] - 1.5 * iqr;upper <- quant[2] + 1.5 * iqr
-        no_outliers <- subset(grupo_z$margen, grupo_z$margen > lower & grupo_z$margen < upper)
-        grupo_z <- grupo_z %>% filter(margen %in% no_outliers)
-        margenes_mes$margen_estimado[which(margenes_mes$Grupo == grupos_margenes[k])] <- mean(grupo_z$margen) * 100
-        margenes_mes$error_estandar[which(margenes_mes$Grupo == grupos_margenes[k])] <- sd(grupo_z$margen)
-    }
-
-
-
-    #--------                    -------#
-    #Margenes de comercialziación hist  #
-    #-----                       -------#
-
-
-    meses <- c("Julio", "Agosto", "Septiembre")
-    for (k in meses) {
-        file <- paste0("grupos_margenes_",k)
-        margen <- get(file, envir = as.environment("package:Foodprice"))
-        colnames(margen) <- c("Grupo", paste0("Margen_estimado_", k), paste0("Error_estándar_", k))
-        assign(paste0("margen_", k), margen)
-        rm(margen)
-    }
-
-    # Fusionar los datos en un solo marco de datos
-    Margenes_Historicos <- Reduce(function(x, y) merge(x, y, by = "Grupo", all.x = TRUE), mget(paste0("margen_", meses)))
-
-    # Calcular el margen medio
+    # margen medio
     Margenes_Historicos$margen_medio <- c(4.925515,32.154734,21.770773,26.226295,17.150887,6.884347,76.380988,54.096494)
 
 

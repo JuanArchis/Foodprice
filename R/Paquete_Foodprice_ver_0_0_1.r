@@ -187,7 +187,7 @@ archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx")
   # Verificar si el archivo ya existe en el directorio temporal < 2023
 
   if (!file.exists(archivo_excel_A)) {
-  url_excel_A <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSAbastecimiento-Microdatos-%d.xlsx", self$Año)
+  url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
   download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
   assign(nombre_data_abast, rio::import_list(archivo_excel_A, setclass = "tbl"), envir = data_list_abast_ev)
     self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)

@@ -165,7 +165,7 @@ temp_dir_A <- tempdir()
 archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
 
 if (!exists("data_list_abast_ev")) {data_list_abast_ev <- new.env(parent = emptyenv())}
-nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
+nombre_data_abast <- paste0("data_list_abast_ev", self$Año)}
 
   # Verificar si el archivo ya existe en el directorio temporal >2022
 
@@ -186,7 +186,7 @@ if (self$Año<2023) {
 
 
 if (!exists("data_list_abast_ev", envir = globalenv())) {
-assign("data_list_abast_ev", new.env(parent = emptyenv()), envir = globalenv())
+assign("data_list_abast_ev", new.env(parent = emptyenv()), envir = globalenv())}
 
 temp_dir_A <- tempdir()
 archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))

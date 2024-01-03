@@ -104,89 +104,96 @@ public=list(
 
     Módulo_1=function(){
 options(rio.column_names = FALSE)
-suppressMessages({
+
     # ------------------------------------------------------------#
     #   IIMPORTAR DATOS DESDE LA WEB                             # COMPLETO
     #-----------------------------------------------------------#
       options(timeout=1000)
       
     #  -----------------Precios mayoristas------------------------------
+
+
+
+temp_dir_P <- tempdir()
+archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",Año, ".xlsx"))
+if (!exists("data_list_precios_ev")) {data_list_precios_ev <- new.env(parent = emptyenv())}
+nombre_data <- paste0("data_list_precios_env", self$Año)
+
+
 if (self$Año>2022) {
   
-  temp_dir_P <- tempdir()
-  archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
-  
-  
-  # Verificar si el archivo ya existe en el directorio temporal
+  # Verificar si el archivo ya existe en el directorio temporal >2022
+
   if (!file.exists(archivo_excel_p)) {
   url_excel_P <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSA-SerieHistoricaMayorista-%d.xlsx", self$Año)
   download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
-  self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
+  assign(nombre_data, rio::import_list(archivo_excel_p, setclass = "tbl"), envir = data_list_precios_ev)
+    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
   } else {
-  self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
+    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
   }
+
 }
 
-      if (self$Año<2023) {
-        
-        temp_dir_P <- tempdir()
-        archivo_excel_p <- file.path(temp_dir_P, paste0("archivo_P_",self$Año, ".xlsx"))
-        
-        
-        # Verificar si el archivo ya existe en el directorio temporal
-        if (!file.exists(archivo_excel_p)) {
-          url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
-          download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
-          self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
-        } else {
-          self$data_list_precios <- rio::import_list(archivo_excel_p, setclass = "tbl")
-        }
-      }      
-      
+if (self$Año<2023) {
+  # Verificar si el archivo ya existe en el directorio temporal < 2022
+
+  if (!file.exists(archivo_excel_p)) {
+  url_excel_P <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/series-historicas-precios-mayoristas-%d.xlsx", self$Año)
+  download.file(url_excel_P, archivo_excel_p, mode = "wb",timeout = 444)
+  assign(nombre_data, rio::import_list(archivo_excel_p, setclass = "tbl"), envir = data_list_precios_ev)
+    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
+  } else {
+    self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
+  }
+    } 
       
     #  -----------------Abastecimiento-----------------------------
+
+
+if (!is.null(self$Percentil_Abast)){ # hiperparámetro
+    
 if (self$Año>2022) {
       
- if (!is.null(self$Percentil_Abast)){
-  temp_dir_A <- tempdir()
-  archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
+temp_dir_A <- tempdir()
+archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
+if (!exists("data_list_abast_ev")) {data_list_abast_ev <- new.env(parent = emptyenv())}
+nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
 
-    # Verificar si el archivo ya existe en el directorio temporal
+  # Verificar si el archivo ya existe en el directorio temporal >2022
+
+
   if (!file.exists(archivo_excel_A)) {
-      url_excel_A <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSAbastecimiento-Microdatos-%d.xlsx", self$Año)
-      download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
-      self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
- } else {
-        self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
+  archivo_excel_A <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSAbastecimiento-Microdatos-%d.xlsx", self$Año)
+  download.file(archivo_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
+  assign(nombre_data_abast, rio::import_list(archivo_excel_A, setclass = "tbl"), envir = data_list_abast_ev)
+    self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)
+  } else {
+    self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)
+  }
+
 
  }
- }}
 
       if (self$Año<2023) {
         
-        if (!is.null(self$Percentil_Abast)){
-          temp_dir_A <- tempdir()
-          archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
-          
-          # Verificar si el archivo ya existe en el directorio temporal
-          if (!file.exists(archivo_excel_A)) {
-            url_excel_A <- sprintf("https://www.dane.gov.co/files/investigaciones/agropecuario/sipsa/series-historicas/microdato-abastecimiento-%d.xlsx", self$Año)
-            download.file(url_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
-            self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
-          } else {
-            self$data_list_abas <- rio::import_list(archivo_excel_A, setclass = "tbl")
-            
-          }
-        }}
+  # Verificar si el archivo ya existe en el directorio temporal < 2023
 
- else {
-    self$data_list_abas=NULL
- }
-    })
+  if (!file.exists(archivo_excel_A)) {
+  archivo_excel_A <- sprintf("https://www.dane.gov.co/files/operaciones/SIPSA/anex-SIPSAbastecimiento-Microdatos-%d.xlsx", self$Año)
+  download.file(archivo_excel_A, archivo_excel_A, mode = "wb",timeout = 444)
+  assign(nombre_data_abast, rio::import_list(archivo_excel_A, setclass = "tbl"), envir = data_list_abast_ev)
+    self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)
+  } else {
+    self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)
+  }
+      }
+    }
+else{self$data_list_abas=NULL}
+
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO
     #----------------------------------------------------------------#
-
     Nombres_Meses = c("Enero","Febrero","Marzo","Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre")
 
     Semestres=c("I_Semestre","II_Semestre")

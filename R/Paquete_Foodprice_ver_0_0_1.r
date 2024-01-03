@@ -188,8 +188,9 @@ nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
     self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)
   }
       }
-    }
-else{self$data_list_abas=NULL}
+    } else{
+      self$data_list_abas=NULL
+      }
 
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO

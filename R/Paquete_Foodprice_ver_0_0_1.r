@@ -183,6 +183,7 @@ if (self$Año<2023) {
 
 temp_dir_A <- tempdir()
 archivo_excel_A <- file.path(temp_dir_A, paste0("archivo_A_",self$Año, ".xlsx"))
+nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
   
   # Verificar si el archivo ya existe en el directorio temporal < 2023
 

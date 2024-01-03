@@ -361,36 +361,42 @@ Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario_Abas(self$Ciudad,ciudades_co
         Data_Sipsa_Abas = Data_Sipsa_Abas %>% filter(Ciudad_Mercado %in% Mercados_ciudad_Abas) } else 
         {cat("Error,",self$Ciudad," aún no está en los datos públicos de abastecimiento SIPSA",sep="")}
 
- print(Mercados_ciudad_Abas)         
-          
+
+# ---------------------------cargar ciudades atuomáticamente
+
+# Crear una lista para almacenar los resultados de cada mercado
+resultados_mercados <- list()
+
+# Iterar sobre cada mercado en Mercados_ciudad_Abas
+for (mercado in Mercados_ciudad_Abas) {
+  data_mercado <- subset(Data_Sipsa_Abas, Ciudad_Mercado == mercado)
+  Alimentos_Mercado_Abas <- levels(as.factor(data_mercado$Alimento))
+  
+  Data_Mercado_Unico <- data.frame(Alimentos_Mercado_Abas, Total_Mercado = NA)
+  colnames(Data_Mercado_Unico) <- c("Alimento_abs", paste0("Total_", gsub(", ", "_", mercado)))
+  
+  for (i in 1:length(Alimentos_Mercado_Abas)) {
+    Datos_Alimento <- subset(data_mercado, Alimento == Alimentos_Mercado_Abas[i])
+    Datos_Alimento$Cantidad_KG <- as.numeric(Datos_Alimento$Cantidad_KG)  # Convertir a tipo numérico
+    
+    Data_Mercado_Unico[i, paste0("Total_", gsub(", ", "_", mercado))] <- sum(Datos_Alimento$Cantidad_KG, na.rm = TRUE)
+  }
+  resultados_mercados[[mercado]] <- Data_Mercado_Unico
+}
 
 
-    # --- Crea el abastecimiento mensual de SIPSA
+Data_Sipsa_Abas_Unicos <- Reduce(function(x, y) merge(x, y, by = "Alimento_abs", all = TRUE), resultados_mercados);resultado_final[is.na(resultado_final)] <- 0
 
-    # Filtrar la información de abastecimiento para Cavasa y SE
-    Data_Sipsa_Abas_Cavasa = subset(Data_Sipsa_Abas,Ciudad_Mercado == "Cali, Cavasa",);Data_Sipsa_Abas_SE = subset(Data_Sipsa_Abas,Ciudad_Mercado == "Cali, Santa Elena",);Alimentos_Sipsa_Abs=levels(as.factor(Data_Sipsa_Abas$Alimento))
 
-    # Crea data frame el cual albergará por columnas la suma de abastecimiento en el mes indicado
-    Data_Sipsa_Abas_Unicos= data.frame(Alimentos_Sipsa_Abs, Cantidad_Total_KG_Cavasa= NA,Cantidad_Total_KG_SE=NA,Total_cali=NA);colnames(Data_Sipsa_Abas_Unicos)=c("Alimento_abs","Cantidad_Total_KG_Cavasa","Cantidad_Total_KG_SE","Total_cali")
+# Obtener las columnas numéricas para calcular la suma por fila
+columnas_numericas <- sapply(Data_Sipsa_Abas_Unicos, is.numeric)
 
-    # Ciclo donde se llena la data a partir de la suma
-    for(i in 1:length(Alimentos_Sipsa_Abs)){
+# Calcular la suma por fila en las columnas numéricas
+Data_Sipsa_Abas_Unicos$Total <- rowSums(Data_Sipsa_Abas_Unicos[columnas_numericas], na.rm = TRUE)
 
-        Datos_Alimento_Cavasa=subset(Data_Sipsa_Abas_Cavasa, Alimento==Alimentos_Sipsa_Abs[i])
-        Datos_Alimento_SE=subset(Data_Sipsa_Abas_SE, Alimento==Alimentos_Sipsa_Abs[i])
+Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
-        Data_Sipsa_Abas_Unicos$Cantidad_Total_KG_Cavasa[i]=sum(Datos_Alimento_Cavasa[is.element(Datos_Alimento_Cavasa$Fecha, Fecha),]$Cantidad_KG)
-        Data_Sipsa_Abas_Unicos$Cantidad_Total_KG_SE[i]=sum(Datos_Alimento_SE[is.element(Datos_Alimento_SE$Fecha, Fecha),]$Cantidad_KG)
-
-        Data_Sipsa_Abas_Unicos["Cantidad_Total_KG_Cavasa"][Data_Sipsa_Abas_Unicos["Cantidad_Total_KG_Cavasa"] == 0] = NA
-        Data_Sipsa_Abas_Unicos["Cantidad_Total_KG_SE"][Data_Sipsa_Abas_Unicos["Cantidad_Total_KG_SE"] == 0] = NA
-
-    }
-
-    Data_Sipsa_Abas_Unicos$Total_cali= rowSums(Data_Sipsa_Abas_Unicos[c("Cantidad_Total_KG_Cavasa","Cantidad_Total_KG_SE")], na.rm =TRUE);Data_Sipsa_Abas_Unicos["Total_cali"][Data_Sipsa_Abas_Unicos["Total_cali"] == 0] = NA
-
-    Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total_cali")]
-    #----# Salida: Data_Sipsa_Abas_Unicos #----#
+#----# Salida: Data_Sipsa_Abas_Unicos #----#
 
   } else {Data_Sipsa_Abas_Unicos=NULL}
 
@@ -454,7 +460,7 @@ Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario_Abas(self$Ciudad,ciudades_co
     # Asignación del valor de abastecimiento en cada caso
     Data_abs_precios_Sipsa = merge(Data_Sipsa_Abas_Unicos, Data_abs_precios_Sipsa,by = "Alimento_abs", all.x = TRUE)
     # Selección de las variables de interés
-    Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[c("Alimento", "Precio_kg", "Total_cali")]
+    Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[c("Alimento", "Precio_kg", "Total")]
     Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[order(Data_abs_precios_Sipsa$Alimento),]
     colnames(Data_abs_precios_Sipsa) = c("Alimento",paste0("Precio_kg_", self$Mes), paste0("Total_Cali_", self$Mes))
  }

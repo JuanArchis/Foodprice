@@ -703,6 +703,25 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     dataset_sim = dataset_sim[c(1,2, 20, 21, 3:19)];dataset_sim = dataset_sim[order(dataset_sim$Alimento),];dataset_sim[1,3]="1 Litro";Datos_Insumo_Modelos=dataset_sim
 
     Datos_Insumo_Modelos[1,3]=100
+
+
+
+    # -----------------------------------------------------------------#
+    #     Alimentos faltantes en ciudades diferentes a CALI            #
+    #------------------------------------------------------------------#
+
+
+    # Obtener alimentos que están en Data_Model$Alimento pero no en Alimentos_Sipsa_Precios
+    alimentos_faltantes <- setdiff(self$Data_Model$Alimento, Alimentos_Sipsa_Precios)
+
+    # Imprimir los alimentos que hacen falta en Alimentos_Sipsa_Precios
+    print("Los alimentos que hacen falta son:")
+    print(alimentos_faltantes)
+
+
+
+
+
     #--------------------------------------------------- Salida principal 2 ----------------------------- Datos_Insumo_Modelos ----------------------------------------#
 
 
@@ -712,16 +731,15 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
       assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
       
-      Datos=self$Data_Model
-      self$Data=Datos
-      self$Data3=Datos
+      self$Data=self$Data_Model
+      self$Data3=self$Data_Model
 
     } else {
 
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())
-      Datos=Datos_Insumo_Modelos
-      self$Data=Datos
-      self$Data3=Datos
+
+      self$Data=Datos_Insumo_Modelos
+      self$Data3=Datos_Insumo_Modelos
 
 
 }

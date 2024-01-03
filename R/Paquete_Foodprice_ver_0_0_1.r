@@ -303,6 +303,7 @@ Mercados_ciudad=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombia,Dat
 
     # -- Carga y limpia los datos de abastecimiento SIPSA
     # -- Carga y limpia los datos de abastecimiento SIPSA
+
   if (!is.null(self$Percentil_Abast)){
 
     Data_Sipsa_Abas=(self$data_list_abas[[as.integer(which(sapply(Lista_Semestres, function(x) self$Mes %in% x)))+2]]) # Se extraen los meses disponibles con base en la data dada
@@ -313,12 +314,44 @@ Mercados_ciudad=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombia,Dat
     Data_Sipsa_Abas <- janitor::remove_empty(Data_Sipsa_Abas, which = "cols") # Elimina las columnas con total NA
     Data_Sipsa_Abas$Cantidad_KG=as.numeric(Data_Sipsa_Abas$Cantidad_KG)
 
-    # -- Seleciona la ciudad de interés
+    # -- Seleciona la ciudad de interés- ABSATECIMIENTO
+
+
+asociar_ciudad_mercado_Abast <- function(ciudad, df) {
+  opciones_mercado <- unique(df$Ciudad_Mercado[grep(ciudad, df$Ciudad_Mercado, ignore.case = TRUE)])
+  
+  if (length(opciones_mercado) == 0) {
+    print("Error: No se encontraron opciones de mercado para la ciudad especificada.")
+    opciones_mercado=NULL
+  } else {
+    return(opciones_mercado)
+  }
+}
+
+
+asociar_ciudad_entrada_usuario_Abas <- function(entrada_usuario, lista_ciudades, df) {
+
+  similitudes <- sapply(lista_ciudades, function(ciudad) stringdist::stringdist(entrada_usuario, ciudad, method = "jw"))
+  # Encontramos la ciudad más cercana en términos de texto a la entrada del usuario
+  ciudad_mas_cercana <- lista_ciudades[which.min(similitudes)]
+  # Llamamos a la función asociar_ciudad_mercado con la ciudad encontrada
+  opciones_ciudad <- asociar_ciudad_mercado_Abast(ciudad_mas_cercana, df)
+  return(opciones_ciudad)
+}
+
+
+Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombia,x)
 
 
 
-    if(self$Ciudad=="Cali") {
-        Data_Sipsa_Abas = Data_Sipsa_Abas %>% filter(Ciudad_Mercado %in% c("Cali, Cavasa","Cali, Santa Elena"))} else {cat("Error,",self$Ciudad," aún no está disponible en el paquete",sep="")}
+    if(!is.null(Mercados_ciudad)) {
+
+        Data_Sipsa_Abas = Data_Sipsa_Abas %>% filter(Ciudad_Mercado %in% Mercados_ciudad_Abas } 
+        
+        else {cat("Error,",self$Ciudad," aún no está en los datos públicos de abastecimiento SIPSA",sep="")}
+
+          
+          }
 
 
     # --- Crea el abastecimiento mensual de SIPSA

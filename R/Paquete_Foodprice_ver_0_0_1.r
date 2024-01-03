@@ -450,14 +450,15 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     # -----------------------------------------------------------------#
     #                       Seleción de data                           # COMPLETO
     #------------------------------------------------------------------#
-
+    Data_abs_precios_Sipsa=Data_Sipsa_Precios_Unicos
 
     # Asignación de un alimento con abastecimiento a cada producto de la base de datos de precios
-    Data_abs_precios_Sipsa = merge(Data_Sipsa_Precios_Unicos, Mapeo_Precios_Abs, by = "Alimento", all.x = TRUE)
+    #Data_abs_precios_Sipsa = merge(Data_Sipsa_Precios_Unicos, Mapeo_Precios_Abs, by = "Alimento", all.x = TRUE)
 
 
  if (!is.null(self$Percentil_Abast)){
     # Asignación del valor de abastecimiento en cada caso
+    Data_abs_precios_Sipsa = merge(Data_Sipsa_Precios_Unicos, Mapeo_Precios_Abs, by = "Alimento", all.x = TRUE)
     Data_abs_precios_Sipsa = merge(Data_Sipsa_Abas_Unicos, Data_abs_precios_Sipsa,by = "Alimento_abs", all.x = TRUE)
     # Selección de las variables de interés
     Data_abs_precios_Sipsa = Data_abs_precios_Sipsa[c("Alimento", "Precio_kg", "Total")]

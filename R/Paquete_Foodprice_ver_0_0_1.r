@@ -385,7 +385,7 @@ for (mercado in Mercados_ciudad_Abas) {
 }
 
 
-Data_Sipsa_Abas_Unicos <- Reduce(function(x, y) merge(x, y, by = "Alimento_abs", all = TRUE), resultados_mercados);resultado_final[is.na(resultado_final)] <- 0
+Data_Sipsa_Abas_Unicos <- Reduce(function(x, y) merge(x, y, by = "Alimento_abs", all = TRUE), resultados_mercados);Data_Sipsa_Abas_Unicos[is.na(Data_Sipsa_Abas_Unicos)] <- 0
 
 
 # Obtener las columnas numéricas para calcular la suma por fila

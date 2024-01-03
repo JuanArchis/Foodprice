@@ -19,7 +19,7 @@ Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
     static = list(
     data_list_precios_ev = new.env(parent = emptyenv())  # Campo estático
     ),
-
+  )
 # ------------------------------------------------------------#
 #   Definición de parámetros (entradas) de la clase          #
 #-----------------------------------------------------------#
@@ -1952,7 +1952,7 @@ cat("Ejecución del modelo 3 correcta")
 }
 
 
-)))
+))
 
 
 

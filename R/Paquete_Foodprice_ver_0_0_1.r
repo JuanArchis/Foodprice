@@ -350,7 +350,7 @@ Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombi
         {cat("Error,",self$Ciudad," aún no está en los datos públicos de abastecimiento SIPSA",sep="")}
 
           
-          }
+          
 
 
     # --- Crea el abastecimiento mensual de SIPSA

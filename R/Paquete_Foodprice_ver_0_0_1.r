@@ -17,7 +17,7 @@ Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
 
   private = list(
     static = list(
-      self$static$data_list_precios_ev = new.env(parent = emptyenv())  # Campo estático
+    data_list_precios_ev = new.env(parent = emptyenv())  # Campo estático
     ),
 
 # ------------------------------------------------------------#

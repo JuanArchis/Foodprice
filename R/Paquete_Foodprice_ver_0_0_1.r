@@ -352,7 +352,7 @@ asociar_ciudad_entrada_usuario_Abas <- function(entrada_usuario, lista_ciudades,
 }
 
 
-Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombia,x)
+Mercados_ciudad_Abas=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombia,Data_Sipsa_Abas)
 
 
 

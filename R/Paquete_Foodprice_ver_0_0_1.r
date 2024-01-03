@@ -21,7 +21,7 @@ Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
 
 public=list(
     Librerias_base = c("readxl","dplyr","ggplot2","reshape2","knitr","haven","foreign","stringi","labelled","tidyr","plyr","openxlsx","tidyverse",
-                    "lpSolve","Rglpk","Rsymphony","scatterplot3d","reshape","utils","rio"),
+                    "lpSolve","Rglpk","Rsymphony","scatterplot3d","reshape","utils","rio","stringdist"),
     # Parámetros de la clase
     data_list_precios=NULL,
     data_list_abas=NULL,
@@ -227,20 +227,56 @@ nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
     #   Depuración de la data: Datos Mayoristas  (Fuente: SIPSA)     # COMPLETO
     #----------------------------------------------------------------#
 
-    #-- Lee la data cargada por el usuario, asgina el més con base en la posición de la hoja y depura un poco las columnas combinadas y texto inecesario de excel
+    #--  asgina el més con base en la posición de la hoja y depura un poco las columnas combinadas y texto inecesario de excel
 
     Meses=Nombres_Meses[1:length(self$data_list_precios)-1];Data_Sipsa_Precios=(self$data_list_precios[[which(Meses %in% self$Mes)+1]]) # Se extraen los meses disponibles con base en la data dada
 
-    if(self$Mes %in% Meses==FALSE){cat("Error,",self$Mes," aún no está disponible en los precios mayoristas de SIPSA",sep="")}
     Data_Sipsa_Precios=Data_Sipsa_Precios[-c(1:4,nrow(Data_Sipsa_Precios)),-c(6,7)];Data_Sipsa_Precios=na.omit(Data_Sipsa_Precios) # Un poco de depuración
 
     colnames(Data_Sipsa_Precios) = c("Fecha", "Grupo", "Alimento", "Mercado", "Precio_kg");Data_Sipsa_Precios$Precio_kg=as.numeric(Data_Sipsa_Precios$Precio_kg);Data_Sipsa_Precios$Fecha=as.Date(paste(self$Año,which(Meses %in% self$Mes),"1", sep = "-"),format = "%Y-%m-%d") # Cambia los nombres y asigna fechas
 
     # -- Establece la ciudad de interés
 
-    if(self$Ciudad=="Cali") {
-        Data_Sipsa_Precios = Data_Sipsa_Precios %>% filter(Mercado %in% c("Cali, Cavasa","Cali, Galería Alameda","Cali, La Floresta","Cali, Santa Elena","Cali, Siloé"))
-    } else {cat("Error,",self$Ciudad," aún no está disponible en el paquete",sep="")}
+
+  ciudades_colombia <- c("Bogotá", "Medellín", "Cali", "Barranquilla", "Cartagena", "Cúcuta", "Bucaramanga", 
+"Pereira", "Santa Marta", "Ibagué", "Pasto", "Manizales", "Neiva", "Soledad", "Villavicencio", "Valledupar", 
+"Armenia", "Soacha", "Itagüí", "Sincelejo", "Popayán", "Floridablanca", "Palmira", "Buenaventura", 
+"Barrancabermeja", "Dosquebradas", "Tuluá", "Envigado", "Cartago", "Maicao", "Florencia", "Girardot", 
+"Sogamoso", "Buga", "Tunja", "Girón", "Mocoa", "Ipiales", "Facatativá", "Yopal", "Tumaco", "Riohacha", 
+"Quibdó", "Turbo", "Magangué", "Apartadó", "Montería", "Arauca", "Mitu", "Puerto Carreño", "San Andrés")
+
+asociar_ciudad_mercado <- function(ciudad, df) {
+  opciones_mercado <- unique(df$Mercado[grep(ciudad, df$Mercado, ignore.case = TRUE)])
+  
+  if (length(opciones_mercado) == 0) {
+    print("Error: No se encontraron opciones de mercado para la ciudad especificada.")
+    opciones_mercado=NULL
+  } else {
+    return(opciones_mercado)
+  }
+}
+
+
+asociar_ciudad_entrada_usuario <- function(entrada_usuario, lista_ciudades, df) {
+
+  similitudes <- sapply(lista_ciudades, function(ciudad) stringdist::stringdist(entrada_usuario, ciudad, method = "jw"))
+  # Encontramos la ciudad más cercana en términos de texto a la entrada del usuario
+  ciudad_mas_cercana <- lista_ciudades[which.min(similitudes)]
+  # Llamamos a la función asociar_ciudad_mercado con la ciudad encontrada
+  opciones_ciudad <- asociar_ciudad_mercado(ciudad_mas_cercana, df)
+  return(opciones_ciudad)
+}
+
+
+Mercados_ciudad=asociar_ciudad_entrada_usuario(self$Ciudad,ciudades_colombia,Data_Sipsa_Precios)
+
+
+
+
+
+    if(!is.null(Mercados_ciudad)) {
+        Data_Sipsa_Precios = Data_Sipsa_Precios %>% filter(Mercado %in% Mercados_ciudad)
+    } else {cat("Error,",self$Ciudad," aún no está en los datos públicos de precios SIPSA",sep="")}
 
 
     #-- Crea el vector de alimentos con base en la data de SIPSA precios mayoristas
@@ -278,6 +314,9 @@ nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
     Data_Sipsa_Abas$Cantidad_KG=as.numeric(Data_Sipsa_Abas$Cantidad_KG)
 
     # -- Seleciona la ciudad de interés
+
+
+
     if(self$Ciudad=="Cali") {
         Data_Sipsa_Abas = Data_Sipsa_Abas %>% filter(Ciudad_Mercado %in% c("Cali, Cavasa","Cali, Santa Elena"))} else {cat("Error,",self$Ciudad," aún no está disponible en el paquete",sep="")}
 

@@ -1114,9 +1114,7 @@ Módulo_4=function(){
 #------------------------------------------------------------------------------------#
 
 
-"-------------------------------------------------------------------"
-"-------------------------------------------------------------------"
-"-------------------------------------------------------------------"
+
 
 
 # vector de precios
@@ -1748,7 +1746,7 @@ for (i in 1:length(edad)) {
 
 
   #frutas
-  df = datos_grupos[[4]]
+  df = datos_grupos[["Grupo_Frutas"]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
@@ -1761,7 +1759,7 @@ for (i in 1:length(edad)) {
   df_solution = rbind(df_solution, df_x)
 
   #verduras
-  df = datos_grupos[[10]]
+  df = datos_grupos[["Grupo_Verduras"]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
@@ -1905,7 +1903,7 @@ for (i in 1:length(edad)) {
 
 
   #frutas
-  df = datos_grupos[[4]]
+  df = datos_grupos[["Grupo_Frutas"]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]
@@ -1918,7 +1916,7 @@ for (i in 1:length(edad)) {
   df_solution = rbind(df_solution, df_x)
 
   #verduras
-  df = datos_grupos[[10]]
+  df = datos_grupos[["Grupo_Verduras"]]
   q = cantidad_alimentos_seleccionar[which(cantidad_alimentos_seleccionar$Grupo_GABAS == levels(as.factor(df$Grupo_GABAS))),2]
   q = as.numeric(levels(as.factor(q$Cantidad)))
   df = df[order(df$Precio_per_int),]

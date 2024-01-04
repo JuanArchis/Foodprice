@@ -711,12 +711,10 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     #------------------------------------------------------------------#
 
 
+
+
     # Obtener alimentos que están en Data_Model$Alimento pero no en Alimentos_Sipsa_Precios
     alimentos_faltantes <- setdiff(Mapeo_Sipsa_TCAC$Alimento, Datos_Insumo_Modelos$Alimento)
-
-    # Imprimir los alimentos que hacen falta en Alimentos_Sipsa_Precios
-    print("Los alimentos que hacen falta son:")
-    print(alimentos_faltantes)
 
 
 
@@ -753,8 +751,8 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
-
-
+mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, "los siguentes alimentos se omitieron por falta de información nutricional:", paste(alimentos_faltantes, collapse = ", "))
+print(mensaje)
 
 },
 

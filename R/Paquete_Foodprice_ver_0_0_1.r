@@ -114,9 +114,9 @@ if (!is.null(Ingreso_Alimentos)) {
           }
         }
       } else {
-        stop("Se debe inicializar 'Select_Modelos' con los modelos deseados.")
+       self$Select_Modelos=list(mod1 = TRUE, mod2 = TRUE, mod3 = TRUE)
       }
-      self$Data_Model <- Data_Model
+
 
 
     },

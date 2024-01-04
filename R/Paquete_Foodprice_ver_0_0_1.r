@@ -780,7 +780,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
-mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, ", se omitieron los siguientes alimentos por falta de información nutricional " , length(alimentos_faltantes_filtrados) ," :", paste(alimentos_faltantes_filtrados, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
+mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, ", se omitieron los siguientes alimentos por falta de información nutricional " , length(alimentos_faltantes) ," :", paste(alimentos_faltantes, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
 print(mensaje)
 
 },

@@ -41,6 +41,19 @@ public=list(
     Data2=NULL,
     Data3=NULL,
 
+    # REQUERIMIENTOS OPCIONALES
+
+#- Primer y segundo modelo
+    DRI_m_op=NULL
+    DRI_f_op=NULL
+
+
+#- Tercer modelo
+    intercambio_gramos_op=NULL
+    
+    int_req_m_op=NULL
+    int_req_f_op=NULL
+
 
     initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL){
 
@@ -145,10 +158,14 @@ if (!is.null(Ingreso_Alimentos)) {
 
 
 if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
-  assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv()) } else {
-      
-      self$Data=self$Data_Model
+  assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv()) 
+  
+        self$Data=self$Data_Model
       self$Data3=self$Data_Model
+  
+  } else {
+      
+
 
 options(rio.column_names = FALSE)
 
@@ -811,6 +828,8 @@ print(mensaje)
 Módulo_2=function(){
 
 
+
+
 # Depuración modelo 1
 #
 
@@ -896,6 +915,9 @@ colnames(exclusion_3er_modelo) = c("Alimento", "Cod_TCAC");colnames(EER_share_ra
 if(length(warnings())<100) {cat("Carga de requerimientos exitosa")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 data(TCAC, package = "Foodprice",envir=parent.env(environment()))
+
+
+
 
 }, # BASES Resultantes: Data, DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar
 

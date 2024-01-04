@@ -141,7 +141,7 @@ if (!is.null(Ingreso_Alimentos)) {
     #   MÓDULO 1: PREPARACIÓN DE DATOS DE INSUMO A LOS MODELOS   # COMPLETO
     #-----------------------------------------------------------#
 
-    Módulo_1=function(){
+    Depuración=function(){
 
 
 if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
@@ -1960,7 +1960,7 @@ cat("Ejecución del modelo 3 correcta")
 },
 
 Modelos = function() {
-  
+
       self$Módulo_2()
       print("")
 

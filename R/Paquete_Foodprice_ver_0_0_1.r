@@ -31,7 +31,7 @@ public=list(
     Data_Model=NULL,
     Percentil_Abast=NULL,
     Ingreso_Alimentos=NULL,
-    Select_Modelos=NULL,
+    Select_Modelos = list(mod1 = FALSE, mod2 = FALSE, mod3 = FALSE),
 
     # Parámetros privados
 
@@ -42,7 +42,8 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,mod1 = FALSE, mod2 = FALSE, mod3 = FALSE){
+
 
     self$Mes=Mes
     self$Año=Año
@@ -99,13 +100,23 @@ if (!is.null(Ingreso_Alimentos)) {
 
 
 # Select_Modelos como Modelos opcionales
-if (!is.null(Select_Modelos)) {
-  if (length(Select_Modelos) > 3 || !is.list(Select_Modelos)) {
-    stop("El parámetro 'Ingreso_Alimentos' debe ser una lista con máximo tres elementos. Consulte la documentación para más información.")
-  } else {
-    self$Select_Modelos <- Select_Modelos
-  }
-}
+ if (!is.null(Select_Modelos)) {
+        if (!is.list(Select_Modelos) || length(Select_Modelos) > 3) {
+          stop("El parámetro 'Select_Modelos' debe ser una lista con máximo tres elementos. Consulte la documentación para más información.")
+        } else {
+          self$Select_Modelos <- list(mod1 = FALSE, mod2 = FALSE, mod3 = FALSE)
+          for (model in names(Select_Modelos)) {
+            if (model %in% names(self$Select_Modelos)) {
+              self$Select_Modelos[[model]] <- Select_Modelos[[model]]
+            } else {
+              stop("Los modelos proporcionados no son válidos.")
+            }
+          }
+        }
+      } else {
+        stop("Se debe inicializar 'Select_Modelos' con los modelos deseados.")
+      }
+      self$Data_Model <- Data_Model
 
 
     },
@@ -1948,29 +1959,15 @@ cat("Ejecución del modelo 3 correcta")
 
 },
 
-
-    imprimir = function() {
-      true_indices <- which(unlist(self$Select_Modelos))
-      true_count <- length(true_indices)
-      
-      if (true_count == 1) {
-        if ("Mod1" %in% names(self$Select_Modelos)) {
-          cat("Solo Mod1 es TRUE. Se ejecuta acción A.\n")
-        } else if ("Mod2" %in% names(self$Select_Modelos)) {
-          cat("Solo Mod2 es TRUE. Se ejecuta acción B.\n")
-        } else if ("Mod3" %in% names(self$Select_Modelos)) {
-          cat("Solo Mod3 es TRUE. Se ejecuta acción C.\n")
-        }
-      } else if (true_count == 2) {
-        if ("Mod1" %in% names(self$Select_Modelos) && "Mod2" %in% names(self$Select_Modelos)) {
-          cat("Mod1 y Mod2 son TRUE. Se ejecuta acción D.\n")
-        } else if ("Mod1" %in% names(self$Select_Modelos) && "Mod3" %in% names(self$Select_Modelos)) {
-          cat("Mod1 y Mod3 son TRUE. Se ejecuta acción E.\n")
-        } else if ("Mod2" %in% names(self$Select_Modelos) && "Mod3" %in% names(self$Select_Modelos)) {
-          cat("Mod2 y Mod3 son TRUE. Se ejecuta acción F.\n")
-        }
-      } else if (true_count == 3) {
-        cat("Mod1, Mod2 y Mod3 son TRUE. Se ejecuta acción G.\n")
+Modelos_Opcionales = function() {
+      if (self$Select_Modelos$mod1) {
+        self$Módulo_3()
+      }
+      if (self$Select_Modelos$mod2) {
+        self$Módulo_4()
+      }
+      if (self$Select_Modelos$mod3) {
+        self$Módulo_5()
       }
     }
 

@@ -31,7 +31,7 @@ public=list(
     Margenes=NULL,
     Data_Model=NULL,
     Percentil_Abast=NULL,
-    Ingreso_Alimentos=NULL
+    Ingreso_Alimentos=NULL,
 
     # Parámetros privados
 

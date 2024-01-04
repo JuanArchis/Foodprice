@@ -31,7 +31,7 @@ public=list(
     Margenes=NULL,
     Data_Model=NULL,
     Percentil_Abast=NULL,
-
+    Ingreso_Alimentos=NULL
 
     # Parámetros privados
 
@@ -42,7 +42,7 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL){
 
     self$Mes=Mes
     self$Año=Año
@@ -81,7 +81,39 @@ public=list(
     } else {
     self$Percentil_Abast =  NULL }
 
+
+# Data_Model como Ingreso_Alimentos
+if (!is.null(Ingreso_Alimentos)) {
+  if (is.vector(Ingreso_Alimentos) && length(Ingreso_Alimentos) == 21) {
+    # Verifica si las dos primeras entradas son texto
+    if (!is.character(Ingreso_Alimentos[1]) || !is.character(Ingreso_Alimentos[2])) {
+      stop("Las dos primeras entradas deben ser texto (caracteres). Consulte la documentación para más información.")
+    }
+    
+    # Verifica si las siguientes entradas son numéricas
+    if (!all(sapply(Ingreso_Alimentos[-c(1, 2)], is.numeric))) {
+      stop("Las entradas 3 a 21 deben ser valores numéricos. Consulte la documentación para más información.")
+    }
+
+    self$Ingreso_Alimentos = Ingreso_Alimentos
+  } else if (is.data.frame(Ingreso_Alimentos) && ncol(Ingreso_Alimentos) == 21) {
+    # Si es un data frame con 21 columnas
+    if (!all(sapply(Ingreso_Alimentos[, 1:2], is.character)) || !all(sapply(Ingreso_Alimentos[, -c(1, 2)], is.numeric))) {
+      stop("Las dos primeras columnas deben ser texto (caracteres) y las restantes numéricas. Consulte la documentación para más información.")
+    }
+    
+    self$Ingreso_Alimentos = Ingreso_Alimentos
+  } else {
+    stop("El parámetro 'Ingreso_Alimentos' debe ser un vector de tamaño 21 o un data frame con 21 columnas. Consulte la documentación para más información.")
+  }
+} else {
+  self$Ingreso_Alimentos = NULL
+}
+
+
+
     },
+
 
     # ---------------------------------------------------------------#
     #          Primer método: Definición de librerias base           # COMPLETO
@@ -103,6 +135,14 @@ public=list(
     #-----------------------------------------------------------#
 
     Módulo_1=function(){
+
+
+if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
+  assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv()) } else {
+      
+      self$Data=self$Data_Model
+      self$Data3=self$Data_Model
+
 options(rio.column_names = FALSE)
 
     # ------------------------------------------------------------#
@@ -714,7 +754,6 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
 
     # Obtener alimentos que están en Data_Model$Alimento pero no en Alimentos_Sipsa_Precios
-    alimentos_faltantes <- setdiff(Mapeo_Sipsa_TCAC$Alimento, Datos_Insumo_Modelos$Alimento)
 
 
 
@@ -726,14 +765,13 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     # -----------------------------------------------------------------#
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
-    if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Data_Model) > 0 && ncol(self$Data_Model) > 0) {
-      assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv());assign("Estimación_Precios_Minoristas",Estimación_Precios_Minoristas,envir = globalenv())
-      
-      self$Data=self$Data_Model
-      self$Data3=self$Data_Model
 
-    } else {
 
+    
+
+      if (!is.null(self$Ingreso_Alimentos)) {Datos_Insumo_Modelos=rbind(self$Ingreso_Alimentos,Datos_Insumo_Modelos)}
+
+      alimentos_faltantes <- setdiff(Mapeo_Sipsa_TCAC$Alimento, Datos_Insumo_Modelos$Alimento)
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())
 
       self$Data=Datos_Insumo_Modelos
@@ -751,7 +789,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
-mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, ", se omitieron los siguientes alimentos por falta de información nutricional: ", paste(alimentos_faltantes, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
+mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, ", se omitieron los siguientes alimentos por falta de información nutricional :" , length(alimentos_faltantes), paste(alimentos_faltantes, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
 print(mensaje)
 
 },

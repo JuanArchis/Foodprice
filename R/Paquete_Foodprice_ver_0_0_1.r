@@ -44,15 +44,15 @@ public=list(
     # REQUERIMIENTOS OPCIONALES
 
 #- Primer y segundo modelo
-    DRI_m_op=NULL
-    DRI_f_op=NULL
+    DRI_m_op=NULL,
+    DRI_f_op=NULL,
 
 
 #- Tercer modelo
-    intercambio_gramos_op=NULL
-    
-    int_req_m_op=NULL
-    int_req_f_op=NULL
+    intercambio_gramos_op=NULL,
+
+    int_req_m_op=NULL,
+    int_req_f_op=NULL,
 
 
     initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL){

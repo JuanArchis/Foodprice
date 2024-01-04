@@ -760,7 +760,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
     
 
-      alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios, Mapeo_Sipsa_TCAC$Alimento)] # Alimentos que están localmente en la ciudad y no están en el mapeo
+      alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios  %in% Mapeo_Sipsa_TCAC$Alimento)] # Alimentos que están localmente en la ciudad y no están en el mapeo
 
 
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())

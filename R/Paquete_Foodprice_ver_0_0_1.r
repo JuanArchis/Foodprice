@@ -760,14 +760,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
     
 
-      alimentos_faltantes <- setdiff(Alimentos_Sipsa_Precios, Mapeo_Sipsa_TCAC$Alimento) # Alimentos que están localmente en la ciudad y no están en el mapeo
-
-      # Vector con las palabras a eliminar
-    palabras_eliminar <- c("hierbas", "especias", "ajo importado", "cilantro", "linaza molida", "jengibre", "tomillo", "perejil liso", "crespo")
-
-    # Filtrar elementos del vector alimentos_faltantes que no contienen las palabras a eliminar
-    alimentos_faltantes_filtrados <- alimentos_faltantes[!grepl(paste(palabras_eliminar, collapse = "|"), alimentos_faltantes, ignore.case = TRUE)]
-
+      alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios, Mapeo_Sipsa_TCAC$Alimento)] # Alimentos que están localmente en la ciudad y no están en el mapeo
 
 
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())

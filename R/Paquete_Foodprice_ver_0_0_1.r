@@ -753,7 +753,6 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
 
 
-    # Obtener alimentos que están en Data_Model$Alimento pero no en Alimentos_Sipsa_Precios
 
 
 
@@ -766,12 +765,12 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     #     Salidas de los métodos en en embiente GLOBAL                 #
     #------------------------------------------------------------------#
 
-
     
 
       if (!is.null(self$Ingreso_Alimentos)) {Datos_Insumo_Modelos=rbind(self$Ingreso_Alimentos,Datos_Insumo_Modelos)}
 
-      alimentos_faltantes <- setdiff(Mapeo_Sipsa_TCAC$Alimento, Datos_Insumo_Modelos$Alimento)
+      alimentos_faltantes <- setdiff(Alimentos_Sipsa_Precios, Mapeo_Sipsa_TCAC$Alimento) # Alimentos que están localmente en la ciudad y no están en el mapeo
+
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())
 
       self$Data=Datos_Insumo_Modelos

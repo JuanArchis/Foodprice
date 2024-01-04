@@ -103,7 +103,7 @@ if (!is.null(Ingreso_Alimentos)) {
 if (!is.null(Select_Modelos)) {
       if (!is.list(Select_Modelos)) {
 
-      stop("El parámetro 'Select_Modelos' debe ser una lista. Consulte la documentación para más información.")
+      stop("El parámetro 'Select_Modelos' debe ser una lista. Consulte la documentación para más información.")}
 
       else {
       self$parametros_vector <- vector("list", 3)
@@ -113,7 +113,7 @@ if (!is.null(Select_Modelos)) {
       self$Select_Modelos <- Select_Modelos
       }
       
-      }
+      
 
 }
 

@@ -1962,12 +1962,15 @@ cat("Ejecución del modelo 3 correcta")
 Modelos_Opcionales = function() {
       if (self$Select_Modelos$mod1) {
         self$Módulo_3()
+        print("")
       }
       if (self$Select_Modelos$mod2) {
         self$Módulo_4()
+        print("")
       }
       if (self$Select_Modelos$mod3) {
         self$Módulo_5()
+        print("")
       }
     }
 

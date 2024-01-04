@@ -83,25 +83,13 @@ public=list(
 
 
 # Data_Model como Ingreso_Alimentos
+# Data_Model como Ingreso_Alimentos
 if (!is.null(Ingreso_Alimentos)) {
   if (is.vector(Ingreso_Alimentos) && length(Ingreso_Alimentos) == 21) {
-    # Verifica si las dos primeras entradas son texto
-    if (!is.character(Ingreso_Alimentos[1]) || !is.character(Ingreso_Alimentos[2])) {
-      stop("Las dos primeras entradas deben ser texto (caracteres). Consulte la documentación para más información.")
-    }
-    
-    # Verifica si las siguientes entradas son numéricas
-    if (!all(sapply(Ingreso_Alimentos[-c(1, 2)], is.numeric))) {
-      stop("Las entradas 3 a 21 deben ser valores numéricos. Consulte la documentación para más información.")
-    }
-
+    # Si es un vector de tamaño 21
     self$Ingreso_Alimentos = Ingreso_Alimentos
   } else if (is.data.frame(Ingreso_Alimentos) && ncol(Ingreso_Alimentos) == 21) {
     # Si es un data frame con 21 columnas
-    if (!all(sapply(Ingreso_Alimentos[, 1:2], is.character)) || !all(sapply(Ingreso_Alimentos[, -c(1, 2)], is.numeric))) {
-      stop("Las dos primeras columnas deben ser texto (caracteres) y las restantes numéricas. Consulte la documentación para más información.")
-    }
-    
     self$Ingreso_Alimentos = Ingreso_Alimentos
   } else {
     stop("El parámetro 'Ingreso_Alimentos' debe ser un vector de tamaño 21 o un data frame con 21 columnas. Consulte la documentación para más información.")
@@ -109,6 +97,7 @@ if (!is.null(Ingreso_Alimentos)) {
 } else {
   self$Ingreso_Alimentos = NULL
 }
+
 
 
 
@@ -769,7 +758,17 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
       if (!is.null(self$Ingreso_Alimentos)) {Datos_Insumo_Modelos=rbind(self$Ingreso_Alimentos,Datos_Insumo_Modelos)}
 
+    
+
       alimentos_faltantes <- setdiff(Alimentos_Sipsa_Precios, Mapeo_Sipsa_TCAC$Alimento) # Alimentos que están localmente en la ciudad y no están en el mapeo
+
+      # Vector con las palabras a eliminar
+    palabras_eliminar <- c("hierbas", "especias", "ajo importado", "cilantro", "linaza molida", "jengibre", "tomillo", "perejil liso", "crespo")
+
+    # Filtrar elementos del vector alimentos_faltantes que no contienen las palabras a eliminar
+    alimentos_faltantes_filtrados <- alimentos_faltantes[!grepl(paste(palabras_eliminar, collapse = "|"), alimentos_faltantes, ignore.case = TRUE)]
+
+
 
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())
 
@@ -788,7 +787,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
  if(length(warnings())<100) {cat("Depuración del módulo 1 exitosa", "\n")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
-mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, ", se omitieron los siguientes alimentos por falta de información nutricional :" , length(alimentos_faltantes), paste(alimentos_faltantes, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
+mensaje <- paste("En la ciudad de", self$Ciudad, "del año", self$Año, "y mes", self$Mes, ", se omitieron los siguientes alimentos por falta de información nutricional " , length(alimentos_faltantes_filtrados) ," :", paste(alimentos_faltantes_filtrados, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
 print(mensaje)
 
 },

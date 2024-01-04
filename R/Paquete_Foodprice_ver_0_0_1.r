@@ -12,7 +12,6 @@
 
 library("R6")
 
-
 Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
 
 # ------------------------------------------------------------#
@@ -32,6 +31,7 @@ public=list(
     Data_Model=NULL,
     Percentil_Abast=NULL,
     Ingreso_Alimentos=NULL,
+    Select_Modelos=NULL,
 
     # Parámetros privados
 
@@ -42,7 +42,7 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL){
 
     self$Mes=Mes
     self$Año=Año
@@ -83,7 +83,6 @@ public=list(
 
 
 # Data_Model como Ingreso_Alimentos
-# Data_Model como Ingreso_Alimentos
 if (!is.null(Ingreso_Alimentos)) {
   if (is.vector(Ingreso_Alimentos) && length(Ingreso_Alimentos) == 21) {
     # Si es un vector de tamaño 21
@@ -98,6 +97,25 @@ if (!is.null(Ingreso_Alimentos)) {
   self$Ingreso_Alimentos = NULL
 }
 
+
+# Data_Model como Modelos opcionales
+
+if (!is.null(Select_Modelos)) {
+      if (!is.list(Select_Modelos)) {
+
+      stop("El parámetro 'Select_Modelos' debe ser una lista. Consulte la documentación para más información.")
+
+      else {
+      self$parametros_vector <- vector("list", 3)
+      self$parametros_vector[["Mod1"]] <- parametros_vector[["Mod1"]]
+      self$parametros_vector[["Mod2"]] <- parametros_vector[["Mod2"]]
+      self$parametros_vector[["Mod3"]] <- parametros_vector[["Mod3"]]
+      self$Select_Modelos <- Select_Modelos
+      }
+      
+      }
+
+}
 
 
 
@@ -735,19 +753,6 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     Datos_Insumo_Modelos[1,3]=100
 
 
-
-    # -----------------------------------------------------------------#
-    #     Alimentos faltantes en ciudades diferentes a CALI            #
-    #------------------------------------------------------------------#
-
-
-
-
-
-
-
-
-
     #--------------------------------------------------- Salida principal 2 ----------------------------- Datos_Insumo_Modelos ----------------------------------------#
 
 
@@ -783,7 +788,6 @@ if (!is.null(self$Ingreso_Alimentos)) {
 
 
 }
-
 
 
 
@@ -1953,7 +1957,33 @@ assign(paste("Modelo_3_M_COST", self$Mes, self$Año, sep = "_"),modelo_3_costo,e
 
 cat("Ejecución del modelo 3 correcta")
 
-}
+},
+
+
+    imprimir = function() {
+      true_indices <- which(unlist(self$Select_Modelos))
+      true_count <- length(true_indices)
+      
+      if (true_count == 1) {
+        if ("Mod1" %in% names(self$Select_Modelos)) {
+          cat("Solo Mod1 es TRUE. Se ejecuta acción A.\n")
+        } else if ("Mod2" %in% names(self$Select_Modelos)) {
+          cat("Solo Mod2 es TRUE. Se ejecuta acción B.\n")
+        } else if ("Mod3" %in% names(self$Select_Modelos)) {
+          cat("Solo Mod3 es TRUE. Se ejecuta acción C.\n")
+        }
+      } else if (true_count == 2) {
+        if ("Mod1" %in% names(self$Select_Modelos) && "Mod2" %in% names(self$Select_Modelos)) {
+          cat("Mod1 y Mod2 son TRUE. Se ejecuta acción D.\n")
+        } else if ("Mod1" %in% names(self$Select_Modelos) && "Mod3" %in% names(self$Select_Modelos)) {
+          cat("Mod1 y Mod3 son TRUE. Se ejecuta acción E.\n")
+        } else if ("Mod2" %in% names(self$Select_Modelos) && "Mod3" %in% names(self$Select_Modelos)) {
+          cat("Mod2 y Mod3 son TRUE. Se ejecuta acción F.\n")
+        }
+      } else if (true_count == 3) {
+        cat("Mod1, Mod2 y Mod3 son TRUE. Se ejecuta acción G.\n")
+      }
+    }
 
 
 ))

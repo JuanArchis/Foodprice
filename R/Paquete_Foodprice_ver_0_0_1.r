@@ -99,25 +99,15 @@ if (!is.null(Ingreso_Alimentos)) {
 
 
 # Data_Model como Modelos opcionales
-
-if (!is.null(Select_Modelos)) {
-      if (!is.list(Select_Modelos)) {
-
-      stop("El parámetro 'Select_Modelos' debe ser una lista. Consulte la documentación para más información.")}
-
-      else {
-      self$parametros_vector <- vector("list", 3)
-      self$parametros_vector[["Mod1"]] <- parametros_vector[["Mod1"]]
-      self$parametros_vector[["Mod2"]] <- parametros_vector[["Mod2"]]
-      self$parametros_vector[["Mod3"]] <- parametros_vector[["Mod3"]]
-      self$Select_Modelos <- Select_Modelos
+if (!is.null(Ingreso_Alimentos)) {
+      if (length(Select_Modelos) > 3 || !is.list(Select_Modelos)) {
+        stop("El parámetro 'Select_Modelos' debe ser una lista con máximo tres elementos. Consulte la documentación para más información.")
       }
-      
-      
+      else {
+      self$Select_Modelos <- Select_Modelos 
 
+      }
 }
-
-
 
     },
 

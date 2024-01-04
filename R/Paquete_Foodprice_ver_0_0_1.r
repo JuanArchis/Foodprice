@@ -441,6 +441,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
     # SIPSA-TCAC (Códigos de sipsa a  Composición de Alimentos Colombianos)
 
     data(Mapeo_Sipsa_TCAC, package = "Foodprice",envir=parent.env(environment()));colnames(Mapeo_Sipsa_TCAC) = c("Alimento", "Codigo_TCAC")
+    Mapeo_Sipsa_TCAC1=Mapeo_Sipsa_TCAC
     Mapeo_Sipsa_TCAC = Mapeo_Sipsa_TCAC %>% filter(Codigo_TCAC %in% setdiff(levels(as.factor(Mapeo_Sipsa_TCAC$Codigo_TCAC)), "EX000"))
 
     # TCAC-GABAS (TCAC con Guías Alimentarias y SIN composición )
@@ -760,7 +761,10 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
     
 
-      alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios  %in% Mapeo_Sipsa_TCAC$Alimento)] # Alimentos que están localmente en la ciudad y no están en el mapeo
+      alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios  %in% Mapeo_Sipsa_TCAC1$Alimento)] # Alimentos que están localmente en la ciudad y no están en el mapeo
+
+    assign("Alimentos_ciudad",Alimentos_Sipsa_Precios,envir = globalenv())
+        assign("ALimentos_mapeo",Mapeo_Sipsa_TCAC$Alimento,envir = globalenv())
 
 
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())

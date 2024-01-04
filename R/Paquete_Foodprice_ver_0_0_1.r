@@ -42,7 +42,7 @@ public=list(
     Data3=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,mod1 = FALSE, mod2 = FALSE, mod3 = FALSE){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL){
 
 
     self$Mes=Mes

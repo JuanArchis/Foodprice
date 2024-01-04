@@ -71,7 +71,7 @@ public=list(
       self$Data_Model = NULL
     }
 
-     # Data_Model como Percentil_Abast
+     # opcoinal como Percentil_Abast
     if (!is.null(Percentil_Abast)) {
     if (!is.numeric(Percentil_Abast) || Percentil_Abast < 0 || Percentil_Abast > 1) {
     stop("El parámetro 'Percentil_Abast' debe ser un número entre 0 y 1, consulte la documentación para más información")
@@ -82,7 +82,7 @@ public=list(
     self$Percentil_Abast =  NULL }
 
 
-# Data_Model como Ingreso_Alimentos
+# opcional como Ingreso_Alimentos
 if (!is.null(Ingreso_Alimentos)) {
   if (is.vector(Ingreso_Alimentos) && length(Ingreso_Alimentos) == 21) {
     # Si es un vector de tamaño 21
@@ -98,16 +98,15 @@ if (!is.null(Ingreso_Alimentos)) {
 }
 
 
-# Data_Model como Modelos opcionales
-if (!is.null(Ingreso_Alimentos)) {
-      if (length(Select_Modelos) > 3 || !is.list(Select_Modelos)) {
-        stop("El parámetro 'Select_Modelos' debe ser una lista con máximo tres elementos. Consulte la documentación para más información.")
-      }
-      else {
-      self$Select_Modelos <- Select_Modelos 
-
-      }
+# Select_Modelos como Modelos opcionales
+if (!is.null(Select_Modelos)) {
+  if (length(Select_Modelos) > 3 || !is.list(Select_Modelos)) {
+    stop("El parámetro 'Ingreso_Alimentos' debe ser una lista con máximo tres elementos. Consulte la documentación para más información.")
+  } else {
+    self$Select_Modelos <- Select_Modelos
+  }
 }
+
 
     },
 

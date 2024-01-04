@@ -752,21 +752,30 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
 
     # -----------------------------------------------------------------#
-    #     Salidas de los métodos en en embiente GLOBAL                 #
+    #                         Alimentos faltantes                      #
     #------------------------------------------------------------------#
 
+
+if (!is.null(self$Ingreso_Alimentos)) {
+  alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios %in% Mapeo_Sipsa_TCAC1$Alimento)]
+
+  if (is.data.frame(self$Ingreso_Alimentos)) {
+    # Si es un data frame, buscar los alimentos en la columna 'Alimento'
+    alimentos_encontrados <- self$Ingreso_Alimentos$Alimento[self$Ingreso_Alimentos$Alimento %in% alimentos_faltantes]
+  } else {
+    # Si es un vector, buscar los alimentos directamente
+    alimentos_encontrados <- self$Ingreso_Alimentos[self$Ingreso_Alimentos %in% alimentos_faltantes]
+  }
+
+  alimentos_faltantes <- alimentos_faltantes[!(alimentos_faltantes %in% alimentos_encontrados)]
+  
+  Datos_Insumo_Modelos <- rbind(self$Ingreso_Alimentos, Datos_Insumo_Modelos)
+} else {
+  alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios %in% Mapeo_Sipsa_TCAC1$Alimento)]
+}
+
+
     
-
-      if (!is.null(self$Ingreso_Alimentos)) {Datos_Insumo_Modelos=rbind(self$Ingreso_Alimentos,Datos_Insumo_Modelos)}
-
-    
-
-      alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios  %in% Mapeo_Sipsa_TCAC1$Alimento)] # Alimentos que están localmente en la ciudad y no están en el mapeo
-
-    assign("Alimentos_ciudad",Alimentos_Sipsa_Precios,envir = globalenv())
-        assign("ALimentos_mapeo",Mapeo_Sipsa_TCAC$Alimento,envir = globalenv())
-
-
       assign(paste0("Datos_Insumo_Modelos_",self$Año,"_",self$Mes),Datos_Insumo_Modelos,envir = globalenv());assign(paste0("Estimación_Precios_Minoristas_",self$Año,"_",self$Mes),Estimación_Precios_Minoristas,envir = globalenv())
 
       self$Data=Datos_Insumo_Modelos

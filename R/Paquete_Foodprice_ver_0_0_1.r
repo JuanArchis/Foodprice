@@ -1959,7 +1959,11 @@ cat("Ejecución del modelo 3 correcta")
 
 },
 
-Modelos_Opcionales = function() {
+Modelos = function() {
+  
+      self$Módulo_2()
+      print("")
+
       if (self$Select_Modelos$mod1) {
         self$Módulo_3()
         print("")

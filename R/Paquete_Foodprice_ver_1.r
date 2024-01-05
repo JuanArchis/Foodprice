@@ -1261,7 +1261,7 @@ required_columns2 <- c("Precio_100g_ajust", "Alimento", "Energía","Proteina", "
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
 
-missing_columns2 <- setdiff(required_columns2, colnames(self$Data2$))
+missing_columns2 <- setdiff(required_columns2, colnames(self$Data2))
 
 if (length(missing_columns2) > 0) {
   stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns2, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al segundo modelo"))
@@ -1629,7 +1629,7 @@ Modelo_3=function(){
 
 required_columns3 <- c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")
 
-missing_columns3 <- setdiff(required_columns3, colnames(self$Data2$))
+missing_columns3 <- setdiff(required_columns3, colnames(self$Data2))
 
 if (length(missing_columns3) > 0) {
   stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns3, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al tercer modelo"))

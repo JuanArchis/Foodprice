@@ -1613,7 +1613,7 @@ modelo_2_res[is.na(modelo_2_res)] = 0
   assign(paste("Modelo_2_M", self$Mes, self$Año, sep = "_"),modelo_2_res,envir = globalenv())
 
   if(length(warnings())<100) {cat("Ejecución del modelo 2 correcta")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
-
+}
 },
 
 
@@ -2149,7 +2149,7 @@ names(modelo_3_costo)[names(modelo_3_costo) == "Gupo"][1] <- "Alimentos"
 assign(paste("Modelo_3_M_COST", self$Mes, self$Año, sep = "_"),modelo_3_costo,envir = globalenv())
 
 cat("Ejecución del modelo 3 correcta")
-
+}
 },
 
 Modelos = function() {

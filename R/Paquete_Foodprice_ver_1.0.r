@@ -928,7 +928,7 @@ Requerimientos=function(){
 
 # Depuración modelo 1
 #
-
+if(is.null(self$Data_Model)){
 # Modificación de datos del módulo 1
 names(self$Data) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
 
@@ -950,10 +950,11 @@ self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004", "K033","D013")
 
 names(self$Data2) = c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust",  "Energia","Proteina","Carbohidratos","Lipidos",  "Calcio",  "Zinc", "Hierro", "Magnesio","Fosforo","VitaminaC", "Tiamina", "Riboflavina","Niacina", "Folatos", "VitaminaB12", "VitaminaA","Sodio")
 
+
 self$Data2 <- self$Data2 %>%
   transform(grupo = substr(Cod_TCAC, start = 1, stop = 1)) %>%
   arrange(Alimento)
- 
+}
 
 #-------------------------------------#
 # Carga de requerimientos Modelo 3   #

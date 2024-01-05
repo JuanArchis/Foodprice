@@ -196,6 +196,30 @@ if (!is.null(Ingreso_Alimentos)) {
       self$int_req_f_op = NULL
     }
 
+if (!is.null(data_list_precios)) {
+  if (is.list(data_list_precios)) {
+    self$data_list_precios = data_list_precios
+  } else {
+    stop("El parámetro 'data_list_precios' debe ser una lista. Consulte la documentación para más información.")
+  }
+} else {
+  self$data_list_precios = NULL
+}
+
+
+if (!is.null(data_list_abas)) {
+  if (is.list(data_list_abas)) {
+    self$data_list_abas = data_list_abas
+  } else {
+    stop("El parámetro 'data_list_abas' debe ser una lista. Consulte la documentación para más información.")
+  }
+} else {
+  self$data_list_abas = NULL
+}
+
+if (is.null(Percentil_Abast)) {
+  stop("Por favor, ingrese el parámetro 'Percentil_Abast'.")
+}
 
 
     },
@@ -242,6 +266,7 @@ options(rio.column_names = FALSE)
       
     #  -----------------Precios mayoristas------------------------------
 
+if (is.null(data_list_precios)){
 
 
 temp_dir_P <- tempdir()
@@ -280,11 +305,15 @@ if (self$Año<2023) {
     self$data_list_precios =get(nombre_data, envir = data_list_precios_ev)
   }
     } 
-      
+
+
+}      
     #  -----------------Abastecimiento-----------------------------
 
 
 if (!is.null(self$Percentil_Abast)){ # hiperparámetro
+
+  if (is.null(data_list_precios)){
 
 if (self$Año>2022) {
 
@@ -333,9 +362,12 @@ nombre_data_abast <- paste0("data_list_abast_ev", self$Año)
     self$data_list_abas =get(nombre_data_abast, envir = data_list_abast_ev)
   }
       }
+  }
     } else{
       self$data_list_abas=NULL
       }
+
+
 
     # ---------------------------------------------------------------#
     #   Definición de parámetros privados y constantes del código    # COMPLETO

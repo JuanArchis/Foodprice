@@ -265,7 +265,7 @@ options(rio.column_names = FALSE)
       
     #  -----------------Precios mayoristas------------------------------
 
-if (is.null(sefl$data_list_precios)){
+if (is.null(self$data_list_precios)){
 
 
 temp_dir_P <- tempdir()

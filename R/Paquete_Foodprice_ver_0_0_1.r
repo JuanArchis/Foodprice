@@ -56,7 +56,7 @@ public=list(
 
 
     initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL,DRI_m_op=NULL,DRI_f_op=NULL,
-        intercambio_gramos_op=NULL,    int_req_m_op=NULL,   int_req_f_op=NULL,data_list_precios=NULL, data_list_abas=NULL)
+        intercambio_gramos_op=NULL,    int_req_m_op=NULL,   int_req_f_op=NULL,data_list_precios=NULL, data_list_abas=NULL
     ){
 
 

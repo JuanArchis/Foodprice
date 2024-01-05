@@ -210,15 +210,14 @@ if (!is.null(data_list_precios)) {
 if (!is.null(data_list_abas)) {
   if (is.list(data_list_abas)) {
     self$data_list_abas = data_list_abas
+    if (is.null(Percentil_Abast)) {
+      print("Por favor, ingrese el parámetro 'Percentil_Abast'.")
+    }
   } else {
     stop("El parámetro 'data_list_abas' debe ser una lista. Consulte la documentación para más información.")
   }
 } else {
   self$data_list_abas = NULL
-}
-
-if (is.null(Percentil_Abast)) {
-  stop("Por favor, ingrese el parámetro 'Percentil_Abast'.")
 }
 
 

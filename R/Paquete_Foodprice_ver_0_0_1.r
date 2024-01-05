@@ -325,7 +325,7 @@ asociar_ciudad_mercado <- function(ciudad, df) {
   opciones_mercado <- unique(df$Mercado[grep(ciudad, df$Mercado, ignore.case = TRUE)])
   
   if (length(opciones_mercado) == 0) {
-    stop("Error: No se encontraron opciones de mercado para la ciudad especificada.")
+    stop("Error:No se encontraron opciones de mercado para la ciudad especificada. Por favor, verifique su ortografía o escriba una ciudad disponible.")
     opciones_mercado=NULL
   } else {
     return(opciones_mercado)

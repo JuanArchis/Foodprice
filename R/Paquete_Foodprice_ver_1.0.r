@@ -250,7 +250,8 @@ if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Dat
   assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv())
   
         self$Data=self$Data_Model
-      self$Data3=self$Data_Model
+        self$Data2=self$Data_Model
+       self$Data3=self$Data_Model
   
   } else {
       

@@ -55,7 +55,9 @@ public=list(
     int_req_f_op=NULL,
 
 
-    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL){
+    initialize=function(Mes,Año,Ciudad,Margenes=NULL,Data_Model=NULL,Percentil_Abast=NULL,Ingreso_Alimentos=NULL,Select_Modelos=NULL,DRI_m_op=NULL,DRI_f_op=NULL,
+        intercambio_gramos_op=NULL,    int_req_m_op=NULL,   int_req_f_op=NULL,data_list_precios=NULL, data_list_abas=NULL)
+    ){
 
 
     self$Mes=Mes
@@ -129,6 +131,70 @@ if (!is.null(Ingreso_Alimentos)) {
       } else {
        self$Select_Modelos=list(mod1 = TRUE, mod2 = TRUE, mod3 = TRUE)
       }
+
+
+      # DRI_m_op como parámetro opcional
+      if (!is.null(DRI_m_op)) {
+      if (!is.data.frame(DRI_m_op)) {
+        stop("El parámetro 'DRI_m_op' debe ser un data frame, consulte la documentación para más información")
+      } else {
+        self$DRI_m_op = DRI_m_op
+      }
+    } else {
+      self$DRI_m_op = NULL
+    }
+
+
+
+
+      # DRI_f_op como parámetro opcional
+      if (!is.null(DRI_f_op)) {
+      if (!is.data.frame(DRI_f_op)) {
+        stop("El parámetro 'DRI_f_op' debe ser un data frame, consulte la documentación para más información")
+      } else {
+        self$DRI_f_op = DRI_f_op
+      }
+    } else {
+      self$DRI_f_op = NULL
+    }
+
+
+      # intercambio_gramos_op como parámetro opcional
+      if (!is.null(intercambio_gramos_op)) {
+      if (!is.data.frame(intercambio_gramos_op)) {
+        stop("El parámetro 'intercambio_gramos_op' debe ser un data frame, consulte la documentación para más información")
+      } else {
+        self$intercambio_gramos_op = intercambio_gramos_op
+      }
+    } else {
+      self$intercambio_gramos_op = NULL
+    }
+
+
+
+      # int_req_m_op como parámetro opcional
+      if (!is.null(int_req_m_op)) {
+      if (!is.data.frame(int_req_m_op)) {
+        stop("El parámetro 'int_req_m_op' debe ser un data frame, consulte la documentación para más información")
+      } else {
+        self$int_req_m_op = int_req_m_op
+      }
+    } else {
+      self$int_req_m_op = NULL
+    }
+
+
+
+      # int_req_f_op como parámetro opcional
+      if (!is.null(int_req_f_op)) {
+      if (!is.data.frame(int_req_f_op)) {
+        stop("El parámetro 'int_req_f_op' debe ser un data frame, consulte la documentación para más información")
+      } else {
+        self$int_req_f_op = int_req_f_op
+      }
+    } else {
+      self$int_req_f_op = NULL
+    }
 
 
 
@@ -859,22 +925,61 @@ self$Data2 <- self$Data2 %>%
  
 
 #-------------------------------------#
-# Carga de requerimientos Modelos   #
+# Carga de requerimientos Modelo 3   #
 #------------------------------------#
 
-# carga de porciones
+# Intercambio en gramos de alimentos
 
+if (!is.null(self$intercambio_gramos_op)){
+intercambio_gramos=self$intercambio_gramos_op
+} else {
 data(intercambio_gramos, package = "Foodprice",envir=parent.env(environment()))
-# carga de requerimientos
+  
+}
 
+
+
+#int_req_m_op
+
+if (!is.null(self$int_req_m_op)){
+int_req_m=self$int_req_m_op
+} else {
 data(int_req_m, package = "Foodprice",envir=parent.env(environment()))
+  
+}
 
 
+#int_req_f_op
+
+if (!is.null(self$int_req_f_op)){
+int_req_f=self$int_req_f_op
+} else {
 data(int_req_f, package = "Foodprice",envir=parent.env(environment()))
+  
+}
 
 
+#-------------------------------------#
+# Carga de requerimientos Modelos 1 y 2 #
+#------------------------------------#
+
+#DRI M
+
+if (!is.null(self$DRI_m_op)){
+DRI_M=self$DRI_m_op
+} else {
 data(DRI_M, package = "Foodprice",envir=parent.env(environment()))
+  
+}
+
+#DRI F
+
+if (!is.null(self$DRI_f_op)){
+DRI_F=self$DRI_f_op
+} else {
 data(DRI_F, package = "Foodprice",envir=parent.env(environment()))
+  
+}
 
 
 # carga de proporción por grupos de alimentos

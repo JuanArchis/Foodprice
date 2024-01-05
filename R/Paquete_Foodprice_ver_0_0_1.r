@@ -7,12 +7,12 @@
 #' Primera versión
 
 #' @name
-#' Paquete_Foodprice_ver_0_0_1
+#' Foodprice
 #'
 
 library("R6")
 
-Paquete_Foodprice_ver_0_0_1=R6Class(classname="Paquete_Foodprice-ver-0.0.1",
+Foodprice=R6Class(classname="Foodprice",
 
 # ------------------------------------------------------------#
 #   Definición de parámetros (entradas) de la clase          #

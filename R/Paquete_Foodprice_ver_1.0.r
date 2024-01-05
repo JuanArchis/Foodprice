@@ -1065,7 +1065,7 @@ Modelo_1=function(){
 
 # Verificación para el modelo 1
 
-required_columns <- c("Precio_100g_ajust", "Alimento", "Energía")
+required_columns <- c("Precio_100g_ajust", "Alimento", "Energia")
 missing_columns <- setdiff(required_columns, colnames(self$Data))
 
 if (length(missing_columns) > 0) {
@@ -1257,7 +1257,7 @@ Modelo_2=function(){
 #------------------------------------------------------------------------------------#
 
 
-required_columns2 <- c("Precio_100g_ajust", "Alimento", "Energía","Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
+required_columns2 <- c("Precio_100g_ajust", "Alimento", "Energia","Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
          "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
          "Calcio", "Hierro", "Zinc")
 

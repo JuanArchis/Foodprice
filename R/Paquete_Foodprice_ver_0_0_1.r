@@ -842,7 +842,7 @@ self$Data <- self$Data %>%
 self$Data = self$Data[order(self$Data$Alimento),]
 
 self$Data2=self$Data 
-self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004"))
+self$Data = self$Data %>% filter(!Cod_TCAC %in% c("K003", "K004", "K033","D013"))
 
 
 

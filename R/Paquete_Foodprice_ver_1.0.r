@@ -1070,7 +1070,7 @@ required_columns <- c("Precio_100g_ajust", "Alimento", "Energia")
 missing_columns <- setdiff(required_columns, colnames(self$Data))
 
 if (length(missing_columns) > 0) {
-  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
+  stop(paste("El modelo 2 requiere las siguientes columnas", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
 } else {
 
 
@@ -1633,7 +1633,7 @@ required_columns3 <- c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")
 missing_columns3 <- setdiff(required_columns3, colnames(self$Data2))
 
 if (length(missing_columns3) > 0) {
-  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns3, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al tercer modelo"))
+  stop(paste("El modelo 3 requiere las siguientes columnas", paste(missing_columns3, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al tercer modelo"))
 } else {
 
 

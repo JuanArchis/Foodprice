@@ -312,7 +312,7 @@ if (self$Año<2023) {
 
 if (!is.null(self$Percentil_Abast)){ # hiperparámetro
 
-  if (is.null(data_list_precios)){
+  if (is.null(data_list_abas)){
 
 if (self$Año>2022) {
 
@@ -921,7 +921,7 @@ print(mensaje)
     #        MÓDULO 2: CARGA DE DATOS DE REQURIMIENTOS           # -- EN PROGRESO (FALTA GENERALIZAR sleft$ para comunicar con módulos siguientes)
     #-----------------------------------------------------------#
 
-Módulo_2=function(){
+Requerimientos=function(){
 
 
 
@@ -1057,11 +1057,21 @@ data(TCAC, package = "Foodprice",envir=parent.env(environment()))
 }, # BASES Resultantes: Data, DRI_M, DRI_F, EER_share_M, EER_share_F, EER_share_rangos, exclusion_3er_modelo, cantidad_alimentos_seleccionar
 
 
-Módulo_3=function(){
+Modelo_1=function(){
 
   #--------------------------------------------------------------------------#
   #                   Primer Modelo - Construcción de datos                  #
   #-------------------------------------------------------------------------#
+
+# Verificación para el modelo 1
+
+required_columns <- c("Precio_100g_ajust", "Alimento", "Energía")
+missing_columns <- setdiff(required_columns, colnames(self$Data))
+
+if (length(missing_columns) > 0) {
+  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
+} else {
+
 
 
   precios = self$Data$Precio_100g_ajust
@@ -1071,6 +1081,9 @@ Módulo_3=function(){
 
   # Matriz de contenidos energéticos
   A = matrix(as.vector(self$Data$Energia), ncol = length(alimentos))
+
+
+
 
   #-----------------------------------------------------------------------------------------#
   #                   Primer Modelo Masculino - Solución y verificación                    #
@@ -1234,14 +1247,25 @@ Módulo_3=function(){
   assign(paste("Modelo_1_F", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
 
   if(length(warnings())<100) {cat ("Ejecución del modelo 1 correcta") } else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
-
+}
 },
 
-Módulo_4=function(){
+Modelo_2=function(){
 
 #--------------------------------------------------------------------------------------#
 #                   Segundo Modelo  - Femenino                        #
 #------------------------------------------------------------------------------------#
+
+
+required_columns2 <- c("Precio_100g_ajust", "Alimento", "Energía","Proteina", "Lipidos", "Carbohidratos", "VitaminaC", "Folatos", "VitaminaA",
+         "Tiamina", "Riboflavina", "Niacina", "VitaminaB12", "Magnesio", "Fosforo", "Sodio",
+         "Calcio", "Hierro", "Zinc")
+
+missing_columns2 <- setdiff(required_columns2, colnames(self$Data2$))
+
+if (length(missing_columns2) > 0) {
+  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns2, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al segundo modelo"))
+} else {
 
 
 
@@ -1595,12 +1619,24 @@ modelo_2_res[is.na(modelo_2_res)] = 0
 
 
 
-Módulo_5=function(){
+Modelo_3=function(){
 
 
 #---------------------------------------------------------------------------------------#
 #                   Tercer Modelo  - Construcción de ecuaciones                        #
 #-------------------------------------------------------------------------------------#
+
+
+required_columns3 <- c("Cod_TCAC", "Alimento", "Serving", "Precio_100g_ajust")
+
+missing_columns3 <- setdiff(required_columns3, colnames(self$Data2$))
+
+if (length(missing_columns3) > 0) {
+  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns3, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al tercer modelo"))
+} else {
+
+
+
 
 colnames(cantidad_alimentos_seleccionar) = c("Grupo_GABAS", "Cantidad")
 
@@ -2118,19 +2154,19 @@ cat("Ejecución del modelo 3 correcta")
 
 Modelos = function() {
 
-      self$Módulo_2()
+      self$Requerimientos()
       print("")
 
       if (self$Select_Modelos$mod1) {
-        self$Módulo_3()
+        self$Modelo_1()
         print("")
       }
       if (self$Select_Modelos$mod2) {
-        self$Módulo_4()
+        self$Modelo_2()
         print("")
       }
       if (self$Select_Modelos$mod3) {
-        self$Módulo_5()
+        self$Modelo_3()
         print("")
       }
     }

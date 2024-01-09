@@ -520,36 +520,17 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
 # LA CARGA DE DATOS NO SE MUESTRA EN EL AMBIENTE GLOBAL
 
-    # SIPSA (precios mayoristas-abastecimiento)
-    data(Mapeo_Precios_Abs, package = "Foodprice",envir=parent.env(environment()))
 
 
 
-    # SIPSA-TCAC (Códigos de sipsa a  Composición de Alimentos Colombianos)
+  # Crear un nuevo ambiente local
+  datos_env <- new.env()
 
-    data(Mapeo_Sipsa_TCAC, package = "Foodprice",envir=parent.env(environment()));colnames(Mapeo_Sipsa_TCAC) = c("Alimento", "Codigo_TCAC")
-    Mapeo_Sipsa_TCAC1=Mapeo_Sipsa_TCAC
-    Mapeo_Sipsa_TCAC = Mapeo_Sipsa_TCAC %>% filter(Codigo_TCAC %in% setdiff(levels(as.factor(Mapeo_Sipsa_TCAC$Codigo_TCAC)), "EX000"))
+  # Cargar los datos en el ambiente local
+  data(Primer_Criterio_Lista_Alimentos, package = "Foodprice", envir = datos_env)
 
-    # TCAC-GABAS (TCAC con Guías Alimentarias y SIN composición )
-    data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice",envir=parent.env(environment()))
-    Variables_Necesarias = c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC");Mapeo_Sipsa_TCAC_GABAS_Grupos = Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
-    colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) = c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
+print(Primer_Criterio_Lista_Alimentos)
 
-
-    #--------               -------#
-    #    Criterios de exclusión    #
-    #-----                  -------#
-
-    data(Primer_Criterio_Lista_Alimentos, package = "Foodprice",envir=parent.env(environment()))
-
-
-    #--------               -------#
-    #    Composición nutricional   #
-    #-----                  -------#
-
-
-   data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice",envir=parent.env(environment()))
 
 
 

@@ -20,9 +20,16 @@ Datos_dane_col(
 \description{
 La función Datos_dane_col ofrece la posibilidad de obtener y manejar datos de precios mayoristas SIPSA del Departamento Administrativo Nacional de Estadística (DANE) en Colombia, adecuados para un mes, año y ciudad particulares. Su resultado principal se centra en las estimaciones de los precios minoristas, vinculando los nutrientes correspondientes a cada alimento.}
 \examples{
+
 # Ejemplo de uso:
-# Obtener datos para Medellín, enero de 2023
-Datos_dane_col(Mes = "Enero", Año = 2023, Ciudad = "Medellín")
+# Obtener datos para Medellín, enero de 2017
+Datos_dane_col(Mes = "Enero", Año = 2017, Ciudad = "Medellín")
+
+# Salidas en el ambiente global
+
+PRECIOS_SIPSA_Enero_2017
+Datos_Insumo_Modelos_2017_Enero_Medellín
+
 }
 
 \arguments{
@@ -52,7 +59,7 @@ La función realiza una validación exhaustiva de los parámetros ingresados par
 \value{
 Las salidas se mostrarán en el ambiente global de R, su estructura es:
 
-    \item{PRECIOS_SIPSA_Mes_Año:}{ Datos de lso precios mayoristas de SIPSA descargados desde el DANE en el año y més dado}
+    \item{PRECIOS_SIPSA_Mes_Año:}{Datos de lso precios mayoristas de SIPSA descargados desde el DANE en el año y més dado}
     
     \item{Datos_Insumo_Modelos_Año_Mes_Ciudad:}{Data frame de la estimación de los precios minorístas junto con la composición nutricional de cada alimento}
 

@@ -4,7 +4,7 @@
 
 \name{Datos_dane_col}
 \alias{Datos_dane_col}
-\title{Función para procesar datos del DANE en Colombia}
+\title{Función para procesar datos de precios SIPSA del DANE en Colombia, desde el año 2013 hasta 2023.}
 \usage{
 Datos_dane_col(
   Mes,

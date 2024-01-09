@@ -18,8 +18,7 @@ Datos_dane_col(
 )
 }
 \description{
-La función Datos_dane_col permite procesar datos del Departamento Administrativo Nacional de Estadística (DANE) en Colombia para un mes, año y ciudad específicos. Realiza la estimación de los precios minorístas además del mapeo de los alimentos con sus nutrientes, considerando diferentes parámetros opcionales para obtener información detallada sobre el abastecimiento y los ingresos por alimentos en la ciudad seleccionada.
-Esta permite descargar y depurar los datos desde la web o localmente.
+La función Datos_dane_col permite procesar datos del Departamento Administrativo Nacional de Estadística (DANE) en Colombia para un mes, año y ciudad específicos. Realiza la estimación de los precios minoristas además del mapeo de los alimentos con sus nutrientes, considerando diferentes parámetros opcionales para obtener información detallada sobre el abastecimiento y los ingresos por alimentos en la ciudad seleccionada. También permite descargar y depurar los datos desde la web o localmente.
 }
 \examples{
 # Ejemplo de uso:
@@ -41,12 +40,11 @@ Datos_dane_col(Mes = "Enero", Año = 2023, Ciudad = "Medellín")
       \item{Percentil\_Abast}{Opcional. Un valor numérico entre 0 y 1 que indica el percentil para el análisis de abastecimiento.}
       \item{Ingreso\_Alimentos}{Opcional. Un vector o data frame con 21 columnas o tamaño 21, representando ingresos por alimentos.}
 
-      \item{data\_list\_precios}{Opcional. Una lista que contiene datos de precios.
-      Para el funcionamiento corecto el paquete supone los datos directamente descargados desde la página, es decir, NO debe depurar los datos; Además, como se supone es un excel con varias hojas, debe cargar este como una lista con la librería RIO, por ejemplo:
-      rio::import_list(Archivo_excel, setclass = "tbl") }
+      \item{data\_list\_precios}{Opcional. Una lista que contiene datos de precios. Para el funcionamiento correcto, el paquete asume que los datos son directamente descargados desde la página, es decir, NO se debe depurar los datos. Además, como se supone que es un archivo Excel con varias hojas, debe cargarse como una lista con la librería RIO, por ejemplo: rio::import_list(Archivo_excel, setclass = "tbl")}
 
-      \item{data\_list\_abas}{Opcional. Una lista de datos relacionados con el abastecimiento. Aplica las mismas condiciones de carga que data_list_precios.}
-      \item{Margenes}{Opcional. Un vector de tamaño 8 relacionado con márgenes a cada grupo alimenticio, el orden de este es:}
+      \item{data\_list\_abas}{Opcional. Una lista de datos relacionados con el abastecimiento. Aplica las mismas condiciones de carga que data\_list\_precios.}
+      
+      \item{Margenes}{Opcional. Un vector de tamaño 8 relacionado con márgenes a cada grupo alimenticio, en el orden correspondiente: carnes, frutas, granos y cereales, lacteos y huevos, pescados, procesados, tuberculos, raices y platanos, y verduras y hortalizas.}
     }
   }
 }

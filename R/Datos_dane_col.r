@@ -517,12 +517,6 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 #------------------------------------------------------#
 #                       CARGA DE MAPEOS: Datos intra  #
 #------------------------------------------------------#
-    local({
-    # Crear un entorno local
-    datos_entorno <- new.env()
-    
-    # Cargar datos en el entorno local
-    with(datos_entorno, {
 
     # Los datos no se mostrarán en el ámbito global
  
@@ -539,9 +533,6 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
   data(Primer_Criterio_Lista_Alimentos, package = "Foodprice")
   
   data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice")
-  
-})
-    })
 
     Micro_Macro_Nutrientes_Necesarios = c("codigo", "Nombre del Alimento", "% de parte comestible", "Factor de conversión", "Energia (Kcal)", "Proteina (g)", "Carbohidratos Totales (g)", "Lipidos (g)", "Calcio (mg)",
                                             "Zinc (mg)", "Hierro (mg)", "Magnesio (mg)", "Fosforo (mg)", "Vitamina C (mg)", "Tiamina (mg)", "Riboflavina (mg)",

@@ -27,19 +27,21 @@ Datos_dane_col(Mes = "Enero", Año = 2023, Ciudad = "Medellín")
 }
 
 \arguments{
-  \item{Parámetros necesarios:}{
-    \item{\code{Mes}}{Un texto representando el mes del año (por ejemplo, "Enero").}
-    \item{\code{Año}}{Un valor numérico entre 2014 y 2023, indicando el año de interés.}
-    \item{\code{Ciudad}}{Un texto que especifica la ciudad de interés en Colombia.}
-  }
 
-  \item{Parámetros opcionales:}{
-    \item{\code{Percentil\_Abast}}{Opcional. Un valor numérico entre 0 y 1 que indica el percentil para el análisis de abastecimiento.}
-    \item{\code{Ingreso\_Alimentos}}{Opcional. Un vector o data frame con 21 columnas o tamaño 21, representando ingresos por alimentos.}
-    \item{\code{data\_list\_precios}}{Opcional. Una lista que contiene datos de precios. Para el funcionamiento correcto, el paquete asume que los datos son directamente descargados desde la página, es decir, NO se debe depurar los datos. Además, como se supone que es un archivo Excel con varias hojas, debe cargarse como una lista con la librería RIO, por ejemplo: rio::import\_list(Archivo\_excel, setclass = "tbl")}
-    \item{\code{data\_list\_abas}}{Opcional. Una lista de datos relacionados con el abastecimiento. Aplica las mismas condiciones de carga que data\_list\_precios.}
-    \item{\code{Margenes}}{Opcional. Un vector de tamaño 8 relacionado con márgenes a cada grupo alimenticio, en el orden correspondiente: carnes, frutas, granos y cereales, lacteos y huevos, pescados, procesados, tuberculos, raices y platanos, y verduras y hortalizas.}
-  }
+ Parámetros necesarios:   
+ 
+    \item{{Mes}}{Un texto representando el mes del año (por ejemplo, "Enero").}
+    \item{{Año}}{Un valor numérico entre 2014 y 2023, indicando el año de interés.}
+    \item{{Ciudad}}{Un texto que especifica la ciudad de interés en Colombia.}
+
+ Parámetros Opcionales:   
+
+    \item{{Percentil_Abast}}{Opcional. Un valor numérico entre 0 y 1 que indica el percentil para el análisis de abastecimiento.}
+    \item{{Ingreso_Alimentos}}{Opcional. Un vector o data frame con 21 columnas o tamaño 21, representando ingresos por alimentos.}
+    \item{{data_list_precios}}{Opcional. Una lista que contiene datos de precios. Para el funcionamiento correcto, el paquete asume que los datos son directamente descargados desde la página, es decir, NO se debe depurar los datos. Además, como se supone que es un archivo Excel con varias hojas, debe cargarse como una lista con la librería RIO, por ejemplo: rio::import\_list(Archivo\_excel, setclass = "tbl")}
+    \item{{data_list_abas}}{Opcional. Una lista de datos relacionados con el abastecimiento. Aplica las mismas condiciones de carga que data\_list\_precios.}
+    \item{{Margenes}}{Opcional. Un vector de tamaño 8 relacionado con márgenes a cada grupo alimenticio, en el orden correspondiente: carnes, frutas, granos y cereales, lacteos y huevos, pescados, procesados, tuberculos, raices y platanos, y verduras y hortalizas.}
+
 }
 
 

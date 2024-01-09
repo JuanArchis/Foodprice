@@ -523,28 +523,58 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 
 
 
-  # Crear un nuevo ambiente local
-  datos_env <- new.env()
+# Crear un nuevo ambiente local para sólo los datos
+datos_env <- new.env()
 
   # Cargar los datos en el ambiente local
   data(Primer_Criterio_Lista_Alimentos, package = "Foodprice", envir = datos_env)
 
-print(Primer_Criterio_Lista_Alimentos)
+
+    # SIPSA (precios mayoristas-abastecimiento)
+    data(Mapeo_Precios_Abs, package = "Foodprice",envir=datos_env)
+
+
+
+    # SIPSA-TCAC (Códigos de sipsa a  Composición de Alimentos Colombianos)
+
+    data(Mapeo_Sipsa_TCAC, package = "Foodprice",envir=datos_env);colnames(Mapeo_Sipsa_TCAC) = c("Alimento", "Codigo_TCAC")
+    Mapeo_Sipsa_TCAC1=Mapeo_Sipsa_TCAC
+    Mapeo_Sipsa_TCAC = Mapeo_Sipsa_TCAC %>% filter(Codigo_TCAC %in% setdiff(levels(as.factor(Mapeo_Sipsa_TCAC$Codigo_TCAC)), "EX000"))
+
+    # TCAC-GABAS (TCAC con Guías Alimentarias y SIN composición )
+    data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice",envir=datos_env)
+    Variables_Necesarias = c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC");Mapeo_Sipsa_TCAC_GABAS_Grupos = Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
+    colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) = c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
+
+
+    #--------               -------#
+    #    Criterios de exclusión    #
+    #-----                  -------#
+
+    data(Primer_Criterio_Lista_Alimentos, package = "Foodprice",envir=datos_env)
+
+
+    #--------               -------#
+    #    Composición nutricional   #
+    #-----                  -------#
+
+
+   data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice",envir=datos_env)
 
 
 
 
 
+
+#------------------------------------------------------#
+#                       seleción de datos              #
+#------------------------------------------------------#
 
     Micro_Macro_Nutrientes_Necesarios = c("codigo", "Nombre del Alimento", "% de parte comestible", "Factor de conversión", "Energia (Kcal)", "Proteina (g)", "Carbohidratos Totales (g)", "Lipidos (g)", "Calcio (mg)",
                                             "Zinc (mg)", "Hierro (mg)", "Magnesio (mg)", "Fosforo (mg)", "Vitamina C (mg)", "Tiamina (mg)", "Riboflavina (mg)",
                                             "Niacina (mg)", "Folatos (mcg)", "Vitamina B12 (mcg)", "Vitamina A (ER)", "Sodio (mg)", "Micr sin inf (por alimento)")
 
     Sipsa_TCAC=Mapeo_Sipsa_TCAC_Carga_2[Micro_Macro_Nutrientes_Necesarios];colnames(Sipsa_TCAC)[1] = "Cod_TCAC";colnames(Sipsa_TCAC)[2] = "Alimento_TCAC"
-
-#------------------------------------------------------#
-#                       seleción de datos              #
-#------------------------------------------------------#
 
     Data_abs_precios_Sipsa=Data_Sipsa_Precios_Unicos
 

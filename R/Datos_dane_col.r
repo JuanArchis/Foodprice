@@ -517,31 +517,31 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 #------------------------------------------------------#
 #                       CARGA DE MAPEOS: Datos intra  #
 #------------------------------------------------------#
-# Crear un nuevo entorno local
-entorno_local <- new.env()
+    local({
+    # Crear un entorno local
+    datos_entorno <- new.env()
+    
+    # Cargar datos en el entorno local
+    with(datos_entorno, {
 
-  # Dentro del nuevo entorno local
-  with(entorno_local, {
-    # Cargar y manipular los datos
-    data(Mapeo_Sipsa_TCAC, package = "Foodprice")
-    colnames(Mapeo_Sipsa_TCAC) <- c("Alimento", "Codigo_TCAC")
-    Mapeo_Sipsa_TCAC1 <- Mapeo_Sipsa_TCAC
-    Mapeo_Sipsa_TCAC <- Mapeo_Sipsa_TCAC %>% filter(Codigo_TCAC %in% setdiff(levels(as.factor(Mapeo_Sipsa_TCAC$Codigo_TCAC)), "EX000"))
-    
-    data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice")
-    Variables_Necesarias <- c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC")
-    Mapeo_Sipsa_TCAC_GABAS_Grupos <- Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
-    colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) <- c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
-    
-    data(Primer_Criterio_Lista_Alimentos, package = "Foodprice")
-    
-    data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice")
-    
-    # Puedes realizar operaciones o análisis con los datos aquí
-    
-    # Al salir de este bloque, el entorno se limpiará automáticamente
-  })
-
+    # Los datos no se mostrarán en el ámbito global
+ 
+  data(Mapeo_Sipsa_TCAC, package = "Foodprice")
+  colnames(Mapeo_Sipsa_TCAC) <- c("Alimento", "Codigo_TCAC")
+  Mapeo_Sipsa_TCAC1 <- Mapeo_Sipsa_TCAC
+  Mapeo_Sipsa_TCAC <- Mapeo_Sipsa_TCAC %>% filter(Codigo_TCAC %in% setdiff(levels(as.factor(Mapeo_Sipsa_TCAC$Codigo_TCAC)), "EX000"))
+  
+  data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice")
+  Variables_Necesarias <- c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC")
+  Mapeo_Sipsa_TCAC_GABAS_Grupos <- Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
+  colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) <- c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
+  
+  data(Primer_Criterio_Lista_Alimentos, package = "Foodprice")
+  
+  data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice")
+  
+})
+    })
 
     Micro_Macro_Nutrientes_Necesarios = c("codigo", "Nombre del Alimento", "% de parte comestible", "Factor de conversión", "Energia (Kcal)", "Proteina (g)", "Carbohidratos Totales (g)", "Lipidos (g)", "Calcio (mg)",
                                             "Zinc (mg)", "Hierro (mg)", "Magnesio (mg)", "Fosforo (mg)", "Vitamina C (mg)", "Tiamina (mg)", "Riboflavina (mg)",
@@ -857,3 +857,33 @@ cat("\n")
 
 
 }
+
+library(dbplyr)
+
+
+# Crear un nuevo entorno local
+entorno_local <- new.env()
+
+  # Dentro del nuevo entorno local
+  with(entorno_local, {
+    # Cargar y manipular los datos
+    data(Mapeo_Sipsa_TCAC, package = "Foodprice")
+    colnames(Mapeo_Sipsa_TCAC) <- c("Alimento", "Codigo_TCAC")
+    Mapeo_Sipsa_TCAC1 <- Mapeo_Sipsa_TCAC
+    Mapeo_Sipsa_TCAC <- Mapeo_Sipsa_TCAC %>% filter(Codigo_TCAC %in% setdiff(levels(as.factor(Mapeo_Sipsa_TCAC$Codigo_TCAC)), "EX000"))
+    
+    data(Mapeo_Sipsa_TCAC_GABAS_Grupos, package = "Foodprice")
+    Variables_Necesarias <- c("codigo", "Nombre del Alimento","Grupos  GABAS", "Subgrupos  GABAS",  "Grupo TCAC")
+    Mapeo_Sipsa_TCAC_GABAS_Grupos <- Mapeo_Sipsa_TCAC_GABAS_Grupos[Variables_Necesarias]
+    colnames(Mapeo_Sipsa_TCAC_GABAS_Grupos) <- c("Cod_TCAC", "Alimento", "Grupo_GABAS", "Subgrupo_GABAS", "Grupo_TCAC")
+    
+    data(Primer_Criterio_Lista_Alimentos, package = "Foodprice")
+    
+    data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice")
+    
+    # Puedes realizar operaciones o análisis con los datos aquí
+    
+    # Al salir de este bloque, el entorno se limpiará automáticamente
+  })
+
+

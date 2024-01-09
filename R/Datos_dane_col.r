@@ -518,6 +518,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 #                       CARGA DE MAPEOS: Datos intra  #
 #------------------------------------------------------#
 
+print("SI LLEGA ")
 
    # SIPSA (precios mayoristas-abastecimiento)
     data(Mapeo_Precios_Abs, package = "Foodprice",envir=parent.env(environment()))

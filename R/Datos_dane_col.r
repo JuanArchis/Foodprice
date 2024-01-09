@@ -520,7 +520,7 @@ Data_Sipsa_Abas_Unicos=Data_Sipsa_Abas_Unicos[,c("Alimento_abs","Total")]
 local_env <- new.env(parent = emptyenv())
   
   # Cargar los datos dentro del entorno local
-with(local_env, (
+with(local_env, {
 
 
    # SIPSA (precios mayoristas-abastecimiento)
@@ -554,7 +554,7 @@ with(local_env, (
 
    data(Mapeo_Sipsa_TCAC_Carga_2, package = "Foodprice")
 
-))
+ })
 
     Micro_Macro_Nutrientes_Necesarios = c("codigo", "Nombre del Alimento", "% de parte comestible", "Factor de conversión", "Energia (Kcal)", "Proteina (g)", "Carbohidratos Totales (g)", "Lipidos (g)", "Calcio (mg)",
                                             "Zinc (mg)", "Hierro (mg)", "Magnesio (mg)", "Fosforo (mg)", "Vitamina C (mg)", "Tiamina (mg)", "Riboflavina (mg)",

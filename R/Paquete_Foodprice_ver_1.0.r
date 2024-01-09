@@ -250,11 +250,12 @@ if (!is.null(self$Data_Model) && is.data.frame(self$Data_Model) && nrow(self$Dat
   assign("Datos_Insumo_Modelos",self$Data_Model,envir = globalenv())
   
         self$Data=self$Data_Model
-      self$Data3=self$Data_Model
+        self$Data2=self$Data_Model
+       self$Data3=self$Data_Model
   
   } else {
       
-
+#
 
 options(rio.column_names = FALSE)
 
@@ -886,11 +887,26 @@ if (!is.null(self$Ingreso_Alimentos)) {
     alimentos_encontrados <- self$Ingreso_Alimentos[self$Ingreso_Alimentos %in% alimentos_faltantes]
   }
 
+    alimentos_faltantes <- alimentos_faltantes[!(alimentos_faltantes %in% alimentos_encontrados)]
+  # Palabras a eliminar
+alimentos_a_eliminar <- c("Ajo importado", "cilantro", "linaza molida", "jengibre", "tomillo", "perejil liso", "crespo", "Ajo","Acelga")
+
+# Eliminar alimentos específicos del vector
+alimentos_faltantes <- alimentos_faltantes[!grepl(paste(alimentos_a_eliminar, collapse = "|"), alimentos_faltantes, ignore.case = TRUE)]
+
   alimentos_faltantes <- alimentos_faltantes[!(alimentos_faltantes %in% alimentos_encontrados)]
   
   Datos_Insumo_Modelos <- rbind(self$Ingreso_Alimentos, Datos_Insumo_Modelos)
 } else {
+
   alimentos_faltantes <- Alimentos_Sipsa_Precios[!(Alimentos_Sipsa_Precios %in% Mapeo_Sipsa_TCAC1$Alimento)]
+
+  # Palabras a eliminar
+alimentos_a_eliminar <- c("Ajo importado", "cilantro", "linaza molida", "jengibre", "tomillo", "perejil liso", "crespo", "Ajo","Acelga")
+
+# Eliminar alimentos específicos del vector
+alimentos_faltantes <- alimentos_faltantes[!grepl(paste(alimentos_a_eliminar, collapse = "|"), alimentos_faltantes, ignore.case = TRUE)]
+
 }
 
 
@@ -1135,15 +1151,21 @@ if (length(missing_columns) > 0) {
   modelo_1_res = modelo_1[rowSums(is.na(modelo_1[,2:length(colnames(modelo_1))])) != ncol(modelo_1[,2:length(colnames(modelo_1))]),]
 
   #presentaci?n del resultado en gramos
-  modelo_1_res[nrow(modelo_1_res)+1,] = modelo_1_res[1,]
+ # Encuentra el nombre del alimento diferente a 'Costo'
+alimento_nombre <- modelo_1_res[modelo_1_res$Alimentos != "Costo", "Alimentos"]
 
-  for (k in 2:ncol(modelo_1_res)) {
-    modelo_1_res[3,k] = as.numeric(modelo_1_res[1,k])*100
-  }
+# Encuentra la fila del alimento
+alimento_fila <- modelo_1_res[modelo_1_res$Alimentos == alimento_nombre, ]
 
-  modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(100 g)")
-  modelo_1_res = modelo_1_res[c(1,3,2),]
+# Multiplica los valores por 100
+alimento_fila_100g <- alimento_fila
+alimento_fila_100g[-1] <- as.numeric(alimento_fila_100g[-1]) * 100
 
+# Agrega una nueva fila con los valores de alimento * 100
+modelo_1_res <- rbind(modelo_1_res, alimento_fila_100g)
+
+# Modifica el nombre del alimento para representar 100g
+modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g)")
   #--------- Validación
 
   # vector de energía para el alimento seleccionado
@@ -1236,14 +1258,21 @@ if (length(missing_columns) > 0) {
   modelo_1_res = modelo_1[rowSums(is.na(modelo_1[,2:length(colnames(modelo_1))])) != ncol(modelo_1[,2:length(colnames(modelo_1))]),]
 
   #presentaci?n del resultado en gramos
-  modelo_1_res[nrow(modelo_1_res)+1,] = modelo_1_res[1,]
+ # Encuentra el nombre del alimento diferente a 'Costo'
+alimento_nombre <- modelo_1_res[modelo_1_res$Alimentos != "Costo", "Alimentos"]
 
-  for (k in 2:ncol(modelo_1_res)) {
-    modelo_1_res[3,k] = as.numeric(modelo_1_res[1,k])*100
-  }
+# Encuentra la fila del alimento
+alimento_fila <- modelo_1_res[modelo_1_res$Alimentos == alimento_nombre, ]
 
-  modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(100 g)")
-  modelo_1_res = modelo_1_res[c(1,3,2),]
+# Multiplica los valores por 100
+alimento_fila_100g <- alimento_fila
+alimento_fila_100g[-1] <- as.numeric(alimento_fila_100g[-1]) * 100
+
+# Agrega una nueva fila con los valores de alimento * 100
+modelo_1_res <- rbind(modelo_1_res, alimento_fila_100g)
+
+# Modifica el nombre del alimento para representar 100g
+modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g)")
 
   assign(paste("Modelo_1_F", self$Mes, self$Año, sep = "_"),modelo_1_res,envir = globalenv())
 
@@ -1265,7 +1294,7 @@ required_columns2 <- c("Precio_100g_ajust", "Alimento", "Energia","Proteina", "L
 missing_columns2 <- setdiff(required_columns2, colnames(self$Data2))
 
 if (length(missing_columns2) > 0) {
-  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns2, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al segundo modelo"))
+  stop(paste("El modelo 2 requiere las siguientes columnas", paste(missing_columns2, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al segundo modelo"))
 } else {
 
 

@@ -4,35 +4,20 @@
 #-----------------------------------------------------------------------------------------#
 
 
-#' Obtener datos del DANE para Colombia
-#'
-#' Esta función obtiene datos del Departamento Administrativo Nacional de Estadística (DANE)
-#' para Colombia, dados el mes y la ciudad en formato de texto.
-#'
-#' @param Mes El mes para el que se desean obtener los datos.
-#' @param Ciudad El nombre de la ciudad de la cual se quieren obtener los datos.
-#' @param Año Año del  cual se quieren obtener los datos.
-#'
-#' @return Retorna los datos correspondientes al mes y ciudad especificados.
-#'
-#' @details La función espera que tanto el mes como la ciudad estén en formato de texto.
-#' Por ejemplo, Mes="Enero" y Ciudad="Bogotá".
-#'
-#' @examples
-#' Datos_dane_col("Enero", "Bogotá")
-#'
-#' @export
-#' @keywords dataset
-#'
-#' @seealso Otras funciones relacionadas: OtraFuncionRelacionada
-#'
-#' @references Aquí puedes incluir referencias relevantes si las hay.
-#'
-#' @family Funciones de acceso a datos
-#' @version 1.0.0
-#' @author Tu Nombre <tu@email.com>
-#' @copyright Año, Tu Nombre
-#' @license Licencia
+# Hello, world!
+#
+# This is an example function named 'hello' 
+# which prints 'Hello, world!'.
+#
+# You can learn more about package authoring with RStudio at:
+#
+#   http://r-pkgs.had.co.nz/
+#
+# Some useful keyboard shortcuts for package authoring:
+#
+#   Install Package:           'Ctrl + Shift + B'
+#   Check Package:             'Ctrl + Shift + E'
+#   Test Package:              'Ctrl + Shift + T'
 
 
 

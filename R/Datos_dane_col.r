@@ -523,7 +523,7 @@ print("SI LLEGA ")
    # SIPSA (precios mayoristas-abastecimiento)
     data(Mapeo_Precios_Abs, package = "Foodprice",envir=parent.env(environment()))
 
-
+print("SI LLEGA 2")
 
     # SIPSA-TCAC (Códigos de sipsa a  Composición de Alimentos Colombianos)
 

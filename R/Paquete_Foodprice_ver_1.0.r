@@ -2180,3 +2180,24 @@ Modelos = function() {
 
 
 
+
+
+
+
+
+
+
+
+
+
+mes_solicitado <- "Diciembre"  # Aquí colocas el mes que buscas
+
+meses_disponibles <- Nombres_Meses[1:length(self$data_list_precios) - 1]
+posicion_mes <- which(meses_disponibles %in% mes_solicitado)
+
+if (length(posicion_mes) == 0) {
+  stop("El mes solicitado no está presente en los datos SIPSA.")
+} else {
+  Data_Sipsa_Precios <- self$data_list_precios[[posicion_mes + 1]]
+  # Resto de tu código usando Data_Sipsa_Precios...
+}

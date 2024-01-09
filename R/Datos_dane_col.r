@@ -6,7 +6,8 @@
 #'
 #' Esta función obtiene datos del Departamento Administrativo Nacional de Estadística (DANE)
 #' para Colombia, dados el mes y la ciudad en formato de texto.
-#'
+#' @name Datos_dane_col
+#' 
 #' @param Mes El mes para el que se desean obtener los datos.
 #' @param Ciudad El nombre de la ciudad de la cual se quieren obtener los datos.
 #'

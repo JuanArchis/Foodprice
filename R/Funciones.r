@@ -830,5 +830,4 @@ library(Foodprice)
 dane(Ciudad="cali",Mes="enero",Año=2018,Percentil_Abast=0.1)
 PRECIOS_SIPSA_Enero_2018_cali
 
-View(Datos_Insumo_Modelos_2018_Enero_cali)
 

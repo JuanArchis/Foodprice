@@ -18,8 +18,7 @@ Datos_dane_col(
 )
 }
 \description{
-La función Datos_dane_col permite procesar datos del Departamento Administrativo Nacional de Estadística (DANE) en Colombia para un mes, año y ciudad específicos. Realiza la estimación de los precios minoristas además del mapeo de los alimentos con sus nutrientes, considerando diferentes parámetros opcionales para obtener información detallada sobre el abastecimiento y los ingresos por alimentos en la ciudad seleccionada. También permite descargar y depurar los datos desde la web o localmente.
-}
+La función Datos_dane_col ofrece la posibilidad de obtener y manejar datos de precios mayoristas SIPSA del Departamento Administrativo Nacional de Estadística (DANE) en Colombia, adecuados para un mes, año y ciudad particulares. Su resultado principal se centra en las estimaciones de los precios minoristas, vinculando los nutrientes correspondientes a cada alimento.}
 \examples{
 # Ejemplo de uso:
 # Obtener datos para Medellín, enero de 2023
@@ -28,30 +27,35 @@ Datos_dane_col(Mes = "Enero", Año = 2023, Ciudad = "Medellín")
 
 \arguments{
 
- Parámetros necesarios:   
- 
-    \item{{Mes}}{Un texto representando el mes del año (por ejemplo, "Enero").}
-    \item{{Año}}{Un valor numérico entre 2014 y 2023, indicando el año de interés.}
-    \item{{Ciudad}}{Un texto que especifica la ciudad de interés en Colombia.}
+ \code{- PARÁMETROS NECESARIOS} 
 
- Parámetros Opcionales:   
+    \item{Mes:}{Un texto representando el mes del año (por ejemplo, "Enero").}
+    \item{Año:}{Un valor numérico entre 2014 y 2023, indicando el año de interés.}
+    \item{Ciudad:}{Un texto que especifica la ciudad de interés en Colombia.}
 
-    \item{{Percentil_Abast}}{Opcional. Un valor numérico entre 0 y 1 que indica el percentil para el análisis de abastecimiento.}
-    \item{{Ingreso_Alimentos}}{Opcional. Un vector o data frame con 21 columnas o tamaño 21, representando ingresos por alimentos.}
-    \item{{data_list_precios}}{Opcional. Una lista que contiene datos de precios. Para el funcionamiento correcto, el paquete asume que los datos son directamente descargados desde la página, es decir, NO se debe depurar los datos. Además, como se supone que es un archivo Excel con varias hojas, debe cargarse como una lista con la librería RIO, por ejemplo: rio::import\_list(Archivo\_excel, setclass = "tbl")}
-    \item{{data_list_abas}}{Opcional. Una lista de datos relacionados con el abastecimiento. Aplica las mismas condiciones de carga que data\_list\_precios.}
-    \item{{Margenes}}{Opcional. Un vector de tamaño 8 relacionado con márgenes a cada grupo alimenticio, en el orden correspondiente: carnes, frutas, granos y cereales, lacteos y huevos, pescados, procesados, tuberculos, raices y platanos, y verduras y hortalizas.}
+ \code{- PARÁMETROS OPCIONALES} 
+
+    \item{Percentil_Abast:}{Un número dentro del rango de 0 a 1 que señala el percentil utilizado para filtrar los alimentos con un nivel de abastecimiento inferior a este valor. Por omisión, se establece como NULL.}
+    \item{Ingreso_Alimentos:}{Un vector o data frame con 21 columnas, que puede tener un tamaño de 21 si se trata de un vector. Este conjunto de datos actúa como un complemento para los alimentos faltantes en términos de su contenido nutricional. Inicialmente, los análisis nutricionales se llevaron a cabo exclusivamente para la ciudad de Cali, Colombia, lo que resulta en la ausencia de información sobre la composición nutricional de varios alimentos en otras ciudades. La función identifica y muestra los alimentos faltantes en la ciudad proporcionada debido a esta carencia de datos nutricionales específicos para cada ubicación.}
+    \item{data_list_precios:}{Una lista que incorpora información de precios. Para su correcto funcionamiento, se espera que el paquete maneje datos descargados directamente desde el DANE, evitando así cualquier procedimiento previo de depuración de datos. Se supone que estos datos se encuentran en un archivo Excel con múltiples hojas, por lo que deben ser cargados como una lista utilizando la librería RIO. Por ejemplo, se puede utilizar la función rio::import_list(Archivo_excel, setclass = "tbl").}
+    \item{data_list_abas:}{Una colección de datos vinculados al abastecimiento. Se espera que el proceso de carga para estos datos siga las mismas pautas que se establecen para la carga de la lista de precios, es decir, aplicando las mismas condiciones y procedimientos de carga que se emplean para data_list_precios.}
+    \item{Margenes:}{Un conjunto de ocho valores que representan los márgenes de comercialización asociados a cada categoría de alimentos. Estos valores deben seguir un orden específico correspondiente a las siguientes categorías: carnes, frutas, granos y cereales, lácteos y huevos, pescados, productos procesados, tubérculos, raíces y plátanos, verduras y hortalizas.}
 
 }
 
 
 
 \details{
-La función realiza una validación exhaustiva de los parámetros ingresados para asegurar su coherencia y luego procesa los datos correspondientes del DANE para ofrecer análisis detallados sobre el abastecimiento y los ingresos por alimentos en la ciudad especificada.
+La función realiza una validación exhaustiva de los parámetros ingresados para asegurar su coherencia y luego procesa los datos correspondientes del DANE para estimar los precios minoristas junto con la composición de cada alimento.
 }
 
 \value{
-La función retorna análisis y estadísticas detalladas relacionadas con el abastecimiento y los ingresos por alimentos en la ciudad y periodo de tiempo seleccionados.
+Las salidas se mostrarán en el ambiente global de R, su estructura es:
+
+    \item{PRECIOS_SIPSA_Mes_Año:}{ Datos de lso precios mayoristas de SIPSA descargados desde el DANE en el año y més dado}
+    
+    \item{Datos_Insumo_Modelos_Año_Mes_Ciudad:}{Data frame de la estimación de los precios minorístas junto con la composición nutricional de cada alimento}
+
 }
 
 \note{

@@ -312,7 +312,7 @@ Data_Sipsa_Precios$Fecha=convertir_fechas_vector(Data_Sipsa_Precios$Fecha)
 
 #Data_Sipsa_Precios$Fecha=as.Date(paste(Año,which(Meses %in% Mes),"1", sep = "-"),format = "%Y-%m-%d") # Cambia los nombres y asigna fechas
 
-assign(paste("PRECIOS_SIPSA", Mes, Año,Ciudad, sep = "_"),Data_Sipsa_Precios,envir = globalenv())
+assign(paste("PRECIOS_SIPSA", Mes, Año, sep = "_"),Data_Sipsa_Precios,envir = globalenv())
 
 
 
@@ -656,7 +656,7 @@ datos_env <- new.env()
     #-----                       -------#
 
     grupos_margenes <- levels(as.factor(Precios_Grupos_SIPSA$Grupo));Margenes_Historicos <- data.frame(Grupo = grupos_margenes, margen_medio=NA)
-    print(grupos_margenes)
+
     # margen medio
     Margenes_Historicos$margen_medio <- c(4.925515,32.154734,21.770773,26.226295,17.150887,6.884347,76.380988,54.096494)
 

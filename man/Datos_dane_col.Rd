@@ -27,8 +27,8 @@ Datos_dane_col(Mes = "Enero", Año = 2017, Ciudad = "Medellín")
 
 # Salidas en el ambiente global
 
-PRECIOS_SIPSA_Enero_2017
-Datos_Insumo_Modelos_2017_Enero_Medellín
+kable(head(PRECIOS_SIPSA_Enero_2017))
+kable(head(Datos_Insumo_Modelos_2017_Enero_Medellín))
 
 }
 

@@ -1,7 +1,52 @@
 
+#------------------------------------------------------------------------------------------#
+#                 D O C U M E N T A C I Ó N: FUNCIÓN-Datos_dane_col                        #
+#-----------------------------------------------------------------------------------------#
 
 
-dane <- function(Mes, Año, Ciudad, Percentil_Abast = NULL, Ingreso_Alimentos = NULL, data_list_precios = NULL, data_list_abas = NULL, Margenes=NULL) {
+#' Obtener datos del DANE para Colombia
+#'
+#' Esta función obtiene datos del Departamento Administrativo Nacional de Estadística (DANE)
+#' para Colombia, dados el mes y la ciudad en formato de texto.
+#'
+#' @param Mes El mes para el que se desean obtener los datos.
+#' @param Ciudad El nombre de la ciudad de la cual se quieren obtener los datos.
+#' @param Año Año del  cual se quieren obtener los datos.
+#'
+#' @return Retorna los datos correspondientes al mes y ciudad especificados.
+#'
+#' @details La función espera que tanto el mes como la ciudad estén en formato de texto.
+#' Por ejemplo, Mes="Enero" y Ciudad="Bogotá".
+#'
+#' @examples
+#' Datos_dane_col("Enero", "Bogotá")
+#'
+#' @export
+#' @keywords dataset
+#'
+#' @seealso Otras funciones relacionadas: OtraFuncionRelacionada
+#'
+#' @references Aquí puedes incluir referencias relevantes si las hay.
+#'
+#' @family Funciones de acceso a datos
+#' @version 1.0.0
+#' @author Tu Nombre <tu@email.com>
+#' @copyright Año, Tu Nombre
+#' @license Licencia
+
+
+
+
+
+
+
+
+#------------------------------------------------------------------------------------------#
+#         PRIMERA FUNCIÓN: CARGA Y DEPURACIÓN DATOS DE COLOMBIA, DANE                      #
+#-----------------------------------------------------------------------------------------#
+ 
+ 
+ Datos_dane_col<- function(Mes, Año, Ciudad, Percentil_Abast = NULL, Ingreso_Alimentos = NULL, data_list_precios = NULL, data_list_abas = NULL, Margenes=NULL) {
 
 
 #------------------------------------------------------------------------------------------#

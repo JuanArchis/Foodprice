@@ -43,18 +43,19 @@ dane <- function(Mes, Año, Ciudad, Percentil_Abast = NULL, Ingreso_Alimentos = 
   }
   
 # Verificación de Percentil_Abast si es proporcionado
+if(!is.null(Percentil_Abast)){
+   if (!is.numeric(Percentil_Abast) || Percentil_Abast < 0 || Percentil_Abast > 1) {
+      stop("El Percentil_Abast debe ser un valor numérico entre 0 y 1. Revise la documentación de la función para más información")
+    }
 
+}
 if (!is.null(data_list_abas)) {
     if (!is.list(data_list_abas)){
     stop("data_list_abas debe ser una lista. Revise la documentación de la función para más información")
     }
   if (is.null(Percentil_Abast)) {
     stop("Si se proporciona data_list_abas, Percentil_Abast debe estar presente. Revise la documentación de la función para más información")
-  } else {
-    if (!is.numeric(Percentil_Abast) || Percentil_Abast < 0 || Percentil_Abast > 1) {
-      stop("El Percentil_Abast debe ser un valor numérico entre 0 y 1. Revise la documentación de la función para más información")
-    }
-  }
+  } 
 }
   
   # Verificación de Ingreso_Alimentos si es proporcionado
@@ -269,13 +270,14 @@ Data_Sipsa_Precios=(data_list_precios[[which(Meses %in% Mes)+1]]) # Se extraen l
 }
 
 if (Año==2018){ 
-    Meses=1:12
+#Meses = c("Enero","Febrero","Marzo","Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre")
+
  Data_Sipsa_Precios=data_list_precios[[2]]   
 }
 
  if(Año < 2018) {
 
-Meses=1:12
+#Meses = c("Enero","Febrero","Marzo","Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre","Octubre","Noviembre","Diciembre")
 Año_selec <- which(Año == 2013:2017)
 Data_Sipsa_Precios <- data_list_precios[[Año_selec+1]]
 
@@ -283,13 +285,32 @@ Data_Sipsa_Precios <- Data_Sipsa_Precios[rowSums(is.na(Data_Sipsa_Precios)) / nc
 
 }
 
-# Depuración y eliminar datos NA
 
 Data_Sipsa_Precios <- Data_Sipsa_Precios[rowSums(is.na(Data_Sipsa_Precios)) / ncol(Data_Sipsa_Precios) < 0.5, colSums(is.na(Data_Sipsa_Precios)) / nrow(Data_Sipsa_Precios) < 0.5 ]
 Data_Sipsa_Precios=Data_Sipsa_Precios[-1,]
-colnames(Data_Sipsa_Precios) = c("Fecha", "Grupo", "Alimento", "Mercado", "Precio_kg");Data_Sipsa_Precios$Precio_kg=as.numeric(Data_Sipsa_Precios$Precio_kg);Data_Sipsa_Precios$Fecha=as.Date(paste(Año,which(Meses %in% Mes),"1", sep = "-"),format = "%Y-%m-%d") # Cambia los nombres y asigna fechas
+colnames(Data_Sipsa_Precios) = c("Fecha", "Grupo", "Alimento", "Mercado", "Precio_kg");Data_Sipsa_Precios$Precio_kg=as.numeric(Data_Sipsa_Precios$Precio_kg)
 
-assign(paste("PRECIOS_SIPSA", Mes, Año, sep = "_"),Data_Sipsa_Precios,envir = globalenv())
+# ------------DFECHAS
+
+
+    convertir_fechas_vector <- function(fechas) {
+  formato_fecha <- ifelse(grepl("/", fechas[1]), "%d/%m/%y", "%d") # Comprueba el formato
+  
+  if (formato_fecha == "%d/%m/%y") {
+    fechas_convertidas <- as.Date(fechas, format = "%d/%m/%y", na.rm = TRUE)
+  } else {
+    fechas_numericas <- as.numeric(fechas)
+    fechas_convertidas <- as.Date(fechas_numericas, origin = "1899-12-30")
+  }
+  
+  return(fechas_convertidas)
+}
+
+Data_Sipsa_Precios$Fecha=convertir_fechas_vector(Data_Sipsa_Precios$Fecha)
+
+#Data_Sipsa_Precios$Fecha=as.Date(paste(Año,which(Meses %in% Mes),"1", sep = "-"),format = "%Y-%m-%d") # Cambia los nombres y asigna fechas
+
+assign(paste("PRECIOS_SIPSA", Mes, Año,Ciudad, sep = "_"),Data_Sipsa_Precios,envir = globalenv())
 
 
 
@@ -375,18 +396,6 @@ Data_Sipsa_Abas <- Data_Sipsa_Abas[rowSums(is.na(Data_Sipsa_Abas)) / ncol(Data_S
 Data_Sipsa_Abas=Data_Sipsa_Abas[-1,]
 Data_Sipsa_Abas$Cantidad_KG=as.numeric(Data_Sipsa_Abas$Cantidad_KG)
 
-    convertir_fechas_vector <- function(fechas) {
-  formato_fecha <- ifelse(grepl("/", fechas[1]), "%d/%m/%y", "%d") # Comprueba el formato
-  
-  if (formato_fecha == "%d/%m/%y") {
-    fechas_convertidas <- as.Date(fechas, format = "%d/%m/%y", na.rm = TRUE)
-  } else {
-    fechas_numericas <- as.numeric(fechas)
-    fechas_convertidas <- as.Date(fechas_numericas, origin = "1899-12-30")
-  }
-  
-  return(fechas_convertidas)
-}
 
 Data_Sipsa_Abas$Fecha <- convertir_fechas_vector(Data_Sipsa_Abas$Fecha)
 
@@ -782,7 +791,7 @@ if (!is.null(Ingreso_Alimentos)) {
 }
 
     
-assign(paste0("Datos_Insumo_Modelos_",Año,"_",Mes),Datos_Insumo_Modelos,envir = globalenv())
+assign(paste0("Datos_Insumo_Modelos_",Año,"_",Mes,"_",Ciudad),Datos_Insumo_Modelos,envir = globalenv())
 
 
 mensaje <- paste("En la ciudad de", Ciudad, "del año", Año, "y mes", Mes, ", se omitieron los siguientes alimentos por falta de información nutricional " , length(alimentos_faltantes) ," :", paste(alimentos_faltantes, collapse = ", "), ". Si conoce la información de estos, utilice el parámetro opcional llamado 'Ingreso_Alimentos' para ingresarlos")
@@ -818,7 +827,8 @@ cat("\n")
 }
 
 library(Foodprice)
-dane(Ciudad="cali",Mes="enero",Año=2014,Percentil_Abast=0.1)
+dane(Ciudad="cali",Mes="enero",Año=2018,Percentil_Abast=0.1)
+PRECIOS_SIPSA_Enero_2018_cali
 
-
+View(Datos_Insumo_Modelos_2018_Enero_cali)
 

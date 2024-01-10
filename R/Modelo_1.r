@@ -23,7 +23,7 @@ cat("\n")
 #         SEGUNDA ETAPA: VALIDACIÓN DE PARÁMETROS OBLIGATORIOS Y OPCIONALES                #
 #-----------------------------------------------------------------------------------------#
 
-#-------------Requerimientos de nombre
+#-------------data 
 
   # Verificar si Datos_Insumo es un data frame
   if (!is.data.frame(Datos_Insumo)) {
@@ -50,7 +50,7 @@ if (length(missing_columns) > 0) {
     stop("DRI_M_OP no es un data frame.")
   }
 
-      if((!is.null(DRI_M_OP) && !ncol(DRI_M_OP)>=2)){ stop("DRI_M_OP no es un data frame de dos columnas.")}
+      if((!is.null(DRI_M_OP) && !ncol(DRI_M_OP)>=2)){ stop("DRI_M_OP no es un data frame de  al menos dos columnas.")}
 
   if (!is.null(DRI_F_OP) && !is.data.frame(DRI_F_OP)) {
     stop("DRI_F_OP no es un data frame de al menos dos columnas.")
@@ -270,3 +270,4 @@ modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g
 #-----------------------------------------------------------------------------------------#
 
 }
+

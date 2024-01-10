@@ -3,19 +3,8 @@ Type: Package
 Title: Libreria en R para la estimación del costo mínimo a una dieta suficiente en energía, a una dieta adecuada en nutrientes y a una dieta saludable.
 Version: 1.0.0
 Author: Pontificia Universidad Javeriana Cali
-Maintainer: El responsable del matenimiento paquete <juan.ordonez.duenas@correounivalle.edu.co>
-Description: {
-
-Este paquete proporciona herramientas para estimar el costo mínimo de una dieta que cumpla con los siguientes criterios. suficiencia en energía, adecuación en nutrientes y promoción de la salud. Desarrollado en colaboración con la UPJ Cali y el CIAT, el paquete ofrece funcionalidades que permiten calcular y optimizar el costo asociado con la elaboración de dietas saludables y equilibradas.
-
-Características principales:
-
-    - Estimación del costo mínimo para lograr una ingesta suficiente en energía.
-    - Evaluación de la adecuación nutricional de la dieta.
-    - Enfoque en la promoción de una dieta saludable y equilibrada.
-
-Este trabajo conjunto entre la Pontificia Universidad Javeriana Cali  y  Alianza Bioversity-CIAT ha dado como resultado un paquete versátil y útil para investigadores, nutricionistas y profesionales interesados en el diseño de dietas óptimas desde el punto de vista nutricional y económico en el contexto de la salud.
-}
+Maintainer: Responsable del matenimiento paquete <juan.ordonez.duenas@correounivalle.edu.co>
+Description: Este paquete proporciona herramientas para estimar el costo mínimo de una dieta que cumpla con los siguientes criterios. suficiencia en energía, adecuación en nutrientes y promoción de la salud. Desarrollado en colaboración con la Pontificia Universidad Javeriana Calii y Alianza Bioversity-CIAT, el paquete ofrece funcionalidades que permiten calcular y optimizar el costo asociado con la elaboración de dietas saludables y equilibradas.
 License:GPL-3
 Encoding: UTF-8
 LazyData: true

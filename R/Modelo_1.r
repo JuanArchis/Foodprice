@@ -38,7 +38,7 @@ required_columns <- c("Precio_100g_ajust", "Alimento", "Energia")
 missing_columns <- setdiff(required_columns, colnames(Datos_Insumo))
 
 if (length(missing_columns) > 0) {
-  stop(paste("El modelo 1 requiere las siguientes columnas", paste(missing_columns, collapse = ", "),". Por favor revise la documentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))}
+  stop(paste("El modelo 1 requiere las siguientes columnas: ", paste(missing_columns, collapse = ", "),". Por favor revise la documentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))}
 
 
 # -------------- VERIFICACIÓN DE DRI_M_OP Y F
@@ -64,7 +64,7 @@ required_columns <- c("Edad", "Energía")
 missing_columns <- setdiff(required_columns, colnames(DRI_M_OP))
 
 if (length(missing_columns) > 0) {
-  stop(paste("Los datos de requerimientos del modelo 1  requiere las siguientes columnas", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
+  stop(paste("Los datos de requerimientos del modelo 1  requiere las siguientes columnas: ", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
 } 
   }
 
@@ -74,7 +74,7 @@ required_columns <- c("Edad", "Energía")
 missing_columns <- setdiff(required_columns, colnames(DRI_F_OP))
 
 if (length(missing_columns) > 0) {
-  stop(paste("Los datos de requerimientos del modelo 1  requiere las siguientes columnas", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
+  stop(paste("Los datos de requerimientos del modelo 1  requiere las siguientes columnas: ", paste(missing_columns, collapse = ", "),". Por favor revise la docuentación para conocer el nombre que deben tener las columnas necesarias al primer modelo"))
 } 
   
   }}
@@ -259,5 +259,3 @@ edad=DRI_M$Edad
 #-----------------------------------------------------------------------------------------#
 
 }
-
-

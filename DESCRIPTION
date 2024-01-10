@@ -1,6 +1,6 @@
 Package: Foodprice
 Type: Package
-Title: Libreria en R para la estimación del costo mínimo a una dieta suficiente en energía, a una dieta adecuada en nutrientes y a una dieta saludable.
+Title: Libreria en R para la estimación del costo mínimo en tres tipos de dietas.
 Version: 1.0.0
 Author: Pontificia Universidad Javeriana Cali
 Maintainer: Responsable del matenimiento paquete <juan.ordonez.duenas@correounivalle.edu.co>

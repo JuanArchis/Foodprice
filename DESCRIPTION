@@ -1,6 +1,6 @@
 Package: Foodprice
 Type: Package
-Title: Libreria en R para la estimación del costo mínimo en tres tipos de dietas.
+Title: Libreria en R para la estimación del costo mínimo a tres tipos de dietas.
 Version: 1.0.0
 Author: Pontificia Universidad Javeriana Cali
 Maintainer: Responsable del matenimiento paquete <juan.ordonez.duenas@correounivalle.edu.co>
@@ -8,3 +8,4 @@ Description: Este paquete proporciona herramientas para estimar el costo mínimo
 License:GPL-3
 Encoding: UTF-8
 LazyData: true
+

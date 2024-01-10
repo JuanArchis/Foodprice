@@ -4,7 +4,7 @@
 
 \name{Modelo_1}
 \alias{Modelo_1}
-\title{Función para la estimación del costo mínimo a una dieta suficiente en energía.}
+\title{Función para la estimación del costo diario mínimo de una dieta suficiente en energía}
 \usage{
 Modelo_1(
 Datos_Insumo,
@@ -14,7 +14,7 @@ DRI_F_OP=NULL
 
 }
 \description{
-La función Modelo_1 calcula el alimento y su costo para una dieta que garantice suficiente energía. Requiere un parámetro obligatorio y dos opcionales.
+La función Modelo_1 calcula el alimento y su costo minimo para una dieta que garantice suficiente energía en el día. Requiere un parámetro obligatorio y dos opcionales.
 }
 \examples{
 
@@ -35,8 +35,7 @@ kable(head(Modelo_1_F))
 
  \code{- PARÁMETROS NECESARIOS} 
 
-    \item{Datos_Insumo:}{El marco de datos debe tener al menos tres columnas con estos nombres: "Precio_100g_ajust", "Alimento", "Energia", para asegurar una estimación precisa del modelo. La columna "Precio_100g_ajust" debe mostrar el precio por 100 gramos de cada alimento, "Alimento" identifica el tipo de comida y "Energia" refleja la cantidad energética que aporta cada alimento.}
-
+    \item{Datos_Insumo:}{El marco de datos debe tener al menos tres columnas con estos nombres: "Precio_100g_ajust", "Alimento", "Energia", para asegurar una estimación precisa del modelo. 
  \code{- PARÁMETROS OPCIONALES} 
 
     \item{DRI_M_OP:}{Marco de datos que puede ser utilizado como una entrada opcional para los requerimientos energéticos de hombres de diferentes edades. Debe incluir al menos dos columnas llamadas "Edad" y "Energía". La columna "Edad" debe ser de tipo carácter.}

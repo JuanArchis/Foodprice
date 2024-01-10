@@ -59,7 +59,7 @@ La función realiza una validación exhaustiva de los parámetros ingresados par
 \value{
 Las salidas se mostrarán en el ambiente global de R, su estructura es:
 
-    \item{PRECIOS_SIPSA_Mes_Año:}{Datos de lso precios mayoristas de SIPSA descargados desde el DANE en el año y més dado}
+    \item{PRECIOS_SIPSA_Mes_Año:}{Datos de los precios mayoristas de SIPSA descargados desde el DANE en el año y més dado}
     
     \item{Datos_Insumo_Modelos_Año_Mes_Ciudad:}{Data frame de la estimación de los precios minorístas junto con la composición nutricional de cada alimento}
 

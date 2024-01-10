@@ -270,3 +270,6 @@ modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g
 #-----------------------------------------------------------------------------------------#
 
 }
+
+
+Modelo_1(Datos_Insumo = )

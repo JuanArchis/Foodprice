@@ -194,7 +194,7 @@ modelo_1_res <- rbind(modelo_1_res, alimento_fila_100g)
 # Modifica el nombre del alimento para representar 100g
 modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g)")
 
-
+assign("Modelo_1_M",modelo_1_res,envir = globalenv())
 #------------------------------------------------------------------------------------------#
 #                       QUINTA ETAPA: MODELO 1 FEMENINO                                   #
 #-----------------------------------------------------------------------------------------#
@@ -270,4 +270,4 @@ modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g
 #-----------------------------------------------------------------------------------------#
 
 }
-Modelo_1_M
+

@@ -32,6 +32,8 @@ kable(head(Modelo_2_M))
 kable(head(Modelo_2_F))
 }
 
+
+
 \arguments{
 
  \code{- PARÁMETROS NECESARIOS} 

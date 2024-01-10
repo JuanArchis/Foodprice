@@ -459,3 +459,4 @@ assign("Modelo_2_M",modelo_2_res,envir = globalenv())
 
 }
 
+help(Modelo_2)

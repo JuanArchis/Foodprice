@@ -35,7 +35,9 @@ kable(head(Modelo_1_F))
 
  \code{- PARÁMETROS NECESARIOS} 
 
-    \item{Datos_Insumo:}{El marco de datos debe tener al menos tres columnas con estos nombres: "Precio_100g_ajust", "Alimento", "Energia", para asegurar una estimación precisa del modelo. 
+    \item{Datos_Insumo:}{El marco de datos debe tener al menos tres columnas con estos nombres: "Precio_100g_ajust", "Alimento", "Energia", para asegurar una estimación precisa del modelo.} 
+ 
+ 
  \code{- PARÁMETROS OPCIONALES} 
 
     \item{DRI_M_OP:}{Marco de datos que puede ser utilizado como una entrada opcional para los requerimientos energéticos de hombres de diferentes edades. Debe incluir al menos dos columnas llamadas "Edad" y "Energía". La columna "Edad" debe ser de tipo carácter.}

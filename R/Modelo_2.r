@@ -458,5 +458,3 @@ assign("Modelo_2_M",modelo_2_res,envir = globalenv())
   if(length(warnings())<100) {print("Ejecución del modelo 2 correcta")} else {cat("Cantidad de errores encontrados:",length(warnings()), "\n")}
 
 }
-
-help(Modelo_2)

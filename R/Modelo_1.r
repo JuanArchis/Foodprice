@@ -178,16 +178,21 @@ edad=DRI_M$Edad
   modelo_1[modelo_1 == 0] = NA
   modelo_1_res = modelo_1[rowSums(is.na(modelo_1[,2:length(colnames(modelo_1))])) != ncol(modelo_1[,2:length(colnames(modelo_1))]),]
 
-  #presentaci?n del resultado en gramos
-  modelo_1_res[nrow(modelo_1_res)+1,] = modelo_1_res[1,]
+ # Encuentra el nombre del alimento diferente a 'Costo'
+alimento_nombre <- modelo_1_res[modelo_1_res$Alimentos != "Costo", "Alimentos"]
 
-  for (k in 2:ncol(modelo_1_res)) {
-    modelo_1_res[3,k] = as.numeric(modelo_1_res[1,k])*100
-  }
+# Encuentra la fila del alimento
+alimento_fila <- modelo_1_res[modelo_1_res$Alimentos == alimento_nombre, ]
 
-  modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(100 g)")
-  modelo_1_res = modelo_1_res[c(1,3,2),]
-  assign(paste("Modelo_1_M"),modelo_1_res,envir = globalenv())
+# Multiplica los valores por 100
+alimento_fila_100g <- alimento_fila
+alimento_fila_100g[-1] <- as.numeric(alimento_fila_100g[-1]) * 100
+
+# Agrega una nueva fila con los valores de alimento * 100
+modelo_1_res <- rbind(modelo_1_res, alimento_fila_100g)
+
+# Modifica el nombre del alimento para representar 100g
+modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g)")
 
 
 #------------------------------------------------------------------------------------------#
@@ -240,15 +245,21 @@ edad=DRI_M$Edad
   modelo_1[modelo_1 == 0] = NA
   modelo_1_res = modelo_1[rowSums(is.na(modelo_1[,2:length(colnames(modelo_1))])) != ncol(modelo_1[,2:length(colnames(modelo_1))]),]
 
-  #presentaci?n del resultado en gramos
-  modelo_1_res[nrow(modelo_1_res)+1,] = modelo_1_res[1,]
+ # Encuentra el nombre del alimento diferente a 'Costo'
+alimento_nombre <- modelo_1_res[modelo_1_res$Alimentos != "Costo", "Alimentos"]
 
-  for (k in 2:ncol(modelo_1_res)) {
-    modelo_1_res[3,k] = as.numeric(modelo_1_res[1,k])*100
-  }
+# Encuentra la fila del alimento
+alimento_fila <- modelo_1_res[modelo_1_res$Alimentos == alimento_nombre, ]
 
-  modelo_1_res[3,1] = paste0(modelo_1_res[1,1],"(100 g)")
-  modelo_1_res = modelo_1_res[c(1,3,2),]
+# Multiplica los valores por 100
+alimento_fila_100g <- alimento_fila
+alimento_fila_100g[-1] <- as.numeric(alimento_fila_100g[-1]) * 100
+
+# Agrega una nueva fila con los valores de alimento * 100
+modelo_1_res <- rbind(modelo_1_res, alimento_fila_100g)
+
+# Modifica el nombre del alimento para representar 100g
+modelo_1_res[nrow(modelo_1_res), "Alimentos"] <- paste0(alimento_nombre, " (100g)")
 
   assign("Modelo_1_F",modelo_1_res,envir = globalenv())
   if(length(warnings())<100) {print ("Ejecución del modelo 1 correcta") }
@@ -259,3 +270,4 @@ edad=DRI_M$Edad
 #-----------------------------------------------------------------------------------------#
 
 }
+Modelo_1_M

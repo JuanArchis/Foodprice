@@ -48,8 +48,10 @@ kable(head(Modelo_2_F))
 
 
 \details{
-Si los parámetros de requerimientos (DRI_M_OP o DRI_f_OP) no son utilizados, se emplearán por defecto los requerimientos nutricionales establecidos para la región pacífica de Colombia.
+Si los parámetros de requerimientos (DRI_M_OP o DRI_f_OP) no son utilizados, se emplearán por defecto los requerimientos nutricionales establecidos para la región pacífica de Colombia.}
+
 \value{
+
 Las salidas se mostrarán en el ambiente global de R, su estructura es:
 
     \item{Modelo_2_M:}{Marco de datos con las estimaciones para hombres, que incluye el costo y los alimentos para la dieta.}
